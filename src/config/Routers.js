@@ -2,6 +2,7 @@
 import React from "react";
 import { Route,Switch } from "react-router-dom";
 import AppRoute from "./AppRoute";
+import { auth } from '../utilities/auth';
 import Register from '../containers/Register';
 import NotFound from "../components/NotFound";
 import {frontLayout, dashboardLayout} from "../components/Layouts";
@@ -9,36 +10,34 @@ import ForgotPassword from "../containers/ForgotPassword";
 import Login from "../containers/Login";
 import RegisterPayment from "../containers/RegisterPayment";
 import Home from "../containers/Home";
+import RecordStep1 from "../containers/records/RecordStep1";
+import RecordStep2 from "../containers/records/RecordStep2";
+import RecordStep3 from "../containers/records/RecordStep3";
+import RecordStep4 from "../containers/records/RecordStep4";
+import Docs from "../containers/docs/Docs";
+import DocsList from "../containers/docs/DocsList";
 
-const Routers = ({store, history}) => {
-	const state = store.getState(); 
-	console.log(history.location.pathname)
-	 /*********** Check authentications ***********/
-    const requireAuth = () => {
-        if(!state.user.loggedIn && history.location.pathname !== "/") {
-           history.push( "/");
-        } else if(state.user.loggedIn && history.location.pathname === "/"){
-           history.push( "/dashboard");
-        }
-    };
-
-	 return (
+const Routers = store => {
+	return (
         <div>
             <Switch> 
                 <AppRoute  
                     exact={true}
                     path="/" 
                     component={Login} 
-                    requireAuth={requireAuth}
-                    layout={frontLayout} 
+                    requireAuth={auth}
+                    layout={frontLayout}
+                    store={store}
+                    type="public" 
                 />
 
                 <AppRoute  
                     exact 
                     path="/dashboard" 
                     component={Home} 
-                    requireAuth={() => false}
+                    requireAuth={auth}
                     layout={dashboardLayout} 
+                    store={store}
                 />
 
                  <AppRoute  
@@ -47,6 +46,8 @@ const Routers = ({store, history}) => {
                         component={Register} 
                         requireAuth={() => false}
                         layout={frontLayout} 
+                        store={store}
+                        type="public" 
                     />
                  <AppRoute
                         exact
@@ -54,6 +55,8 @@ const Routers = ({store, history}) => {
                         component={RegisterPayment}
                         requireAuth={() => false}
                         layout={frontLayout}
+                        store={store}
+                        type="public" 
                     />
                  <AppRoute
                         exact
@@ -61,6 +64,62 @@ const Routers = ({store, history}) => {
                         component={ForgotPassword} 
                         requireAuth={() => false}
                         layout={frontLayout} 
+                        store={store}
+                        type="public" 
+                    /> 
+                    
+                    <AppRoute
+                        exact
+                        path="/records/step_one" 
+                        component={RecordStep1} 
+                        requireAuth={auth}
+                        layout={dashboardLayout} 
+                        store={store}
+                    />
+
+                    <AppRoute
+                        exact
+                        path="/records/step_two" 
+                        component={RecordStep2} 
+                        requireAuth={auth}
+                        layout={dashboardLayout} 
+                        store={store}
+                    />
+
+                    <AppRoute
+                        exact
+                        path="/records/step_three" 
+                        component={RecordStep3} 
+                        requireAuth={auth}
+                        layout={dashboardLayout} 
+                        store={store}
+                    />
+
+                    <AppRoute
+                        exact
+                        path="/records/step_four" 
+                        component={RecordStep4} 
+                        requireAuth={auth}
+                        layout={dashboardLayout} 
+                        store={store}
+                    />
+
+                    <AppRoute
+                        exact
+                        path="/docs/:_id" 
+                        component={Docs} 
+                        requireAuth={auth}
+                        layout={dashboardLayout} 
+                        store={store}
+                    /> 
+
+                    <AppRoute
+                        exact
+                        path="/docs" 
+                        component={DocsList} 
+                        requireAuth={auth}
+                        layout={dashboardLayout} 
+                        store={store}
                     />
 
                     <AppRoute 
@@ -68,7 +127,9 @@ const Routers = ({store, history}) => {
                         path="*" 
                         component={NotFound}
                         requireAuth={()=> false} 
-                        layout={frontLayout}                                
+                        layout={frontLayout}  
+                        store={store}
+                        type="public"                               
                     />
 			</Switch>
         </div>

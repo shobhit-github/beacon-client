@@ -178,7 +178,7 @@ class Register extends Component {
 
                             <div className="col-sm-12 text-right">
 
-                                <Link to="/login" className="btn signin-btn">Sign in</Link>
+                                <Link to="/" className="btn signin-btn">Sign in</Link>
 
                             </div>
 

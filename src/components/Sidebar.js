@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
+import {Link} from "react-router-dom";
 import "./_styles/sidebar.css";
 
 
@@ -24,9 +25,9 @@ class Sidebar extends Component {
 
                 <ul className="sidenav">
 
-                    <li className="dashboard active"><a href="">Dashboard</a></li>
+                    <li className="dashboard active"><Link to="/dashboard">Dashboard</Link></li>
 
-                    <li className="files"><a href="">My Files</a></li>
+                    <li className="files"><Link to="/docs">My Files</Link></li>
 
                     <li className="help"><a href="">Help</a></li>
 

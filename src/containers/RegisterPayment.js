@@ -37,7 +37,7 @@ class RegisterPayment extends Component {
     componentWillReceiveProps(nextProps, props) {
 
         if (!nextProps.registerError) {
-            return this.props.history.push('/login')
+            return this.props.history.push('/')
         }
         this.setState({
             ...this.state, ...{validateErr: nextProps.message}
@@ -53,7 +53,7 @@ class RegisterPayment extends Component {
                 ...this.state, ...{validateErr: true}
             });
             return;
-        }
+        } console.log("this.state.userInfo, this.state.plan_type",this.state.userInfo, this.state.plan_type)
         this.props.dispatch(register(this.state.userInfo, this.state.plan_type));
         this.setState({
             ...this.state, ...{userInfo: {}}
@@ -212,7 +212,7 @@ class RegisterPayment extends Component {
 
                             <div className="col-sm-12 text-right">
 
-                                <Link to="/login" className="btn signin-btn">Sign in</Link>
+                                <Link to="/" className="btn signin-btn">Sign in</Link>
 
                             </div>
 
@@ -332,21 +332,9 @@ RegisterPayment.contextTypes = {
 };
 
 RegisterPayment.propTypes = {
-    user: PropTypes.string,
     registerError: PropTypes.object,
     dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
 
-    const {auth} = state;
-
-    console.log(auth)
-
-    if (auth) {
-        return auth;
-    }
-    return {user: null};
-}
-
-export default connect(mapStateToProps)(RegisterPayment);
+export default connect(null )(RegisterPayment);

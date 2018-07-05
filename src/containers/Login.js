@@ -2,9 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import { bindActionCreators } from "redux";
-import {login} from "../actions/user/";
+import {login} from "../actions/user";
 import AlertMsg from "../components/AlertMsg";
-import Loader from "../components/ProcessingLoader";
 import {Link} from "react-router-dom";
 import {CircularProgress, Icon} from "@material-ui/core/es/index";
 
@@ -17,65 +16,38 @@ class Login extends Component {
             password_visibility: false,
             validationErr: null,
             open:false,
-            loaderStatus: false
+            loggingIn: false
         }
         this.handleLogin = this.handleLogin.bind(this);
     }
 
 
-    componentDidMount() {
-
-        this.handleLogout()
-    }
-
-
-    // componentWillReceiveProps(nextProps) {
-
-    //     if (nextProps.user && !nextProps.loginError) {
-    //         // logged in, let's show redirect if any, or show home
-    //         try {
-    //             const {from} = this.props.location.state || {
-    //                 from: {pathname: "/"}
-    //             };
-    //             nextProps.history.replace(from);
-    //         } catch (err) {
-    //             nextProps.history.replace("/");
-    //         }
-    //     }
-
-    //     this.setState({
-    //         ...this.state,
-    //         ...{ validationErr: nextProps.message }
-    //     })
-    // }
-
     /*************** User Login *************/
     handleLogin = (event) => {
         event.preventDefault();
-        let context = this;
-        let obj = { email: this.refs.username.value, password: this.refs.password.value };
-        this.setState({loaderStatus:true})
-        this.props.login(obj, (res) => {
-               if(res.status){
-                context.setState({
-                    open: true,
-                    msg: res.message,
-                    msgType: res.type,
-                    msgStatus: res.status,
-                    loaderStatus: false
-                  });
-                context.props.history.replace("/dashboard");
-               } else{
-                 context.setState({
-                    open: true,
-                    msg: res.message,
-                    msgType: res.type,
-                    msgStatus: res.status,
-                    loaderStatus: false
-                  });
-               }
-           });
-        this.refs.username.value = this.refs.password.value = ``;
+        if(this.refs.username.value === '' || this.refs.password.value ===''){
+            this.setState({validationErr: "Email and password is required!"});
+        } else{
+             let context = this,
+                params = { email: this.refs.username.value, password: this.refs.password.value };
+                this.setState({loggingIn:true});
+                this.props.login(params, (res) => {
+                       if(res.status){
+                        this.refs.username.value = this.refs.password.value = ``;
+                        context.props.history.replace("/dashboard");
+                       } else{
+                         context.setState({
+                            open: true,
+                            msg: res.message,
+                            msgType: res.type,
+                            msgStatus: res.status,
+                            loggingIn: false,
+                            validationErr: null
+                          });
+                       }
+                   });
+        }
+               
     };
 
 
@@ -88,12 +60,10 @@ class Login extends Component {
     };
 
 
-    handleLogout = (event) => localStorage.removeItem('id_token');
-
     render() {
         let context = this;
-        const {user, loginError, loggingIn} = this.props;
-
+        const {user} = this.props,
+        {loggingIn, validationErr} = this.state;
         return (
 
             <div className="container-fluid">
@@ -106,7 +76,6 @@ class Login extends Component {
                   type={this.state.msgType}
                   status={this.state.msgStatus}
                 />
-                <Loader isShowingLoader={this.state.loaderStatus} />
                     <div className="col-sm-7 p-0">
 
                         <div className="inner-wrapper">
@@ -152,7 +121,7 @@ class Login extends Component {
                             <div className="col-sm-12 center-form">
 
                                 {
-                                    !user && loginError &&
+                                    !user.loggedIn && validationErr && 
 
                                     <div className="error-msg ">
 
@@ -265,28 +234,17 @@ class Login extends Component {
             </div>
 
         );
-
-    }    
-
+    }  
 }
-
-Login.contextTypes = {
-    store: PropTypes.object.isRequired
-};
 
 Login.propTypes = {
-    user: PropTypes.string,
-    loginError: PropTypes.object
+    user: PropTypes.object.isRequired,
+    login: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-   
-    const {auth} = state;
-    if (auth) {
-        return auth;
-    }
-    return {user: null};
-}
+const mapStateToProps = state => ({
+    user: state.user
+});
 
 const mapDispatchToProps = dispatch => ({
   login: bindActionCreators(login, dispatch)

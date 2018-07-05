@@ -1,13 +1,15 @@
 import React, {Component} from "react";
 import AudioRecorder from 'react-audio-recorder';
+import PropTypes from "prop-types";
 import { ReactMic } from 'react-mic';
-import Timer from '../../../node_modules/easytimer.js/dist/easytimer';
 import {connect} from "react-redux";
+import { bindActionCreators } from "redux";
+import Timer from '../../../node_modules/easytimer.js/dist/easytimer';
 import {saveRecord} from "../../actions/records";
-import {Icon} from '@material-ui/core/'
-
-// ui components
+import {Icon} from '@material-ui/core/';
 import Chip from '@material-ui/core/Chip';
+import {CircularProgress} from "@material-ui/core/es/index";
+import AlertMsg from "../../components/AlertMsg";
 
 class RecordStep4 extends Component {
 
@@ -24,7 +26,9 @@ class RecordStep4 extends Component {
             timeStamps: [],
             audioUrl: null,
             recording: false,
+            open:false,
             markers: localStorage.chipData ? JSON.parse(localStorage.chipData) : [],
+            interviewSave: false
         };
     }
 
@@ -47,116 +51,14 @@ class RecordStep4 extends Component {
     }
 
 
-    componentWillReceiveProps(props) {
+    // componentWillReceiveProps(props) {
 
-        if (props.record.success) {
-            localStorage.removeItem('chipData');
-            props.history.push(`/docs/${props.record.data._id}`)
-        }
-    }
+    //     if (props.record.success) {
+    //         localStorage.removeItem('chipData');
+    //         props.history.push(`/docs/${props.record.data._id}`)
+    //     }
+    // }
 
-
-    render() {
-
-        const {recordTimer, audioStr, markers, recording, audioUrl} = this.state;
-
-        return (
-
-            <div className="main-content">
-
-                <div className="row record-step4">
-
-                    <div className="offset-sm-3 col-sm-6">
-
-                        <div className="card text-center single">
-
-                            <div className="beta-tag">Beta</div>
-
-                            <div className="card-header">
-
-                                <label className="step-count">STEP 4 of 4</label>
-
-                                <h2>Record your interview</h2>
-
-                            </div>
-
-                            <div className="card-block">
-
-                                <div className="form-group d-flex justify-content-center mt-3">
-
-                                    <div className="record-sec">
-
-                                        <ReactMic
-                                          record={recording}
-                                          className='react-mic-addon'
-                                          onStop={this.recordingBufferEvent}
-                                        />
-                                        {
-                                            !audioUrl && 
-                                            <button className={recording ? 'on-rec' : 'off-rec'} onClick={this.onRecordingChange} type="button">
-                                                { !recording && <span> <Icon style={{ lineHeight: '18px', fontSize: 15 }}>fiber_manual_record</Icon> Record </span> }
-                                                { recording && <span> <Icon style={{ lineHeight: '25px', fontSize: 18 }}>stop</Icon> Stop </span> }
-                                            </button>
-                                        }
-                                        
-                                    </div>
-
-                                    <div className="timer">{recordTimer}</div>
-                                </div>
-
-                                <div className="input-group mt-4">
-
-                                    <label>Add a new marker</label>
-
-                                    <input ref="marker" className="form-control" onKeyPress={this.addMarker}
-                                           placeholder="Enter text to add a new marker"/>
-
-                                    <span><i className="material-icons">add</i></span>
-
-                                </div>
-
-
-                                <div className="chip-sec">
-
-                                    {
-                                        markers.map(data => {
-
-                                            return (
-                                                <Chip label={data.label}
-                                                      onDelete={this.deleteMarker(data)}
-                                                      onClick={this.onChipClick(data.label)}
-                                                      className='chip'/>
-                                            );
-                                        })
-                                    }
-
-                                </div>
-
-
-                            </div>
-
-                            <button disabled={!audioStr} onClick={this.saveRecord}
-                                    className="btn btn-primary">Save my interview
-                            </button>
-
-                            <div className="card-footer">
-
-                                <a href="">Skip this step</a>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        );
-
-    }
 
 
     onRecordingChange = () => {
@@ -233,23 +135,151 @@ class RecordStep4 extends Component {
 
 
     saveRecord = () => {
-        this.props.dispatch(saveRecord({
-            timeStamps: this.state.timeStamps, audioStr: this.state.audioStr, length: this.state.audioDuration
-        }))
+        const context = this; 
+        context.setState({interviewSave: true});
+        this.props.saveRecord({
+            _id: this.props.user._id, timeStamps: this.state.timeStamps, audioStr: this.state.audioStr, length: this.state.audioDuration
+        }, res => {
+            if(res.status){
+                this.props.history.push(`/docs/${res._id}`)
+            } else{
+                context.setState({
+                    open: true,
+                    msg: res.message,
+                    msgType: res.type,
+                    msgStatus: res.status,
+                    interviewSave: false
+                  });
+            }                    
+        })
+    }
+
+
+    render() {
+        const context = this; 
+        const {recordTimer, audioStr, markers, recording, audioUrl, interviewSave} = this.state;
+
+        return (
+
+            <div className="main-content">
+
+                <div className="row record-step4">
+                    <AlertMsg
+                      onPress={() => context.setState({ open: false })}
+                      isShowingModal={this.state.open}
+                      msg={this.state.msg}
+                      type={this.state.msgType}
+                      status={this.state.msgStatus}
+                    />
+                    <div className="offset-sm-3 col-sm-6">
+
+                        <div className="card text-center single">
+
+                            <div className="beta-tag">Beta</div>
+
+                            <div className="card-header">
+
+                                <label className="step-count">STEP 4 of 4</label>
+
+                                <h2>Record your interview</h2>
+
+                            </div>
+
+                            <div className="card-block">
+
+                                <div className="form-group d-flex justify-content-center mt-3">
+
+                                    <div className="record-sec">
+
+                                        <ReactMic
+                                          record={recording}
+                                          className='react-mic-addon'
+                                          onStop={this.recordingBufferEvent}
+                                        />
+                                        {
+                                            !audioUrl && 
+                                            <button className={recording ? 'on-rec' : 'off-rec'} onClick={this.onRecordingChange} type="button">
+                                                { !recording && <span> <Icon style={{ lineHeight: '18px', fontSize: 15 }}>fiber_manual_record</Icon> Record </span> }
+                                                { recording && <span> <Icon style={{ lineHeight: '25px', fontSize: 18 }}>stop</Icon> Stop </span> }
+                                            </button>
+                                        }
+                                        
+                                    </div>
+
+                                    <div className="timer">{recordTimer}</div>
+                                </div>
+
+                                <div className="input-group mt-4">
+
+                                    <label>Add a new marker</label>
+
+                                    <input ref="marker" className="form-control" onKeyPress={this.addMarker}
+                                           placeholder="Enter text to add a new marker"/>
+
+                                    <span><i className="material-icons">add</i></span>
+
+                                </div>
+
+
+                                <div className="chip-sec">
+
+                                    {
+                                        markers.map(data => {
+
+                                            return (
+                                                <Chip label={data.label}
+                                                      onDelete={this.deleteMarker(data)}
+                                                      onClick={this.onChipClick(data.label)}
+                                                      className='chip'/>
+                                            );
+                                        })
+                                    }
+
+                                </div>
+
+
+                            </div>
+
+                            <button disabled={interviewSave} onClick={this.saveRecord}
+                                    className="btn btn-primary">
+                                    {
+                                        interviewSave ? <CircularProgress size={15} color={'white'} /> : `Save my interview`
+                                    }
+
+                            </button>
+
+                            <div className="card-footer">
+
+                                <a href="">Skip this step</a>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        );
+
     }
 
 }
 
+RecordStep4.propTypes = {
+    user: PropTypes.object.isRequired,
+    saveRecord: PropTypes.func.isRequired
+};
 
-function mapStateToProps(state) {
+const mapStateToProps = state => ({
+    user: state.user
+}); 
 
-    const {records} = state;
+const mapDispatchToProps = dispatch => ({
+  saveRecord: bindActionCreators(saveRecord, dispatch)
+});
 
-    if (records) {
-        return records
-    }
-    return {success: false};
-}
-
-
-export default connect(mapStateToProps)(RecordStep4);
+export default connect(mapStateToProps, mapDispatchToProps)(RecordStep4);

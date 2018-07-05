@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getRecord} from "../actions/records";
-
-import {environment as env} from "../conf/environment";
+import PropTypes from "prop-types";
+import _ from "underscore";
+import {environment as env} from "../../config/environment";
 
 class Docs extends Component {
 
@@ -25,30 +25,24 @@ class Docs extends Component {
 
 
     componentDidMount() {
+       // this.props.dispatch(getRecord(this.props.match.params.id));
+       const { records, match } = this.props, 
+       record = _.findWhere(records, {_id: match.params._id}); 
+       let last = 0;
 
-        this.props.dispatch(getRecord(this.props.match.params.id));
-    }
+            this.state.record = record;
+            this.state.duration = record.media_length;
 
-
-    componentWillReceiveProps(nextProps, props) {
-
-        if (nextProps !== props) {
-
-            let last = 0;
-
-            this.state.record = nextProps.record;
-            this.state.duration = nextProps.record.media_length;
-
-            this.state.listItems = nextProps.record.markers.map((number,index) => {
+            this.state.listItems = record.markers.map((number,index) => {
 
                     let timeArr = number.timeConstraint.split(':');
                     let secs = parseInt(timeArr[0]*60) + parseInt(timeArr[1]);
-                    let prog = (secs/nextProps.record.media_length)*100;
+                    let prog = (secs/record.media_length)*100;
 
                     if(index > 0){
-                        let lastTimeArr = nextProps.record.markers[index-1].timeConstraint.split(":");
+                        let lastTimeArr = record.markers[index-1].timeConstraint.split(":");
                         let lastSecs=(lastTimeArr[0]*60)+lastTimeArr[1];
-                        let lastProg=(lastSecs/nextProps.record.media_length)*100;
+                        let lastProg=(lastSecs/record.media_length)*100;
                         prog=prog-lastProg;
                     }
 
@@ -56,9 +50,107 @@ class Docs extends Component {
                 }
             );
             this.setState(...this.state);
-        }
+
     }
 
+
+    // componentWillReceiveProps(nextProps, props) {
+
+    //     if (nextProps !== props) {
+
+    //         let last = 0;
+
+    //         this.state.record = nextProps.record;
+    //         this.state.duration = nextProps.record.media_length;
+
+    //         this.state.listItems = nextProps.record.markers.map((number,index) => {
+
+    //                 let timeArr = number.timeConstraint.split(':');
+    //                 let secs = parseInt(timeArr[0]*60) + parseInt(timeArr[1]);
+    //                 let prog = (secs/nextProps.record.media_length)*100;
+
+    //                 if(index > 0){
+    //                     let lastTimeArr = nextProps.record.markers[index-1].timeConstraint.split(":");
+    //                     let lastSecs=(lastTimeArr[0]*60)+lastTimeArr[1];
+    //                     let lastProg=(lastSecs/nextProps.record.media_length)*100;
+    //                     prog=prog-lastProg;
+    //                 }
+
+    //                 return <span className='bubble' style={{marginLeft: prog+"%"}} onClick={this.skipPlay(secs)}> </span>;
+    //             }
+    //         );
+    //         this.setState(...this.state);
+    //     }
+    // }
+
+
+     handleError = (error) => {
+        throw (error.message)
+    };
+
+    playPauseSong = () => {
+        if(this.state.playing){
+            document.getElementById("audio").pause();
+            clearInterval(this.state.interval);
+            this.state.interval=0;
+            this.state.isPaused=1;
+            this.setState({...this.state});
+        }else{
+            this.state.isPaused=0;
+            if(this.state.percent>=100){
+                this.state.percent=0;
+                this.state.sec=0;
+                this.state.isPaused=0;
+                this.setState({...this.state});
+            }
+            document.getElementById("audio").play();
+            this.progressUpdate();
+        }
+        this.state.playing=!this.state.playing;
+        this.setState({...this.state});
+
+    }
+
+    endProgress = () => {
+        clearInterval(this.state.interval);
+        this.state.sec=0;
+        this.state.interval=0;
+        this.state.percent=100;
+        this.state.playing=0;
+        this.state.isPaused=1;
+        this.setState({...this.state});
+    }
+
+    progressUpdate(){
+        let length = this.state.record.media_length;
+        this.state.interval = setInterval(this.updateProgress,1000);
+        this.setState({...this.state});
+    }
+
+    updateProgress = () => {
+        if(!this.state.isPaused){
+            this.state.sec+=1;
+            this.state.percent=((this.state.sec/this.state.record.media_length)*100);
+            this.setState({...this.state});
+        }
+    };
+
+    skipPlay = data => () => {
+
+
+        this.state.sec = data-1;
+        this.state.percent=((this.state.sec/this.state.record.media_length)*100);
+        document.getElementById("audio").currentTime = data;
+        document.getElementById("audio").play();
+        this.setState({...this.state});
+
+        if(this.state.isPaused) {
+            this.state.sec=data;
+            this.state.isPaused = 0;
+            this.setState({...this.state});
+            this.progressUpdate();
+        }
+    }
 
     render() {
 
@@ -215,87 +307,15 @@ class Docs extends Component {
             </div>
 
         );
-
-    }
-
-
-    handleError = (error) => {
-        throw (error.message)
-    };
-
-    playPauseSong = () => {
-        if(this.state.playing){
-            document.getElementById("audio").pause();
-            clearInterval(this.state.interval);
-            this.state.interval=0;
-            this.state.isPaused=1;
-            this.setState({...this.state});
-        }else{
-            this.state.isPaused=0;
-            if(this.state.percent>=100){
-                this.state.percent=0;
-                this.state.sec=0;
-                this.state.isPaused=0;
-                this.setState({...this.state});
-            }
-            document.getElementById("audio").play();
-            this.progressUpdate();
-        }
-        this.state.playing=!this.state.playing;
-        this.setState({...this.state});
-
-    }
-
-    endProgress = () => {
-        clearInterval(this.state.interval);
-        this.state.sec=0;
-        this.state.interval=0;
-        this.state.percent=100;
-        this.state.playing=0;
-        this.state.isPaused=1;
-        this.setState({...this.state});
-    }
-
-    progressUpdate(){
-        let length = this.state.record.media_length;
-        this.state.interval = setInterval(this.updateProgress,1000);
-        this.setState({...this.state});
-    }
-
-    updateProgress = () => {
-        if(!this.state.isPaused){
-            this.state.sec+=1;
-            this.state.percent=((this.state.sec/this.state.record.media_length)*100);
-            this.setState({...this.state});
-        }
-    };
-
-    skipPlay = data => () => {
-
-
-        this.state.sec = data-1;
-        this.state.percent=((this.state.sec/this.state.record.media_length)*100);
-        document.getElementById("audio").currentTime = data;
-        document.getElementById("audio").play();
-        this.setState({...this.state});
-
-        if(this.state.isPaused) {
-            this.state.sec=data;
-            this.state.isPaused = 0;
-            this.setState({...this.state});
-            this.progressUpdate();
-        }
-    }
+    }   
 }
 
-function mapStateToProps(state) {
+Docs.propTypes = {
+    records: PropTypes.array.isRequired
+};
 
-    const {records} = state;
-
-    if (records) {
-        return records
-    }
-    return {success: false};
-}
+const mapStateToProps = state => ({
+  records: state.records    
+});
 
 export default connect(mapStateToProps)(Docs);

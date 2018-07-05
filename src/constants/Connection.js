@@ -10,7 +10,7 @@
 let runningUrl  = "localhost:4101",
     zomatoApp  = `${window.location.protocol}//developers.zomato.com`,
     httpUrl     = `${window.location.protocol}//${runningUrl}`;
-    httpUrl = "https://1d41aef3.ngrok.io";
+   // httpUrl = "https://1d41aef3.ngrok.io";
 
 class Connection {
 

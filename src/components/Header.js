@@ -1,29 +1,35 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import { bindActionCreators } from "redux";
 import {withRouter} from "react-router";
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
+//import injectTapEventPlugin from 'react-tap-event-plugin';
+import {logOut} from "../actions/user";
 import logo from "../assets/images/logo.png";
 import menu from "../assets/images/hamburgr.png";
 
 import "./_styles/header.css";
-injectTapEventPlugin();
+
+//injectTapEventPlugin();
 
 
 class Header extends Component {
 
-
-    onLogoutClick = () => {
-
-        // localStorage.removeItem('id_token')
-        // this.props.history.replace("/login");
+    
+    onLogoutClick = () => { 
+        const {user, history, logOut} = this.props;
+        logOut( { token: user.token }, res => {
+            if(res){
+                history.push("/");
+            }
+        });
     };
 
 
     render() {
-
-        const pathname = this.props.history.location.pathname;
+        const {user, history} = this.props;
+        const pathname = history.location.pathname;
         const isLoginPage = pathname.indexOf("register") > -1;
         const isRegisterPage = pathname.indexOf("login") > -1;
         const isForgotPasswordPage = pathname.indexOf("forgot_password") > -1;
@@ -73,14 +79,14 @@ class Header extends Component {
 
                         <li>
 
-                            <span className="proicon">A</span>
+                            <span className="proicon">{user.name.charAt(0)}</span>
 
                             <i className="fa fa-angle-down"> </i>
 
                         </li>
 
                         <li>
-                            <button onClick={this.onLogoutClick} className="btn btn-danger"> Logout </button>
+                            <button onClick={() => this.onLogoutClick()} className="btn btn-danger"> Logout </button>
                         </li>
 
                     </ul>
@@ -95,8 +101,16 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    user: PropTypes.string,
-    handleLogout: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired,
+    logOut: PropTypes.func.isRequired
 };
 
-export default withRouter(Header);
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  logOut: bindActionCreators(logOut, dispatch)
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import storage from 'redux-persist/es/storage'; // default: localStorage if web, AsyncStorage if react-native
 import { routerReducer as router} from 'react-router-redux';
 import user from './modules/user';
+import records from './modules/records';
 import encryptor from './encryptor';
 
 const userPersistConfig = {
@@ -15,5 +16,6 @@ const userPersistConfig = {
 
 export default persistCombineReducers(userPersistConfig, {
 	user,
+	records,
 	router
 });

@@ -1,8 +1,8 @@
 /*
  * @file: App.js
- * @description: Loaded data after rehydrated true
- * @date: 10.6.2018
- * @author: Monika Rani
+ * @description: App Configration
+ * @date: 04.07.2018
+ * @author: Jasdeep Singh
  * */
 
 import React, {Component} from 'react';  
@@ -21,25 +21,17 @@ export const history = createHistory();
 /************ store configration *********/
 const { persistor, store } = configureStore(history);
 
-class App extends Component {  
-
-  constructor() {
-    super()
-    this.state = { }
-  }
-  render() {
+  const App = () => {
     return (
      <Provider store={store}> 
-      <ConnectedRouter history={history}>
-  	    <Router history={history}>  
-  	      <Routers store={store} history={history}/>
-  	    </Router>
-      </ConnectedRouter> 
+      <PersistGate loading={<Loader />} persistor={persistor}>
+        <ConnectedRouter history={history}>
+  	      <Routers {...store}/>
+        </ConnectedRouter> 
+      </PersistGate>
 	   </Provider>
     );
-  }
-
-}
+  };
 
 
 export default App;

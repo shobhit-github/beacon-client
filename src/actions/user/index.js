@@ -24,8 +24,7 @@ export const login = (params, cb) => {
     return dispatch => {
         RestClient.post("user/login", params)
             .then(result => {
-                if (result.success) {
-                   // result.response.token = result.token;
+                if (result.success) {                   
                     dispatch(login_Success(result.data));
                     let res = {
                         status: true,
@@ -59,7 +58,7 @@ export const login = (params, cb) => {
 /****** action creator for register ********/
 export const register = (params, cb) => {
     return dispatch => {
-        RestClient.post("users/register", params)
+        RestClient.post("user/register", params)
             .then(result => {
                 if (result.statusCode === 200) {
                     result.response.token = result.token;
@@ -99,7 +98,7 @@ export const resetPassword = (params, type, cb) => {
     let token = params.token;
     delete params.token;
     return dispatch => {
-        RestClient.put(`users/password/${type}`, params, token)
+        RestClient.put(`user/password/${type}`, params, token)
             .then(result => {
                 if (result.statusCode === 200) {
                     dispatch(reset_password(result.response));
@@ -133,26 +132,33 @@ export const resetPassword = (params, type, cb) => {
 /******** action creator to log user out of the application **********/
 export const logOut = (params, cb) => {
     return dispatch => {
-        RestClient.delete("users/logout", "", params.token)
-            .then(result => {
-                if (result) {
-                    dispatch(log_out());
-                    let res = {
+        dispatch(log_out());
+        let res = {
                         status: true,
                         message: "Logout!",
                         type: "Logout...!!"
                     };
                     cb(res);
-                }
-            })
-            .catch(error => {
-                let res = {
-                    status: false,
-                    message: "Something went wrong!",
-                    type: "Error!"
-                };
-                cb(res);
-            });
+        // RestClient.delete("user/logout", "", params.token)
+        //     .then(result => { console.log("result", result)
+        //         if (result) {
+        //             dispatch(log_out());
+        //             let res = {
+        //                 status: true,
+        //                 message: "Logout!",
+        //                 type: "Logout...!!"
+        //             };
+        //             cb(res);
+        //         }
+        //     })
+        //     .catch(error => {
+        //         let res = {
+        //             status: false,
+        //             message: "Something went wrong!",
+        //             type: "Error!"
+        //         };
+        //         cb(res);
+        //     });
     };
 };
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM  from 'react-dom';
-
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
-// import '../public/css/index.scss';
+import './index.css';
 
 
 import App from './config/App';
@@ -17,7 +16,6 @@ window.$ = window.jQuery = jquery;
 window.Popper = require("popper.js");
 require("bootstrap/dist/js/bootstrap");
 /////////////////////////////////////////////
-
 
 /*************** Render App ********/
 ReactDOM.render(

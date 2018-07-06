@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { register } from "../actions/auth";
+import { register } from "../actions/user";
 
 import successBanner from "../assets/images/successsign.jpg";
 import PropTypes from "prop-types";

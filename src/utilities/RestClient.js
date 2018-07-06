@@ -15,7 +15,6 @@ var config = {
 
 class RestClient {
   static post(url, params) {
-
     return new Promise(function(fulfill, reject) {
       //config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       axios
@@ -35,7 +34,6 @@ class RestClient {
   }
 
   static put(url, params) {
-
     return new Promise(function(fulfill, reject) {
       axios
         .put(Connection.getResturl() + url, JSON.stringify(params), config)
@@ -72,7 +70,6 @@ class RestClient {
 
   static get(url, params) {
     let query = querystring.stringify(params);
-
     return new Promise(function(fulfill, reject) {
       axios
         .get(Connection.getResturl() + url + "?" + query, config)

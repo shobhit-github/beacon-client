@@ -79,10 +79,7 @@ class DocsList extends Component {
             activePage={this.state.activePage}
             itemsCountPerPage={ITEM_PER_PAGE}
             prevPageText={
-              <i
-                className="fa fa-chevron-left customIcon"
-                aria-hidden="true"
-              />
+              <i className="fa fa-chevron-left customIcon" aria-hidden="true" />
             }
             nextPageText={
               <i

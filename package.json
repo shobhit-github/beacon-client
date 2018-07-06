@@ -77,7 +77,8 @@
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "watch-css":
+      "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build && react-snapshot",
@@ -87,18 +88,14 @@
     "eject": "react-scripts eject",
     "ri": "rm -rf node_modules && npm install",
     "lint": "./node_modules/.bin/eslint . --ext .js",
-    "rp": "prettier --write \"**/*.json\" \"**/*.js\" \"!build/**/*.js\" \"!build/**/*.json\"",
+    "rp":
+      "prettier --write \"**/*.json\" \"**/*.js\" \"!build/**/*.js\" \"!build/**/*.json\"",
     "precommit": "npm run rp && lint-staged",
     "predeploy": "npm run build"
   },
   "reactSnapshot": {
-    "include": [
-      "/signin"
-    ],
-    "exclude": [
-      "/signup",
-      "/dashboard/**"
-    ],
+    "include": ["/signin"],
+    "exclude": ["/signup", "/dashboard/**"],
     "snapshotDelay": 5000
   },
   "author": "Jasdeep",

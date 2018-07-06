@@ -1,9 +1,3 @@
-
-
-
-
 export const environment = {
-
-    API_ROOT: `http://localhost:4101/`
-
+  API_ROOT: `http://172.24.0.194:4101/`
 };

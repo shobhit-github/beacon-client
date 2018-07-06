@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import _ from "underscore";
 import {environment as env} from "../../config/environment";
 import { updateRecord } from "../../actions/records";
+import "../_styles/docs.css";
 
 class Docs extends Component {
 
@@ -262,7 +263,7 @@ class Docs extends Component {
                                                 <span style={{marginLeft:50}}>
                                                 <h6 id={index} contenteditable={tagEdit === index ? "true" : "false"} onClick={()=> this.tagEdit(index, value.label) }>{ value.label } </h6>
                                                 </span>
-                                                <span style={{marginLeft:180}}>
+                                                <span>
                                                 {
                                                 tagEdit === index ? [<i className="material-icons" onClick={() => this.editTag(index) }>save</i>,
                                                 <i className="material-icons" onClick={()=> this.setState({tagEdit: false}) }>cancel</i>] :''

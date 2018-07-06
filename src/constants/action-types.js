@@ -5,12 +5,10 @@
  * @author: Jasdeep Singh
  */
 
-
 /******** User *********/
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const RESET_PASSWORD = "RESET_PASSWORD";
 export const LOG_OUT = "LOG_OUT";
-
 
 /******* Interviews Records ********/
 export const SAVE_RECORD = "SAVE_RECORD";

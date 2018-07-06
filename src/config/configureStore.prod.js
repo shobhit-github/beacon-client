@@ -5,11 +5,11 @@
  * @author: Jasdeep Singh
  * */
 
-import { applyMiddleware, createStore, compose } from 'redux';
-import { persistStore } from 'redux-persist';
-import thunk from 'redux-thunk';
-import { routerMiddleware } from 'react-router-redux';
-import reducer from '../redux';
+import { applyMiddleware, createStore, compose } from "redux";
+import { persistStore } from "redux-persist";
+import thunk from "redux-thunk";
+import { routerMiddleware } from "react-router-redux";
+import reducer from "../redux";
 
 export default history => {
   const store = createStore(

@@ -7,13 +7,12 @@
 
 import * as TYPE from "../../constants/action-types";
 
-
 /******** Reducers ********/
 
 export default function reducer(state = [], action) {
   switch (action.type) {
     case TYPE.SAVE_RECORD:
-      return [ action.data, ...state ];   
+      return [action.data, ...state];
 
     case TYPE.GET_RECORD:
       return action.data; 
@@ -24,11 +23,10 @@ export default function reducer(state = [], action) {
       state[index].markers = action.data.timeStamps;
       return [...state];   
         
-    case TYPE.LOG_OUT:  
-      return [];   
-      
+    case TYPE.LOG_OUT:
+      return [];
+
     default:
       return state;
-      }
+  }
 }
-

@@ -15,3 +15,4 @@ export const LOG_OUT = "LOG_OUT";
 /******* Interviews Records ********/
 export const SAVE_RECORD = "SAVE_RECORD";
 export const GET_RECORD = "GET_RECORD";
+export const UPDATE_RECORD = "UPDATE_RECORD";

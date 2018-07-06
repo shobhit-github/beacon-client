@@ -7,6 +7,7 @@
 
 import * as TYPE from "../../constants/action-types";
 
+
 /******** Reducers ********/
 
 export default function reducer(state = [], action) {
@@ -16,6 +17,12 @@ export default function reducer(state = [], action) {
 
     case TYPE.GET_RECORD:
       return action.data; 
+
+    case TYPE.UPDATE_RECORD:
+      const index = state.findIndex( value => value._id === action.data._id);
+      state[index].title = action.data.title;
+      state[index].markers = action.data.timeStamps;
+      return [...state];   
         
     case TYPE.LOG_OUT:  
       return [];   

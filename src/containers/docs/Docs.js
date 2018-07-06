@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import _ from "underscore";
 import {environment as env} from "../../config/environment";
+import { updateRecord } from "../../actions/records";
 
 class Docs extends Component {
 
@@ -129,26 +131,29 @@ class Docs extends Component {
 
     /************ Edit records title ***********/
     editTitle() {
-       const title = document.getElementById("title"),
-       {records, match} = this.props,
+       const title = document.getElementById("title").innerHTML,
+       {records, match, updateRecord} = this.props,
        recordObj = _.findWhere(records, {_id: match.params._id}),
        record = {
+            _id: match.params._id,
             title,
             timeStamps : recordObj.markers
-        } 
-       
+        }; 
+
+       updateRecord(record, res =>  {} );
     }
     /********** Edit tag values *********/
     editTag(index){
         const tagValue = document.getElementById(index).innerHTML,
-        {records, match} = this.props,
+        {records, match, updateRecord} = this.props,
         recordObj = _.findWhere(records, {_id: match.params._id});
         recordObj.markers[index].label = tagValue; 
         const record = {
+            _id: match.params._id,
             title: recordObj.title,
             timeStamps : recordObj.markers
         } 
-        console.log("record", record) 
+        updateRecord(record, res =>  {} )  ;
     }
 
     tagEdit(index, value){
@@ -341,11 +346,16 @@ class Docs extends Component {
 }
 
 Docs.propTypes = {
-    records: PropTypes.array.isRequired
+    records: PropTypes.array.isRequired,
+    updateRecord: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   records: state.records    
 });
 
-export default connect(mapStateToProps)(Docs);
+const mapDispatchToProps = dispatch => ({
+  updateRecord: bindActionCreators(updateRecord, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Docs);

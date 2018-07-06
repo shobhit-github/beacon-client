@@ -15,6 +15,7 @@ import * as TYPE from "../../constants/action-types";
 
 export const save_records = data => ({type: TYPE.SAVE_RECORD, data});
 export const get_records = data => ({type: TYPE.GET_RECORD, data});
+export const update_records = data => ({type: TYPE.UPDATE_RECORD, data});
 
 // Thunk Action Creators For Api
 
@@ -78,6 +79,43 @@ export const getRecord = (params, cb) => {
     };
 };
 
+/****** action creator for save records ********/
+export const updateRecord = (params, cb) => {
+    let _id = params._id;
+    delete params._id; 
+    return dispatch => {
+        RestClient.put(`transcriptions/interview_title/${_id}`, params)
+            .then(result => { 
+                if (result.success) {
+                    params._id = _id;
+                    dispatch(update_records(params));
+                    let res = {
+                        status: true,
+                        message: result.message,
+                        type: message.success,
+                        //_id: result.data._id
+                    };
+                    cb(res);
+                } else {
+                    let res = {
+                        status: false,
+                        message: result.message,
+                        type: message.error
+                    };
 
+                    cb(res);
+                }
+            })
+            .catch(error => {
+                let res = {
+                    status: false,
+                    message: message.commonError,
+                    type: message.error
+                };
+
+                cb(res);
+            });
+    };
+};
 
 

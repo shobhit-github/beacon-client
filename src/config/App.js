@@ -5,33 +5,31 @@
  * @author: Jasdeep Singh
  * */
 
-import React, {Component} from 'react';  
+import React, { Component } from "react";
 import { persistStore } from "redux-persist";
-import { PersistGate } from 'redux-persist/es/integration/react';
-import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
-import Routers from './Routers'; 
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import configureStore from './configureStore';
-import Loader from '../components/Loader';
-
+import { PersistGate } from "redux-persist/es/integration/react";
+import { ConnectedRouter } from "react-router-redux";
+import createHistory from "history/createBrowserHistory";
+import Routers from "./Routers";
+import { Provider } from "react-redux";
+import { Router } from "react-router-dom";
+import configureStore from "./configureStore";
+import Loader from "../components/Loader";
 
 export const history = createHistory();
 /************ store configration *********/
 const { persistor, store } = configureStore(history);
 
-  const App = () => {
-    return (
-     <Provider store={store}> 
+const App = () => {
+  return (
+    <Provider store={store}>
       <PersistGate loading={<Loader />} persistor={persistor}>
         <ConnectedRouter history={history}>
-  	      <Routers {...store}/>
-        </ConnectedRouter> 
+          <Routers {...store} />
+        </ConnectedRouter>
       </PersistGate>
-	   </Provider>
-    );
-  };
-
+    </Provider>
+  );
+};
 
 export default App;

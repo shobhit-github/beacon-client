@@ -12,16 +12,15 @@ import * as TYPE from "../../constants/action-types";
 export default function reducer(state = [], action) {
   switch (action.type) {
     case TYPE.SAVE_RECORD:
-      return [ action.data, ...state ];   
+      return [action.data, ...state];
 
     case TYPE.GET_RECORD:
-      return action.data; 
-        
-    case TYPE.LOG_OUT:  
-      return [];   
-      
+      return action.data;
+
+    case TYPE.LOG_OUT:
+      return [];
+
     default:
       return state;
-      }
+  }
 }
-

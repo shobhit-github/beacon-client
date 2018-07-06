@@ -5,6 +5,6 @@
  * @author: Jasdeep Singh
  * */
 
-export const auth = store => {	
+export const auth = store => {
   return store.getState().user.loggedIn;
 };

@@ -12,38 +12,28 @@ import Header from "./Header";
 
 /*************** Front Layout ***************/
 export const frontLayout = props => (
-    <section className="main-content frontend" id="home">
-        <section className="content">
-            {props.children}
-        </section>
-    </section>
+  <section className="main-content frontend" id="home">
+    <section className="content">{props.children}</section>
+  </section>
 );
 
 /*************** Dashboard Layout ***************/
 export const dashboardLayout = props => {
-    let {history} = props.children.props,
-        PAGE_NAME = history.location.pathname.split('/')[1].replace(/-/gi, " ");
-    return (
-        <div>
+  let { history } = props.children.props,
+    PAGE_NAME = history.location.pathname.split("/")[1].replace(/-/gi, " ");
+  return (
+    <div>
+      <Header />
 
-            <Header />
+      <div className="appContent">
+        <div className="main-container collapse-sidebar">
+          <Sidebar />
 
-            <div className="appContent">
-
-                <div className="main-container collapse-sidebar">
-
-                    <Sidebar/>
-
-                    {props.children}
-
-                </div>
-
-            </div>
-
-            <Footer />
-
+          {props.children}
         </div>
+      </div>
 
-    );
-}
-    	
+      <Footer />
+    </div>
+  );
+};

@@ -47,10 +47,7 @@ export default class Home extends Component {
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry.
                 </p>
-
-                <button className="btn btn-primary">
-                  Open your Google Drive
-                </button>
+                 <Link to="/google-drive" className="btn btn-primary">Open your Google Drive</Link>                
               </div>
 
               <div className="card-footer">

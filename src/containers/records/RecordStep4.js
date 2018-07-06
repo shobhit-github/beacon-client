@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import AudioRecorder from "react-audio-recorder";
 import PropTypes from "prop-types";
 import { ReactMic } from "react-mic";
 import { connect } from "react-redux";
@@ -33,14 +32,14 @@ class RecordStep4 extends Component {
     this.timerInstance = new Timer();
     const $this = this;
 
-    this.timerInstance.addEventListener("secondsUpdated", function(e) {
+    this.timerInstance.addEventListener("secondsUpdated", e => {
       let timeVal = e.detail.timer
         .getTimeValues()
         .toString()
         .substring(3);
       let totalDuration = e.detail.timer.getTotalTimeValues().seconds;
 
-      $this.setState({
+      this.setState({
         ...this.state,
         ...{ recordTimer: timeVal, audioDuration: totalDuration }
       });

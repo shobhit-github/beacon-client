@@ -1,18 +1,8 @@
 import React, {Component} from "react";
-import {Link} from 'react-router-dom';
-
-// ui components
-import Chip from '@material-ui/core/Chip';
+import { Link } from "react-router-dom";
 
 
-
-export default class RecordStep1 extends Component {
-
-
-    state = {
-        chipData: localStorage.chipData?JSON.parse(localStorage.chipData):[]
-    };
-
+export default class GoogleDrive extends Component {
 
 
     render() {
@@ -27,7 +17,7 @@ export default class RecordStep1 extends Component {
                     <div className="card text-center single">
 
                         <div className="back-link">
-                          < back
+                            <Link to="/dashboard"><i className="fa fa-chevron-left" aria-hidden="true"></i> back</Link>
                         </div>
 
                         <div className="card-header">
@@ -59,30 +49,6 @@ export default class RecordStep1 extends Component {
             </div>
         );
     }
-
-
-
-    handleDelete = data => () => {
-
-        const chipData = [...this.state.chipData];
-        const chipToDelete = chipData.indexOf(data);
-        chipData.splice(chipToDelete, 1);
-        this.setState({chipData});
-    };
-
-    saveChips = () => {
-        localStorage.setItem("chipData",JSON.stringify(this.state.chipData))        
-        this.props.history.push('/records/step_two')
-    }
-
-    addMarker = (e) => {
-
-        if (e.key === 'Enter') {
-            this.state.chipData.push({label: this.refs.marker.value});
-            this.refs.marker.value = null;
-            this.setState(this.state);
-        }
-    };
 
 
 }

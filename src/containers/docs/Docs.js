@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import _ from "underscore";
+import Loader from "../../components/ProcessingLoader";
 import {environment as env} from "../../config/environment";
 import { updateRecord } from "../../actions/records";
 import "../_styles/docs.css";
@@ -10,9 +12,7 @@ import "../_styles/docs.css";
 class Docs extends Component {
 
     constructor(props) {
-
         super(props);
-
         this.state = {
             record: {
                 markers: []
@@ -25,14 +25,15 @@ class Docs extends Component {
             titleEdit: false,
             title:"",
             tagEdit: null,
-            tagValue: ''
+            tagValue: '',
+            audioLoaded: false,
+            loaderStatus: false
         };
         
     }
 
 
     componentWillMount() {
-       // this.props.dispatch(getRecord(this.props.match.params.id));
        const { records, match } = this.props, 
        record = _.findWhere(records, {_id: match.params._id}); 
        let last = 0;
@@ -58,7 +59,6 @@ class Docs extends Component {
                 }
             ) : [];
             this.setState(...this.state);
-
     }
 
 
@@ -89,7 +89,7 @@ class Docs extends Component {
 
     }
 
-    endProgress = () => {
+    endProgress = () => { 
         clearInterval(this.state.interval);
         this.state.sec=0;
         this.state.interval=0;
@@ -99,7 +99,7 @@ class Docs extends Component {
         this.setState({...this.state});
     }
 
-    progressUpdate(){
+    progressUpdate = () => {
         let length = this.state.record.media_length;
         this.state.interval = setInterval(this.updateProgress,1000);
         this.setState({...this.state});
@@ -110,6 +110,9 @@ class Docs extends Component {
             this.state.sec+=1;
             this.state.percent=((this.state.sec/this.state.record.media_length)*100);
             this.setState({...this.state});
+            if(this.state.percent === 100){
+                this.endProgress();
+            }
         }
     };
 
@@ -132,6 +135,7 @@ class Docs extends Component {
 
     /************ Edit records title ***********/
     editTitle() {
+       this.setState({loaderStatus: true}); 
        const title = document.getElementById("title").innerHTML,
        {records, match, updateRecord} = this.props,
        recordObj = _.findWhere(records, {_id: match.params._id}),
@@ -140,11 +144,16 @@ class Docs extends Component {
             title,
             timeStamps : recordObj.markers
         }; 
-
-       updateRecord(record, res =>  {} );
+       updateRecord(record, res =>  {
+        if(res){
+            this.setState({loaderStatus: false}); 
+            this.setState({titleEdit: false})
+        }
+       });
     }
     /********** Edit tag values *********/
     editTag(index){
+        this.setState({loaderStatus: true}); 
         const tagValue = document.getElementById(index).innerHTML,
         {records, match, updateRecord} = this.props,
         recordObj = _.findWhere(records, {_id: match.params._id});
@@ -154,16 +163,29 @@ class Docs extends Component {
             title: recordObj.title,
             timeStamps : recordObj.markers
         } 
-        updateRecord(record, res =>  {} )  ;
+        updateRecord(record, res =>  {
+            if(res){
+            this.setState({loaderStatus: false}); 
+            this.setState({tagEdit: null})
+        }
+     });
     }
 
     tagEdit(index, value){
         this.setState({tagEdit: index, tagValue: value})
     }
 
+    audioLoaded = () => {
+        this.setState({audioLoaded: true})
+    }
+
+    createMarkup(value){
+        return { __html: value.replace(/\n/g, '<br />')};
+    }
+
     render() {
 
-        const {record, percent, sec, listItems, duration, isPaused, titleEdit, title, tagEdit, tagValue} = this.state;
+        const {record, percent, sec, listItems, duration, isPaused, titleEdit, title, tagEdit, tagValue, audioLoaded} = this.state;
 
         const totalDurationMin = (Math.trunc(duration / 60));
         const totalDurationSec = (duration % 60);
@@ -182,12 +204,12 @@ class Docs extends Component {
             <div className="main-content">
 
                 <div className="row">
-
+                    <Loader isShowingLoader={this.state.loaderStatus} />
                     <div className="col-sm-7 sidearea player-div">
 
                         <div className="back">
 
-                            <a href=""><i className="fa fa-angle-left"> </i></a>
+                            <Link to="/docs"><i className="fa fa-angle-left"> </i></Link>
 
                         </div>
 
@@ -199,7 +221,7 @@ class Docs extends Component {
                                 <i className="fa fa-step-forward" aria-hidden="true"> </i>
                             </div>
 
-                            <audio id="audio" onEnded={this.endProgress} src={record ? `${ env.API_ROOT + record.blob_str}` : ''} style={{display: "none"}}>
+                            <audio onLoadedData={this.audioLoaded} id="audio" onEnded={this.endProgress} src={record ? `${ env.API_ROOT + record.blob_str}` : ''} style={{display: "none"}}>
 
                                 <source type="audio/webm"/>
 
@@ -239,8 +261,12 @@ class Docs extends Component {
                                 
                                 record ? 
                                 [
-                                    <h1 contenteditable={`${titleEdit}`} id="title" onClick={()=> this.setState({titleEdit: true}) }>
-                                    {title}                              
+                                    <h1 
+                                        contentEditable={`${titleEdit}`} 
+                                        id="title" 
+                                        onClick={()=> this.setState({titleEdit: true}) } 
+                                        dangerouslySetInnerHTML={this.createMarkup(title)}
+                                    >                                                                
                                     </h1>, <span style={{marginLeft:15}}>
                                     {TITLE_ICONS}                                    
                                     </span>
@@ -261,7 +287,11 @@ class Docs extends Component {
                                             <div className="timeline" key={index}>
                                                 <span>{value.timeConstraint}</span>
                                                 <span style={{marginLeft:50}}>
-                                                <h6 id={index} contenteditable={tagEdit === index ? "true" : "false"} onClick={()=> this.tagEdit(index, value.label) }>{ value.label } </h6>
+                                                <p 
+                                                    id={index} 
+                                                    contentEditable={tagEdit === index ? "true" : "false"} 
+                                                    onClick={()=> this.tagEdit(index, value.label) }                                                    
+                                                > <span dangerouslySetInnerHTML={this.createMarkup(value.label)}></span> </p>
                                                 </span>
                                                 <span>
                                                 {

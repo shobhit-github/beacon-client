@@ -12,47 +12,42 @@
       *                                                            *
 */
 
-import React, { Component } from "react";
+import React from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 
-class AlertMsg extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+const AlertMsg = props => {
+ 
     return (
       <div>
-        {this.props.isShowingModal && (
+        {props.isShowingModal && (
           <SweetAlert
-            showCancel={this.props.status == "warning" ? true : false}
+            showCancel={props.status == "warning" ? true : false}
             type={
-              this.props.status == false
+              props.status == false
                 ? "error"
-                : this.props.status == "warning" ? "warning" : "success"
+                : props.status == "warning" ? "warning" : "success"
             }
-            title={this.props.type}
+            title={props.type}
             allowEscape
-            confirmBtnText={this.props.status == "warning" ? "Yes" : "Close"}
+            confirmBtnText={props.status == "warning" ? "Yes" : "Close"}
             confirmBtnBsStyle={
-              this.props.status == false || this.props.status == "warning"
+              props.status == false || props.status == "warning"
                 ? "danger"
                 : "success"
             }
             onConfirm={
-              this.props.status == "warning"
-                ? () => this.props.actionConfirmed()
-                : () => this.props.onPress()
+              props.status == "warning"
+                ? () => props.actionConfirmed()
+                : () => props.onPress()
             }
             cancelBtnBsStyle="default"
-            onCancel={() => this.props.onPress()}
+            onCancel={() => props.onPress()}
           >
-            {this.props.msg}
+            {props.msg}
           </SweetAlert>
         )}
       </div>
     );
-  }
-}
+  };
 
 export default AlertMsg;

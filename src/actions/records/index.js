@@ -8,7 +8,7 @@
 import RestClient from "../../utilities/RestClient";
 import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";
-
+import { toastAction } from '../toast-actions';
 //Action Creator For Reducers
 
 export const save_records = data => ({type: TYPE.SAVE_RECORD, data});
@@ -60,7 +60,7 @@ export const getRecord = (params, cb) => {
   return dispatch => {
     RestClient.get(`transcriptions/fetchAllInterview/${params._id}`)
       .then(result => {
-        if (result) {
+        if (result) { 
           dispatch(get_records(result));
           cb({ status: true });
         }
@@ -86,33 +86,18 @@ export const updateRecord = (params, cb) => {
         RestClient.put(`transcriptions/interview_title/${_id}`, params)
             .then(result => { 
                 if (result.success) {
+                    toastAction(true,"Record Updated!")
                     params._id = _id;
                     dispatch(update_records(params));
-                    let res = {
-                        status: true,
-                        message: result.message,
-                        type: message.success,
-                        //_id: result.data._id
-                    };
-                    cb(res);
+                    cb(true);
                 } else {
-                    let res = {
-                        status: false,
-                        message: result.message,
-                        type: message.error
-                    };
-
-                    cb(res);
+                    toastAction(false,result.message)
+                    cb(false);
                 }
             })
             .catch(error => {
-                let res = {
-                    status: false,
-                    message: message.commonError,
-                    type: message.error
-                };
-
-                cb(res);
+                toastAction(false,message.commonError)
+                cb(false);
             });
     };
 };

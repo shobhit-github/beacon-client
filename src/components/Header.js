@@ -34,7 +34,7 @@ class Header extends Component {
       !isLoginPage &&
       !isRegisterPage &&
       !isForgotPasswordPage && (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark">        
           <div className="navbar-brand">
             <Link to="/" className="pull-left">
               <img src={logo} alt="logo" />

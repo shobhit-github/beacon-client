@@ -5,8 +5,6 @@
  * @author: Jasdeep Singh
  * */
 
-"use strict";
-
 import Connection from "../constants/Connection";
 import querystring from "querystring";
 import axios from "axios";
@@ -17,7 +15,6 @@ var config = {
 
 class RestClient {
   static post(url, params) {
-    let context = this;
 
     return new Promise(function(fulfill, reject) {
       //config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -28,13 +25,16 @@ class RestClient {
           fulfill(response.data);
         })
         .catch(function(error) {
-          fulfill(error.response.data);
+          if(error && error.response){
+            fulfill(error.response.data);
+          } else{
+            reject(error);
+          }
         });
     });
   }
 
   static put(url, params) {
-    let context = this;
 
     return new Promise(function(fulfill, reject) {
       axios
@@ -43,13 +43,16 @@ class RestClient {
           fulfill(response.data);
         })
         .catch(function(error) {
-          fulfill(error.response.data);
+          if(error && error.response){
+            fulfill(error.response.data);
+          } else{
+            reject(error);
+          }
         });
     });
   }
 
   static delete(url, params) {
-    let context = this;
     let query = querystring.stringify(params);
     return new Promise(function(fulfill, reject) {
       axios
@@ -58,13 +61,16 @@ class RestClient {
           fulfill(response.data);
         })
         .catch(function(error) {
-          fulfill(error.response.data);
+          if(error && error.response){
+            fulfill(error.response.data);
+          } else{
+            reject(error);
+          }
         });
     });
   }
 
   static get(url, params) {
-    let context = this;
     let query = querystring.stringify(params);
 
     return new Promise(function(fulfill, reject) {
@@ -74,8 +80,13 @@ class RestClient {
         .then(function(response) {
           fulfill(response.data);
         })
-        .catch(function(error) {
-          fulfill(error.response.data);
+        .catch(function(error) { 
+          if(error && error.response){
+            fulfill(error.response.data);
+          } else{
+            reject(error);
+          }
+          
         });
     });
   }

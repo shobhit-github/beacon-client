@@ -41,7 +41,7 @@ class DocsList extends Component {
       .map((row, index) => (
         <tr key={index}>
           <td className="check">#</td>
-          <td>{row.title}</td>
+          <td dangerouslySetInnerHTML={{ __html: row.title.replace(/\n/g, '<br />')}}></td>
           <td>{moment(row.updated_at).format("LLL")}</td>
           <td>
             <img src="./images/doc.png" /> {row.media_length} sec.

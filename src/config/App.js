@@ -5,14 +5,12 @@
  * @author: Jasdeep Singh
  * */
 
-import React, { Component } from "react";
-import { persistStore } from "redux-persist";
+import React from "react";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { ConnectedRouter } from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 import Routers from "./Routers";
 import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
 import configureStore from "./configureStore";
 import Loader from "../components/Loader";
 

@@ -5,10 +5,7 @@
  * @author: Jasdeep Singh
  * */
 
-"use strict";
-
-let runningUrl = "172.24.0.194:4101",
-  zomatoApp = `${window.location.protocol}//developers.zomato.com`,
+const runningUrl = "172.24.0.194:4101",
   httpUrl = `${window.location.protocol}//${runningUrl}`;
 // httpUrl = "https://1d41aef3.ngrok.io";
 

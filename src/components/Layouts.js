@@ -9,7 +9,8 @@ import React from "react";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 /*************** Front Layout ***************/
 export const frontLayout = props => (
   <section className="main-content frontend" id="home">
@@ -19,16 +20,13 @@ export const frontLayout = props => (
 
 /*************** Dashboard Layout ***************/
 export const dashboardLayout = props => {
-  let { history } = props.children.props,
-    PAGE_NAME = history.location.pathname.split("/")[1].replace(/-/gi, " ");
-  return (
+   return (
     <div>
       <Header />
-
+      <ToastContainer/>
       <div className="appContent">
         <div className="main-container collapse-sidebar">
           <Sidebar />
-
           {props.children}
         </div>
       </div>

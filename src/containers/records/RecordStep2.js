@@ -4,13 +4,12 @@ import { Link } from "react-router-dom";
 // ui dependencies
 import Checkbox from "@material-ui/core/Checkbox";
 
-export default class Step2 extends Component {
-  state = {
-    permissions: { checkOne: true, checkTwo: false }
-  };
-
+export default class Step2 extends Component { 
   constructor(props) {
     super(props);
+    this.state = {
+      permissions: { checkOne: true, checkTwo: false }
+    };
   }
 
   render() {
@@ -95,6 +94,6 @@ export default class Step2 extends Component {
 
   changePermission = name => event => {
     this.state.permissions[name] = event.target.checked;
-    this.setState(this.state);
+    this.setState({...this.state});
   };
 }

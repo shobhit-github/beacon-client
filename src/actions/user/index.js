@@ -5,7 +5,6 @@
  * @author: Jasdeep Singh
  */
 
-import { push } from "react-router-redux";
 import RestClient from "../../utilities/RestClient";
 import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";

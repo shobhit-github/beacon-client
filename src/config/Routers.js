@@ -1,6 +1,6 @@
 /*********** Routes for applications **************/
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import AppRoute from "./AppRoute";
 import { auth } from "../utilities/auth";
 import Register from "../containers/Register";
@@ -16,6 +16,8 @@ import RecordStep3 from "../containers/records/RecordStep3";
 import RecordStep4 from "../containers/records/RecordStep4";
 import Docs from "../containers/docs/Docs";
 import DocsList from "../containers/docs/DocsList";
+import GoogleDrive from "../containers/google-drive/GoogleDrive";
+import GdriveSteps from "../containers/google-drive/GdriveSteps";
 
 const Routers = store => {
   return (
@@ -117,6 +119,15 @@ const Routers = store => {
           exact
           path="/docs"
           component={DocsList}
+          requireAuth={auth}
+          layout={dashboardLayout}
+          store={store}
+        />
+
+        <AppRoute
+          exact
+          path="/google-drive"
+          component={GoogleDrive}
           requireAuth={auth}
           layout={dashboardLayout}
           store={store}

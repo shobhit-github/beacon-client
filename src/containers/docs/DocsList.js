@@ -74,12 +74,15 @@ class DocsList extends Component {
             </table>
           </div>
           <Pagination
-            innerClass="pagination pull-left"
+            innerClass="pagination"
             hideDisabled
             activePage={this.state.activePage}
             itemsCountPerPage={ITEM_PER_PAGE}
             prevPageText={
-              <i className="fa fa-chevron-left customIcon" aria-hidden="true" />
+              <i
+                className="fa fa-chevron-left customIcon"
+                aria-hidden="true"
+              />
             }
             nextPageText={
               <i

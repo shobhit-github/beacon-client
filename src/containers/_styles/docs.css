@@ -8,3 +8,6 @@ table{color: #414965;font-size: 14px;}
     tbody> tr:nth-child(odd)>td{background-color: #fff;}
     tbody> tr>td.check{background-color: #fff;}
     .table td.active{color: #67bdf8;}
+
+  .pagination{margin-left: 19px;}
+    .pagination li{padding: 10px;}

@@ -8,7 +8,9 @@
 
 import {push} from 'react-router-redux';
 import RestClient from "../../utilities/RestClient";
+import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";
+
 
 //Action Creator For Reducers
 
@@ -23,20 +25,20 @@ export const reset_password = data => ({type: TYPE.RESET_PASSWORD});
 export const login = (params, cb) => {
     return dispatch => {
         RestClient.post("user/login", params)
-            .then(result => {
+            .then(result => { console.log("result", result)
                 if (result.success) {                   
                     dispatch(login_Success(result.data));
                     let res = {
                         status: true,
-                        message: result.messsage,
-                        type: "Success!"
+                        message: result.message,
+                        type: message.success
                     };
                     cb(res);
                 } else {
                     let res = {
                         status: false,
-                        message: result.messsage,
-                        type: "Error!"
+                        message: result.message,
+                        type: message.error
                     };
 
                     cb(res);
@@ -45,8 +47,8 @@ export const login = (params, cb) => {
             .catch(error => {
                 let res = {
                     status: false,
-                    message: "Something went wrong!",
-                    type: "Error!"
+                    message: message.commonError,
+                    type: message.error
                 };
 
                 cb(res);
@@ -66,14 +68,14 @@ export const register = (params, cb) => {
                     let res = {
                         status: true,
                         message: result.status,
-                        type: "Success!"
+                        type: message.success
                     };
                     cb(res);
                 } else {
                     let res = {
                         status: false,
                         message: result.message,
-                        type: "Error!"
+                        type: message.error
                     };
 
                     cb(res);
@@ -82,8 +84,8 @@ export const register = (params, cb) => {
             .catch(error => {
                 let res = {
                     status: false,
-                    message: "Something went wrong!",
-                    type: "Error!"
+                    message: message.commonError,
+                    type: message.error
                 };
 
                 cb(res);
@@ -106,14 +108,14 @@ export const resetPassword = (params, type, cb) => {
                     let res = {
                         status: true,
                         message: result.message,
-                        type: "Success!"
+                        type: message.success
                     };
                     cb(res);
                 } else {
                     let res = {
                         status: false,
                         message: result.message,
-                        type: "Error!"
+                        type: message.error
                     };
                     cb(res);
                 }
@@ -121,8 +123,8 @@ export const resetPassword = (params, type, cb) => {
             .catch(error => {
                 let res = {
                     status: false,
-                    message: "Something went wrong!",
-                    type: "Error!"
+                    message: message.commonError,
+                    type: message.error
                 };
                 cb(res);
             });
@@ -135,8 +137,8 @@ export const logOut = (params, cb) => {
         dispatch(log_out());
         let res = {
                         status: true,
-                        message: "Logout!",
-                        type: "Logout...!!"
+                        message: message.logout,
+                        type: message.logout
                     };
                     cb(res);
         // RestClient.delete("user/logout", "", params.token)
@@ -145,8 +147,8 @@ export const logOut = (params, cb) => {
         //             dispatch(log_out());
         //             let res = {
         //                 status: true,
-        //                 message: "Logout!",
-        //                 type: "Logout...!!"
+        //                 message: message.logout,
+        //                 type: message.logout
         //             };
         //             cb(res);
         //         }
@@ -154,8 +156,8 @@ export const logOut = (params, cb) => {
         //     .catch(error => {
         //         let res = {
         //             status: false,
-        //             message: "Something went wrong!",
-        //             type: "Error!"
+        //             message: message.commonError.
+        //             type: message.error
         //         };
         //         cb(res);
         //     });

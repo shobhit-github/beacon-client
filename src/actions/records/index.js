@@ -1,13 +1,15 @@
 /*
  * @file: index.js
- * @description: It Contain User Account Related Action Creators.
+ * @description: It Contain Records Related Action Creators.
  * @date: 04.07.2018
  * @author: Jasdeep Singh
  */
 
 
 import RestClient from "../../utilities/RestClient";
+import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";
+
 
 //Action Creator For Reducers
 
@@ -16,7 +18,7 @@ export const get_records = data => ({type: TYPE.GET_RECORD, data});
 
 // Thunk Action Creators For Api
 
-/****** action creator for login ********/
+/****** action creator for save records ********/
 export const saveRecord = (params, cb) => {
     let userId = params._id;
     delete params._id;
@@ -28,7 +30,7 @@ export const saveRecord = (params, cb) => {
                     let res = {
                         status: true,
                         message: result.message,
-                        type: "Success!",
+                        type: message.success,
                         _id: result.data._id
                     };
                     cb(res);
@@ -36,7 +38,7 @@ export const saveRecord = (params, cb) => {
                     let res = {
                         status: false,
                         message: result.message,
-                        type: "Error!"
+                        type: message.error
                     };
 
                     cb(res);
@@ -45,8 +47,8 @@ export const saveRecord = (params, cb) => {
             .catch(error => {
                 let res = {
                     status: false,
-                    message: "Something went wrong!",
-                    type: "Error!"
+                    message: message.commonError,
+                    type: message.error
                 };
 
                 cb(res);
@@ -54,6 +56,27 @@ export const saveRecord = (params, cb) => {
     };
 };
 
+/****** action creator for get records ********/
+export const getRecord = (params, cb) => {   
+    return dispatch => {
+        RestClient.get(`transcriptions/fetchAllInterview/${params._id}`)
+            .then(result => {  
+                if (result) {
+                    dispatch(get_records(result));
+                    cb({status:true});                
+                }
+            })
+            .catch(error => {
+                let res = {
+                    status: false,
+                    message: message.commonError,
+                    type: message.error
+                };
+
+                cb(res);
+            });
+    };
+};
 
 
 

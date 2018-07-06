@@ -18,22 +18,27 @@ class Docs extends Component {
             percent:"0",
             sec:0,
             isPaused: 1,
-            duration: 0
+            duration: 0,
+            titleEdit: false,
+            title:"",
+            tagEdit: null,
+            tagValue: ''
         };
-        this.setState(...this.state);
+        
     }
 
 
-    componentDidMount() {
+    componentWillMount() {
        // this.props.dispatch(getRecord(this.props.match.params.id));
        const { records, match } = this.props, 
        record = _.findWhere(records, {_id: match.params._id}); 
        let last = 0;
 
             this.state.record = record;
-            this.state.duration = record.media_length;
+            this.state.duration = record ? record.media_length : 0;
+            this.state.title = record ? record.title : '';
 
-            this.state.listItems = record.markers.map((number,index) => {
+            this.state.listItems = record ? record.markers.map((number,index) => {
 
                     let timeArr = number.timeConstraint.split(':');
                     let secs = parseInt(timeArr[0]*60) + parseInt(timeArr[1]);
@@ -48,43 +53,13 @@ class Docs extends Component {
 
                     return <span className='bubble' style={{marginLeft: prog+"%"}} onClick={this.skipPlay(secs)}> </span>;
                 }
-            );
+            ) : [];
             this.setState(...this.state);
 
     }
 
 
-    // componentWillReceiveProps(nextProps, props) {
-
-    //     if (nextProps !== props) {
-
-    //         let last = 0;
-
-    //         this.state.record = nextProps.record;
-    //         this.state.duration = nextProps.record.media_length;
-
-    //         this.state.listItems = nextProps.record.markers.map((number,index) => {
-
-    //                 let timeArr = number.timeConstraint.split(':');
-    //                 let secs = parseInt(timeArr[0]*60) + parseInt(timeArr[1]);
-    //                 let prog = (secs/nextProps.record.media_length)*100;
-
-    //                 if(index > 0){
-    //                     let lastTimeArr = nextProps.record.markers[index-1].timeConstraint.split(":");
-    //                     let lastSecs=(lastTimeArr[0]*60)+lastTimeArr[1];
-    //                     let lastProg=(lastSecs/nextProps.record.media_length)*100;
-    //                     prog=prog-lastProg;
-    //                 }
-
-    //                 return <span className='bubble' style={{marginLeft: prog+"%"}} onClick={this.skipPlay(secs)}> </span>;
-    //             }
-    //         );
-    //         this.setState(...this.state);
-    //     }
-    // }
-
-
-     handleError = (error) => {
+    handleError = (error) => {
         throw (error.message)
     };
 
@@ -152,9 +127,37 @@ class Docs extends Component {
         }
     }
 
+    /************ Edit records title ***********/
+    editTitle() {
+       const title = document.getElementById("title"),
+       {records, match} = this.props,
+       recordObj = _.findWhere(records, {_id: match.params._id}),
+       record = {
+            title,
+            timeStamps : recordObj.markers
+        } 
+       
+    }
+    /********** Edit tag values *********/
+    editTag(index){
+        const tagValue = document.getElementById(index).innerHTML,
+        {records, match} = this.props,
+        recordObj = _.findWhere(records, {_id: match.params._id});
+        recordObj.markers[index].label = tagValue; 
+        const record = {
+            title: recordObj.title,
+            timeStamps : recordObj.markers
+        } 
+        console.log("record", record) 
+    }
+
+    tagEdit(index, value){
+        this.setState({tagEdit: index, tagValue: value})
+    }
+
     render() {
 
-        const {record, percent, sec, listItems, duration, isPaused} = this.state;
+        const {record, percent, sec, listItems, duration, isPaused, titleEdit, title, tagEdit, tagValue} = this.state;
 
         const totalDurationMin = (Math.trunc(duration / 60));
         const totalDurationSec = (duration % 60);
@@ -163,8 +166,11 @@ class Docs extends Component {
 
         const totalAudioDuration = `${(totalDurationMin < 9) ? '0' + totalDurationMin : totalDurationMin}:${(totalDurationSec < 9) ? '0' + totalDurationSec : totalDurationSec}`;
         const completedAudioDuration = `${(compDurationMin < 9) ? '0' + compDurationMin : compDurationMin}:${(compDurationSec < 9) ? '0' + compDurationSec : compDurationSec}`;
-
-
+        
+        let TITLE_ICONS = titleEdit ? 
+            [<i className="material-icons" onClick={() => this.editTitle() }>save</i>,
+            <i className="material-icons" onClick={()=> this.setState({titleEdit: false, title}) }>cancel</i>] : "";
+          
         return (
 
             <div className="main-content">
@@ -187,7 +193,7 @@ class Docs extends Component {
                                 <i className="fa fa-step-forward" aria-hidden="true"> </i>
                             </div>
 
-                            <audio id="audio" onEnded={this.endProgress} src={`${ env.API_ROOT + record.blob_str}`} style={{display: "none"}}>
+                            <audio id="audio" onEnded={this.endProgress} src={record ? `${ env.API_ROOT + record.blob_str}` : ''} style={{display: "none"}}>
 
                                 <source type="audio/webm"/>
 
@@ -206,7 +212,7 @@ class Docs extends Component {
 
                             </div>
 
-                            <a href={`${ env.API_ROOT + record.blob_str}`} download className="download-icon">
+                            <a href={record ? `${ env.API_ROOT + record.blob_str}` : ''} download className="download-icon">
 
                                 <i className="fa fa-download" aria-hidden="true"> </i>
 
@@ -223,19 +229,43 @@ class Docs extends Component {
                     <div className="col-sm-7 sidearea">
 
                         <div className="docs-wrapper">
-
-                            <h1>Untitled Document</h1>
+                            {
+                                
+                                record ? 
+                                [
+                                    <h1 contenteditable={`${titleEdit}`} id="title" onClick={()=> this.setState({titleEdit: true}) }>
+                                    {title}                              
+                                    </h1>, <span style={{marginLeft:15}}>
+                                    {TITLE_ICONS}                                    
+                                    </span>
+                                ]
+                                : 
+                                <h1>Record not found!</h1>
+                            }
+                            
 
                             <a href="" className="dropToggle"><i className="fa fa-ellipsis-h"> </i></a>
 
                             <div className="timers">
 
                                 {
-                                    // console.log(record.markers)
+                                    record &&
                                     record.markers.map((value, index) => {
                                         return (
-                                            <div className="timeline">
-                                                <span>{value.timeConstraint}</span>{value.label}
+                                            <div className="timeline" key={index}>
+                                                <span>{value.timeConstraint}</span>
+                                                <span style={{marginLeft:50}}>
+                                                <h6 id={index} contenteditable={tagEdit === index ? "true" : "false"} onClick={()=> this.tagEdit(index, value.label) }>{ value.label } </h6>
+                                                </span>
+                                                <span style={{marginLeft:180}}>
+                                                {
+                                                tagEdit === index ? [<i className="material-icons" onClick={() => this.editTag(index) }>save</i>,
+                                                <i className="material-icons" onClick={()=> this.setState({tagEdit: false}) }>cancel</i>] :''
+                                                }                                               
+
+                                                </span>
+                                                
+                                                
                                             </div>
                                         )
                                     })

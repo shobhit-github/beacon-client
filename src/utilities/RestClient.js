@@ -17,23 +17,20 @@ var config = {
 
 class RestClient {
    
-    static post(url, params, token) {
+    static post(url, params) {
         let context = this;
         
         return new Promise(function(fulfill, reject) {
           
-           // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-           // console.log("headers",config )
+           //config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
             axios.post(Connection.getResturl()+url, JSON.stringify(params), config)
              
             .then(function (response) {
-               
                 fulfill(response.data);
                
             })
             .catch(function (error) {
-                
-                 reject(error);
+                 fulfill(error.response.data);
             });
 
                
@@ -50,7 +47,7 @@ class RestClient {
                 fulfill(response.data);
             })
             .catch(function (error) {
-                 reject(error);
+                 fulfill(error.response.data);
             });
         }); 
        
@@ -61,14 +58,11 @@ class RestClient {
         let query = querystring.stringify(params);
         return new Promise(function(fulfill, reject) {
             axios.delete(Connection.getResturl()+url + "?" + query, config)
-            .then(function (response) {
-               
-                fulfill(response.data);
-                
+            .then(function (response) {               
+                fulfill(response.data);                
             })
-            .catch(function (error) {
-                
-                 reject(error);
+            .catch(function (error) {                
+                 fulfill(error.response.data);
             });
         });
     }
@@ -83,14 +77,11 @@ class RestClient {
            
             axios.get(Connection.getResturl()+url + "?" + query, config)
 
-            .then(function (response) {
-              
-                fulfill(response.data);
-               
+            .then(function (response) {              
+                fulfill(response.data);               
             })
-            .catch(function (error) {
-                
-                 reject(error);
+            .catch(function (error) {                
+                 fulfill(error.response.data);
             });
                
         });

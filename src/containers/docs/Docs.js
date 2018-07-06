@@ -307,7 +307,7 @@ class Docs extends Component {
                             {value.label}{" "}
                           </h6>
                         </span>
-                        <span style={{ marginLeft: 180 }}>
+                        <span>
                           {tagEdit === index
                             ? [
                                 <i

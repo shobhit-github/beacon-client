@@ -12,11 +12,10 @@
       *                                                            *
 */
 
-import React, { Component } from "react";
+import React from "react";
 const HEIGHT = window.innerHeight;
 
-class NotFound extends Component {
-  render() {
+export default () => {
     return (
       <div className="banner-block" style={{ height: HEIGHT - 84 }}>
         <div className="container" />
@@ -40,7 +39,5 @@ class NotFound extends Component {
         </div>
       </div>
     );
-  }
 }
 
-export default NotFound;

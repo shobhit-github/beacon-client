@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-import { register } from "../actions/user";
-import InputMask from "react-input-mask";
-
-import lockActive from "../assets/images/lock-active.png";
-import sale from "../assets/images/sale-banner.png";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import InputMask from "react-input-mask";
 import { Link } from "react-router-dom";
 import { Switch } from "@material-ui/core/es/index";
+import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import AlertMsg from "../components/AlertMsg";
+import { register } from "../actions/user";
+import lockActive from "../assets/images/lock-active.png";
+import sale from "../assets/images/sale-banner.png";
+
 
 class RegisterPayment extends Component {
   constructor(props) {
@@ -19,8 +22,11 @@ class RegisterPayment extends Component {
       validateErr: null,
       coupon: false,
       couponErr: false,
-      plan_type: "startup-plan-yr"
+      open: false,
+      plan_type: "startup-plan-yr",
+      isPayment: false  
     };
+    this.makePayment = this.makePayment.bind(this);
   }
 
   componentDidMount() {
@@ -30,36 +36,36 @@ class RegisterPayment extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps, props) {
-    if (!nextProps.registerError) {
-      return this.props.history.push("/");
-    }
-    this.setState({
-      ...this.state,
-      ...{ validateErr: nextProps.message }
-    });
-  }
-
-  makePayment = event => {
-    event.preventDefault();
-
-    if (!this.validateInput()) {
+  makePayment = event => { 
+    event.preventDefault();    
+    if (!this.validateInput()) { console.log("vcxv")
       this.setState({
         ...this.state,
-        ...{ validateErr: true }
+        ...{ validateErr: "Please fill valid details!" }
+      });      
+    } else { 
+      this.setState({ isPayment: true });
+      this.props.register({...this.state.userInfo, plan_type: this.state.plan_type }, res => {
+        if(res.status){
+          this.setState({
+            ...this.state,
+            ...{ userInfo: {} }
+          });
+          this.props.history.push("/register-success");
+        } else{
+          this.setState({
+              open: true,
+              msg: res.message,
+              msgType: res.type,
+              msgStatus: res.status,
+              loggingIn: false,
+              validateErr: res.message,
+              isPayment: false
+            });
+        }
       });
-      return;
-    }
-    console.log(
-      "this.state.userInfo, this.state.plan_type",
-      this.state.userInfo,
-      this.state.plan_type
-    );
-    this.props.dispatch(register(this.state.userInfo, this.state.plan_type));
-    this.setState({
-      ...this.state,
-      ...{ userInfo: {} }
-    });
+    }    
+    
   };
 
   validateInput = () => {
@@ -73,14 +79,14 @@ class RegisterPayment extends Component {
       }
     };
 
-    this.setState(this.state);
+    this.setState({...this.state});
 
     return !(
       this.state.userInfo.card_number.length < 16 ||
       this.state.userInfo.card_number.length < 3 ||
       parseInt(this.state.userInfo.card_exp[0], 0) > 12 ||
       parseInt(this.state.userInfo.card_exp[1], 0) <
-        parseInt(new Date().getFullYear(), 0)
+      parseInt(new Date().getFullYear(), 0)
     );
   };
 
@@ -92,11 +98,18 @@ class RegisterPayment extends Component {
   };
 
   render() {
-    const { validateErr, userInfo, coupon, couponErr, plan_type } = this.state;
-
+    const { validateErr, userInfo, coupon, couponErr, plan_type, isPayment } = this.state;
+    console.log("isPayment", isPayment)
     return (
       <div className="container-fluid">
         <div className="row">
+        <AlertMsg
+            onPress={() => this.setState({ open: false })}
+            isShowingModal={this.state.open}
+            msg={this.state.msg}
+            type={this.state.msgType}
+            status={this.state.msgStatus}
+          />
           <div className="col-sm-7 p-0">
             <div className="inner-wrapper">
               <div className="col-sm-12">
@@ -293,12 +306,18 @@ class RegisterPayment extends Component {
 
                   <div className="col-sm-12 form-group">
                     <button
+                      disabled={isPayment}
                       type="button"
                       onClick={this.makePayment}
                       className="btn primary-btn"
+                      
                     >
-                      {" "}
-                      Pay $ 13 USD
+                      {
+                        isPayment ? 
+                        <CircularProgress size={15} color={"inherit"} />
+                        : `Pay $ 13 USD`
+                      }
+                      
                     </button>
                   </div>
                 </form>
@@ -316,8 +335,12 @@ RegisterPayment.contextTypes = {
 };
 
 RegisterPayment.propTypes = {
-  registerError: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
+  register: PropTypes.func.isRequired,
+  registerError: PropTypes.object
 };
 
-export default connect(null)(RegisterPayment);
+const mapDispatchToProps = dispatch => ({
+  register: bindActionCreators(register, dispatch)
+});
+
+export default connect(null, mapDispatchToProps)(RegisterPayment);

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 
-
 export default class GoogleDrive extends Component {
 
 
@@ -20,28 +19,26 @@ export default class GoogleDrive extends Component {
                             <Link to="/dashboard"><i className="fa fa-chevron-left" aria-hidden="true"></i> back</Link>
                         </div>
 
-                        <div className="card-header">
+                         <div className="card-header">
 
                             <label className="step-count">STEP 1 of 1</label>
 
                             <h2>Choose your folder</h2>
 
                         </div>
-
-                        <div className="card-block">
+                         <div className="card-block">
 
                             <p>Select the folder that conatins the documents you want to summarize</p>
                             
                             <div className="drive-box">
 
-                              <label> Google Drive </label>
+                              <label> Select Google Drive </label>
 
                             </div>
                           
 
-                        </div>
-
-
+                        </div> 
+                        
                     </div>
 
                 </div>

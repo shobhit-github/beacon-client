@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import _ from "underscore";
 import Loader from "../../components/ProcessingLoader";
-import {environment as env} from "../../config/environment";
+import { environment as env } from "../../constants/app-config";
 import { updateRecord } from "../../actions/records";
 import "../_styles/docs.css";
 
@@ -42,7 +42,7 @@ class Docs extends Component {
             this.state.duration = record ? record.media_length : 0;
             this.state.title = record ? record.title : '';
 
-            this.state.listItems = record ? record.markers.map((number,index) => {
+            this.state.listItems = record ? record.markers.map( (number,index) => {
 
                     let timeArr = number.timeConstraint.split(':');
                     let secs = parseInt(timeArr[0]*60) + parseInt(timeArr[1]);
@@ -55,12 +55,16 @@ class Docs extends Component {
                         prog=prog-lastProg;
                     }
 
-                    return <span className='bubble' style={{marginLeft: prog+"%"}} onClick={this.skipPlay(secs)}> </span>;
-                }
-            ) : [];
+                    return <span key={index} className='bubble' style={{marginLeft: prog+"%"}} onClick={this.skipPlay(secs)} />;
+                }) : [];
             this.setState(...this.state);
+        /************ Load script for google drive **********/
+        const script = document.createElement("script");
+        script.src = "https://apis.google.com/js/platform.js";
+        script.async = true;
+        document.body.appendChild(script);
+            
     }
-
 
     handleError = (error) => {
         throw (error.message)
@@ -266,8 +270,7 @@ class Docs extends Component {
                                         id="title" 
                                         onClick={()=> this.setState({titleEdit: true}) } 
                                         dangerouslySetInnerHTML={this.createMarkup(title)}
-                                    >                                                                
-                                    </h1>, <span style={{marginLeft:15}}>
+                                    />, <span style={{marginLeft:15}}>
                                     {TITLE_ICONS}                                    
                                     </span>
                                 ]
@@ -276,7 +279,7 @@ class Docs extends Component {
                             }
                             
 
-                            <a href="" className="dropToggle"><i className="fa fa-ellipsis-h"> </i></a>
+                            {/* <a href="" className="dropToggle"><i className="fa fa-ellipsis-h"> </i></a> */}    
 
                             <div className="timers">
 
@@ -320,7 +323,6 @@ class Docs extends Component {
                             <a href="" className="close">x</a>
 
                             <h4>Quick tips:</h4>
-
                             <ul>
 
                                 <li>-Ctrl+I adds italic formatting and Ctrl+B adds bold formatting</li>
@@ -328,50 +330,35 @@ class Docs extends Component {
                                 <li>-Press ESC to play/pause, and Ctrl+j to insert the current timestamp</li>
 
                             </ul>
-
                         </div>
-
                         <div className="quicktip">
-
                             <a href="" className="close">x</a>
-
                             <h4>Quick tips:</h4>
-
                             <ul>
-
                                 <li>-Ctrl+I adds italic formatting and Ctrl+B adds bold formatting</li>
 
                                 <li>-Press ESC to play/pause, and Ctrl+j to insert the current timestamp</li>
 
                             </ul>
-
                         </div>
-
                     </div>
-
                     <div className="col-sm-2 sharebox">
-
                         <ul>
-
                             <li>History <span> <i className=""> </i> </span></li>
 
-                            <li> Save to Google Drive
-
-                                <span>
-                                </span>
-
+                            <li> Save to Google Drive &nbsp;
+                               
+                                <div className="g-savetodrive"
+                                       data-src={`${ env.API_ROOT + record.blob_str}`}
+                                       data-filename={record.blob_str}
+                                       data-sitename="Beacon">
+                                    </div>  
                             </li>
-
                             <li>Quick tips <span> <i className=""> </i> </span></li>
-
                         </ul>
-
                     </div>
-
                 </div>
-
             </div>
-
         );
     }   
 }

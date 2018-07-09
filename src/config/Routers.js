@@ -3,12 +3,13 @@ import React from "react";
 import { Switch } from "react-router-dom";
 import AppRoute from "./AppRoute";
 import { auth } from "../utilities/auth";
-import Register from "../containers/Register";
 import NotFound from "../components/NotFound";
 import { frontLayout, dashboardLayout } from "../components/Layouts";
 import ForgotPassword from "../containers/ForgotPassword";
 import Login from "../containers/Login";
+import Register from "../containers/Register";
 import RegisterPayment from "../containers/RegisterPayment";
+import RegisterSuccess from "../containers/RegisterSuccess";
 import Home from "../containers/Home";
 import RecordStep1 from "../containers/records/RecordStep1";
 import RecordStep2 from "../containers/records/RecordStep2";
@@ -51,18 +52,30 @@ const Routers = store => {
           store={store}
           type="public"
         />
+
         <AppRoute
           exact
-          path="/register_payment"
+          path="/register-payment"
           component={RegisterPayment}
           requireAuth={() => false}
           layout={frontLayout}
           store={store}
           type="public"
+        /> 
+
+         <AppRoute
+          exact
+          path="/register-success"
+          component={RegisterSuccess}
+          requireAuth={() => false}
+          layout={frontLayout}
+          store={store}
+          type="public"
         />
+
         <AppRoute
           exact
-          path="/forgot_password"
+          path="/forgot-password"
           component={ForgotPassword}
           requireAuth={() => false}
           layout={frontLayout}

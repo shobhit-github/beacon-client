@@ -9,14 +9,9 @@ import { CircularProgress, Icon } from "@material-ui/core/es/index";
 class Register extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       registerError: null
     };
-  }
-
-  componentWillReceiveProps(nextProps, props) {
-    console.log(nextProps, props);
   }
 
   changePasswordVisibility = () => {
@@ -43,7 +38,7 @@ class Register extends Component {
       return false;
     }
 
-    this.props.history.push("/register_payment", {
+    this.props.history.push("/register-payment", {
       email: this.refs.email.value,
       name: this.refs.name.value,
       password: this.refs.password.value

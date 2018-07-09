@@ -54,16 +54,14 @@ export const login = (params, cb) => {
 };
 
 /****** action creator for register ********/
-export const register = (params, cb) => {
+export const register = (params, cb) => { 
   return dispatch => {
     RestClient.post("user/register", params)
-      .then(result => {
-        if (result.statusCode === 200) {
-          result.response.token = result.token;
-          dispatch(login_Success(result.response));
+      .then(result => { 
+        if (result.success) {          
           let res = {
             status: true,
-            message: result.status,
+            message: result.message,
             type: message.success
           };
           cb(res);
@@ -83,7 +81,6 @@ export const register = (params, cb) => {
           message: message.commonError,
           type: message.error
         };
-
         cb(res);
       });
   };

@@ -16,9 +16,9 @@ var config = {
 class RestClient {
   static post(url, params) {
     return new Promise(function(fulfill, reject) {
-      //config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      //config.headers['authentication'] = 'XXXXXXXXXXXXXXXX';
       axios
-        .post(Connection.getResturl() + url, JSON.stringify(params), config)
+        .post(Connection.getResturl(url), JSON.stringify(params), config)
 
         .then(function(response) {
           fulfill(response.data);
@@ -36,7 +36,7 @@ class RestClient {
   static put(url, params) {
     return new Promise(function(fulfill, reject) {
       axios
-        .put(Connection.getResturl() + url, JSON.stringify(params), config)
+        .put(Connection.getResturl(url), JSON.stringify(params), config)
         .then(function(response) {
           fulfill(response.data);
         })
@@ -54,7 +54,7 @@ class RestClient {
     let query = querystring.stringify(params);
     return new Promise(function(fulfill, reject) {
       axios
-        .delete(Connection.getResturl() + url + "?" + query, config)
+        .delete(`${Connection.getResturl(url)}?${query}`, config)
         .then(function(response) {
           fulfill(response.data);
         })
@@ -72,7 +72,7 @@ class RestClient {
     let query = querystring.stringify(params);
     return new Promise(function(fulfill, reject) {
       axios
-        .get(Connection.getResturl() + url + "?" + query, config)
+        .get(`${Connection.getResturl(url)}?${query}`, config)
 
         .then(function(response) {
           fulfill(response.data);

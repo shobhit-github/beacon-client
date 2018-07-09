@@ -68,10 +68,10 @@ class Login extends Component {
         <div className="row">
           <AlertMsg
             onPress={() => context.setState({ open: false })}
-            isShowingModal={this.state.open}
-            msg={this.state.msg}
-            type={this.state.msgType}
-            status={this.state.msgStatus}
+            isShowingModal={context.state.open}
+            msg={context.state.msg}
+            type={context.state.msgType}
+            status={context.state.msgStatus}
           />
           <div className="col-sm-7 p-0">
             <div className="inner-wrapper">

@@ -21,13 +21,16 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const {remember} = this.props.user;
-    if(Object.keys(remember).length){
-       this.setState({remember: true, email: remember.email, password: remember.password});
-     } else{
-       this.setState({remember: false, email: "", password: ""});
-     }
-   
+    const { remember } = this.props.user;
+    if (Object.keys(remember).length) {
+      this.setState({
+        remember: true,
+        email: remember.email,
+        password: remember.password
+      });
+    } else {
+      this.setState({ remember: false, email: "", password: "" });
+    }
   }
 
   /*************** User Login *************/
@@ -71,14 +74,14 @@ class Login extends Component {
     );
   };
   /************ Remember me function *********/
-  remember(){
-    this.setState({remember: this.refs.remember.checked});
+  remember() {
+    this.setState({ remember: this.refs.remember.checked });
   }
 
   render() {
     let context = this;
     const { user } = this.props,
-    { loggingIn, validationErr, remember } = this.state;
+      { loggingIn, validationErr, remember } = this.state;
     return (
       <div className="container-fluid">
         <div className="row">
@@ -131,7 +134,7 @@ class Login extends Component {
                       placeholder="Your work email"
                       className="form-control"
                       value={this.state.email}
-                      onChange={(e) => this.setState({email: e.target.value})}
+                      onChange={e => this.setState({ email: e.target.value })}
                     />
                   </div>
 
@@ -143,7 +146,9 @@ class Login extends Component {
                         className="form-control"
                         placeholder="Password"
                         value={this.state.password}
-                        onChange={(e) => this.setState({password: e.target.value})}
+                        onChange={e =>
+                          this.setState({ password: e.target.value })
+                        }
                       />
 
                       <div className="input-group-append">
@@ -180,13 +185,22 @@ class Login extends Component {
                     <span className="float-left form-link-text">
                       <label className="checkbox-wrap">
                         Remember me
-                        {
-                          remember ? 
-                          <input type="checkbox" ref="remember" name="remember" onChange={() => this.remember()} checked/>
-                          :
-                          <input type="checkbox" ref="remember" name="remember" onChange={() => this.remember()}/>
-                        }
-                        
+                        {remember ? (
+                          <input
+                            type="checkbox"
+                            ref="remember"
+                            name="remember"
+                            onChange={() => this.remember()}
+                            checked
+                          />
+                        ) : (
+                          <input
+                            type="checkbox"
+                            ref="remember"
+                            name="remember"
+                            onChange={() => this.remember()}
+                          />
+                        )}
                         <span className="checkmark"> </span>
                       </label>
                     </span>

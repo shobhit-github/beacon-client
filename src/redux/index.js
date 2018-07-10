@@ -1,4 +1,3 @@
-
 /*********** Reduceres defined here *********/
 
 import { persistCombineReducers } from "redux-persist";

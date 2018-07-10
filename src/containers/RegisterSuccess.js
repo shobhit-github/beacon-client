@@ -5,9 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 class RegisterSuccess extends Component {
-    
   render() {
-   
     return (
       <div className="container-fluid">
         <div className="row">
@@ -50,7 +48,7 @@ class RegisterSuccess extends Component {
 
                   <div className="col-sm-12 form-group">
                     <Link to="/" className="btn primary-btn">
-                     Login{" "}
+                      Login{" "}
                     </Link>
                   </div>
                   <div className="col-sm-12 form-group">
@@ -63,7 +61,7 @@ class RegisterSuccess extends Component {
         </div>
       </div>
     );
-  }  
+  }
 }
 
 export default RegisterSuccess;

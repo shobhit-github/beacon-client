@@ -11,7 +11,7 @@ import "../_styles/docs.css";
 
 /*********** PAGINATIONS CONFIG ************/
 const ITEM_PER_PAGE = 10,
-PAGE_RANGE_SHOW = 10;
+  PAGE_RANGE_SHOW = 10;
 
 class DocsList extends Component {
   constructor(props) {
@@ -25,11 +25,11 @@ class DocsList extends Component {
   }
 
   componentWillMount() {
-    this.setState({loaderStatus: true});
+    this.setState({ loaderStatus: true });
     const { getRecord, user } = this.props;
     getRecord({ _id: user._id }, res => {
-      if(res){
-        this.setState({loaderStatus: false})
+      if (res) {
+        this.setState({ loaderStatus: false });
       }
     });
   }
@@ -49,7 +49,11 @@ class DocsList extends Component {
       .map((row, index) => (
         <tr key={index}>
           <td className="check">#</td>
-          <td dangerouslySetInnerHTML={{ __html: row.title.replace(/\n/g, '<br />')}}></td>
+          <td
+            dangerouslySetInnerHTML={{
+              __html: row.title.replace(/\n/g, "<br />")
+            }}
+          />
           <td>{moment(row.updated_at).format("LLL")}</td>
           <td>
             <img src="./images/doc.png" /> {row.media_length} sec.
@@ -68,7 +72,7 @@ class DocsList extends Component {
       <div className="main-content">
         <div className="row">
           <div className="col-sm-12">
-          <Loader isShowingLoader={this.state.loaderStatus} />
+            <Loader isShowingLoader={this.state.loaderStatus} />
             <table className="table">
               <thead>
                 <tr>

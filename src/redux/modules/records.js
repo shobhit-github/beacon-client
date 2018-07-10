@@ -15,14 +15,14 @@ export default function reducer(state = [], action) {
       return [action.data, ...state];
 
     case TYPE.GET_RECORD:
-      return action.data; 
+      return action.data;
 
     case TYPE.UPDATE_RECORD:
-      const index = state.findIndex( value => value._id === action.data._id);
+      const index = state.findIndex(value => value._id === action.data._id);
       state[index].title = action.data.title;
       state[index].markers = action.data.timeStamps;
-      return [...state];   
-        
+      return [...state];
+
     case TYPE.LOG_OUT:
       return [];
 

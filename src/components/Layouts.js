@@ -9,8 +9,8 @@ import React from "react";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 /*************** Front Layout ***************/
 export const frontLayout = props => (
   <section className="main-content frontend" id="home">
@@ -20,10 +20,10 @@ export const frontLayout = props => (
 
 /*************** Dashboard Layout ***************/
 export const dashboardLayout = props => {
-   return (
+  return (
     <div>
       <Header />
-      <ToastContainer/>
+      <ToastContainer />
       <div className="appContent">
         <div className="main-container collapse-sidebar">
           <Sidebar />

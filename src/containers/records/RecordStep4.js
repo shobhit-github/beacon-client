@@ -46,8 +46,8 @@ class RecordStep4 extends Component {
     });
   }
 
-   componentWillUnmount() {
-      localStorage.removeItem('chipData');
+  componentWillUnmount() {
+    localStorage.removeItem("chipData");
   }
 
   onRecordingChange = () => {

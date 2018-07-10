@@ -8,19 +8,19 @@
 import RestClient from "../../utilities/RestClient";
 import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";
-import { toastAction } from '../toast-actions';
+import { toastAction } from "../toast-actions";
 //Action Creator For Reducers
 
-export const save_records = data => ({type: TYPE.SAVE_RECORD, data});
-export const get_records = data => ({type: TYPE.GET_RECORD, data});
-export const update_records = data => ({type: TYPE.UPDATE_RECORD, data});
+export const save_records = data => ({ type: TYPE.SAVE_RECORD, data });
+export const get_records = data => ({ type: TYPE.GET_RECORD, data });
+export const update_records = data => ({ type: TYPE.UPDATE_RECORD, data });
 
 // Thunk Action Creators For Api
 
 /****** action creator for save records ********/
 export const saveRecord = (params, cb) => {
   let userId = params._id,
-  token = params.token;
+    token = params.token;
   delete params._id;
   delete params.token;
   return dispatch => {
@@ -62,7 +62,7 @@ export const getRecord = (params, cb) => {
   return dispatch => {
     RestClient.get(`transcriptions/fetchAllInterview/${params._id}`)
       .then(result => {
-        if (result) { 
+        if (result) {
           dispatch(get_records(result));
           cb({ status: true });
         }
@@ -79,31 +79,28 @@ export const getRecord = (params, cb) => {
   };
 };
 
-
 /****** action creator for save records ********/
 export const updateRecord = (params, cb) => {
-    let _id = params._id,
+  let _id = params._id,
     token = params.token;
-    delete params._id;
-    delete params.token; 
-    return dispatch => {
-        RestClient.put(`transcriptions/interview_title/${_id}`, params, token)
-            .then(result => { 
-                if (result.success) {
-                    toastAction(true,"Record Updated!")
-                    params._id = _id;
-                    dispatch(update_records(params));
-                    cb(true);
-                } else {
-                    toastAction(false,result.message)
-                    cb(false);
-                }
-            })
-            .catch(error => {
-                toastAction(false,message.commonError)
-                cb(false);
-            });
-    };
+  delete params._id;
+  delete params.token;
+  return dispatch => {
+    RestClient.put(`transcriptions/interview_title/${_id}`, params, token)
+      .then(result => {
+        if (result.success) {
+          toastAction(true, "Record Updated!");
+          params._id = _id;
+          dispatch(update_records(params));
+          cb(true);
+        } else {
+          toastAction(false, result.message);
+          cb(false);
+        }
+      })
+      .catch(error => {
+        toastAction(false, message.commonError);
+        cb(false);
+      });
+  };
 };
-
-

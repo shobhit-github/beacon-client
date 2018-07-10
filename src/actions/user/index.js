@@ -5,7 +5,7 @@
  * @author: Jasdeep Singh
  */
 
-import { push } from 'react-router-redux'; 
+import { push } from "react-router-redux";
 import RestClient from "../../utilities/RestClient";
 import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";
@@ -23,12 +23,15 @@ export const login = (params, cb) => {
   let remember = params.remember;
   delete params.remember;
   return dispatch => {
-    RestClient.post("user/login", params)      
-      .then(result => { 
+    RestClient.post("user/login", params)
+      .then(result => {
         if (result.success) {
-          if(remember){
-            result.data.remember = { email : params.email, password: params.password };
-          } else{
+          if (remember) {
+            result.data.remember = {
+              email: params.email,
+              password: params.password
+            };
+          } else {
             result.data.remember = {};
           }
           dispatch(login_Success(result.data));
@@ -61,11 +64,11 @@ export const login = (params, cb) => {
 };
 
 /****** action creator for register ********/
-export const register = (params, cb) => { 
+export const register = (params, cb) => {
   return dispatch => {
     RestClient.post("user/register", params)
-      .then(result => { 
-        if (result.success) {          
+      .then(result => {
+        if (result.success) {
           let res = {
             status: true,
             message: result.message,
@@ -133,13 +136,15 @@ export const resetPassword = (params, type, cb) => {
 export const logOut = (params, cb) => {
   return dispatch => {
     RestClient.delete("user/logout", "", params.token)
-        .then(result => { 
-            if (result) {                
-                dispatch(log_out()); 
-                dispatch(push("/"));                     
-                cb(true);
-            }
-        })
-        .catch(error => { cb(false) });
+      .then(result => {
+        if (result) {
+          dispatch(log_out());
+          dispatch(push("/"));
+          cb(true);
+        }
+      })
+      .catch(error => {
+        cb(false);
+      });
   };
 };

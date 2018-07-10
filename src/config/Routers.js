@@ -61,9 +61,9 @@ const Routers = store => {
           layout={frontLayout}
           store={store}
           type="public"
-        /> 
+        />
 
-         <AppRoute
+        <AppRoute
           exact
           path="/register-success"
           component={RegisterSuccess}

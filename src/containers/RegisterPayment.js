@@ -11,7 +11,6 @@ import { register } from "../actions/user";
 import lockActive from "../assets/images/lock-active.png";
 import sale from "../assets/images/sale-banner.png";
 
-
 class RegisterPayment extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +23,7 @@ class RegisterPayment extends Component {
       couponErr: false,
       open: false,
       plan_type: "startup-plan-yr",
-      isPayment: false  
+      isPayment: false
     };
     this.makePayment = this.makePayment.bind(this);
   }
@@ -36,24 +35,27 @@ class RegisterPayment extends Component {
     });
   }
 
-  makePayment = event => { 
-    event.preventDefault();    
-    if (!this.validateInput()) { console.log("vcxv")
+  makePayment = event => {
+    event.preventDefault();
+    if (!this.validateInput()) {
+      console.log("vcxv");
       this.setState({
         ...this.state,
         ...{ validateErr: "Please fill valid details!" }
-      });      
-    } else { 
+      });
+    } else {
       this.setState({ isPayment: true });
-      this.props.register({...this.state.userInfo, plan_type: this.state.plan_type }, res => {
-        if(res.status){
-          this.setState({
-            ...this.state,
-            ...{ userInfo: {} }
-          });
-          this.props.history.push("/register-success");
-        } else{
-          this.setState({
+      this.props.register(
+        { ...this.state.userInfo, plan_type: this.state.plan_type },
+        res => {
+          if (res.status) {
+            this.setState({
+              ...this.state,
+              ...{ userInfo: {} }
+            });
+            this.props.history.push("/register-success");
+          } else {
+            this.setState({
               open: true,
               msg: res.message,
               msgType: res.type,
@@ -62,10 +64,10 @@ class RegisterPayment extends Component {
               validateErr: res.message,
               isPayment: false
             });
+          }
         }
-      });
-    }    
-    
+      );
+    }
   };
 
   validateInput = () => {
@@ -79,14 +81,14 @@ class RegisterPayment extends Component {
       }
     };
 
-    this.setState({...this.state});
+    this.setState({ ...this.state });
 
     return !(
       this.state.userInfo.card_number.length < 16 ||
       this.state.userInfo.card_number.length < 3 ||
       parseInt(this.state.userInfo.card_exp[0], 0) > 12 ||
       parseInt(this.state.userInfo.card_exp[1], 0) <
-      parseInt(new Date().getFullYear(), 0)
+        parseInt(new Date().getFullYear(), 0)
     );
   };
 
@@ -98,12 +100,19 @@ class RegisterPayment extends Component {
   };
 
   render() {
-    const { validateErr, userInfo, coupon, couponErr, plan_type, isPayment } = this.state;
-    console.log("isPayment", isPayment)
+    const {
+      validateErr,
+      userInfo,
+      coupon,
+      couponErr,
+      plan_type,
+      isPayment
+    } = this.state;
+    console.log("isPayment", isPayment);
     return (
       <div className="container-fluid">
         <div className="row">
-        <AlertMsg
+          <AlertMsg
             onPress={() => this.setState({ open: false })}
             isShowingModal={this.state.open}
             msg={this.state.msg}
@@ -310,14 +319,12 @@ class RegisterPayment extends Component {
                       type="button"
                       onClick={this.makePayment}
                       className="btn primary-btn"
-                      
                     >
-                      {
-                        isPayment ? 
+                      {isPayment ? (
                         <CircularProgress size={15} color={"inherit"} />
-                        : `Pay $ 13 USD`
-                      }
-                      
+                      ) : (
+                        `Pay $ 13 USD`
+                      )}
                     </button>
                   </div>
                 </form>

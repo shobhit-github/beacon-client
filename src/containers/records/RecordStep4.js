@@ -119,6 +119,7 @@ class RecordStep4 extends Component {
     this.props.saveRecord(
       {
         _id: this.props.user._id,
+        token: this.props.user.token,
         timeStamps: this.state.timeStamps,
         audioStr: this.state.audioStr,
         length: this.state.audioDuration

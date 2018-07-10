@@ -5,6 +5,7 @@
  * @author: Jasdeep Singh
  */
 
+import { push } from 'react-router-redux'; 
 import RestClient from "../../utilities/RestClient";
 import message from "../../utilities/messages";
 import * as TYPE from "../../constants/action-types";
@@ -19,11 +20,17 @@ export const reset_password = data => ({ type: TYPE.RESET_PASSWORD });
 
 /****** action creator for login ********/
 export const login = (params, cb) => {
+  let remember = params.remember;
+  delete params.remember;
   return dispatch => {
-    RestClient.post("user/login", params)
-      .then(result => {
-        console.log("result", result);
+    RestClient.post("user/login", params)      
+      .then(result => { 
         if (result.success) {
+          if(remember){
+            result.data.remember = { email : params.email, password: params.password };
+          } else{
+            result.data.remember = {};
+          }
           dispatch(login_Success(result.data));
           let res = {
             status: true,
@@ -125,32 +132,14 @@ export const resetPassword = (params, type, cb) => {
 /******** action creator to log user out of the application **********/
 export const logOut = (params, cb) => {
   return dispatch => {
-    dispatch(log_out());
-    let res = {
-      status: true,
-      message: message.logout,
-      type: message.logout
-    };
-    cb(res);
-    // RestClient.delete("user/logout", "", params.token)
-    //     .then(result => { console.log("result", result)
-    //         if (result) {
-    //             dispatch(log_out());
-    //             let res = {
-    //                 status: true,
-    //                 message: message.logout,
-    //                 type: message.logout
-    //             };
-    //             cb(res);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         let res = {
-    //             status: false,
-    //             message: message.commonError.
-    //             type: message.error
-    //         };
-    //         cb(res);
-    //     });
+    RestClient.delete("user/logout", "", params.token)
+        .then(result => { 
+            if (result) {                
+                dispatch(log_out()); 
+                dispatch(push("/"));                     
+                cb(true);
+            }
+        })
+        .catch(error => { cb(false) });
   };
 };

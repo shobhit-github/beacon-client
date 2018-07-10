@@ -5,25 +5,33 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import Pagination from "react-js-pagination";
+import Loader from "../../components/ProcessingLoader";
 import { getRecord } from "../../actions/records";
 import "../_styles/docs.css";
+
 /*********** PAGINATIONS CONFIG ************/
 const ITEM_PER_PAGE = 10,
-  PAGE_RANGE_SHOW = 10;
+PAGE_RANGE_SHOW = 10;
 
 class DocsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: 1
+      activePage: 1,
+      loaderStatus: false
     };
     this.indexOfLastList = 1 * ITEM_PER_PAGE;
     this.indexOfFirstList = this.indexOfLastList - ITEM_PER_PAGE;
   }
 
   componentWillMount() {
+    this.setState({loaderStatus: true});
     const { getRecord, user } = this.props;
-    getRecord({ _id: user._id }, res => {});
+    getRecord({ _id: user._id }, res => {
+      if(res){
+        this.setState({loaderStatus: false})
+      }
+    });
   }
 
   /************ Active page on change of pagination ***********/
@@ -53,12 +61,14 @@ class DocsList extends Component {
         </tr>
       ));
   }
+
   render() {
     const { records } = this.props;
     return (
       <div className="main-content">
         <div className="row">
           <div className="col-sm-12">
+          <Loader isShowingLoader={this.state.loaderStatus} />
             <table className="table">
               <thead>
                 <tr>

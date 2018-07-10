@@ -19,10 +19,12 @@ export const update_records = data => ({type: TYPE.UPDATE_RECORD, data});
 
 /****** action creator for save records ********/
 export const saveRecord = (params, cb) => {
-  let userId = params._id;
+  let userId = params._id,
+  token = params.token;
   delete params._id;
+  delete params.token;
   return dispatch => {
-    RestClient.post(`transcriptions/uploadInterview/${userId}`, params)
+    RestClient.post(`transcriptions/uploadInterview/${userId}`, params, token)
       .then(result => {
         if (result.success) {
           dispatch(save_records(result.data));
@@ -80,10 +82,12 @@ export const getRecord = (params, cb) => {
 
 /****** action creator for save records ********/
 export const updateRecord = (params, cb) => {
-    let _id = params._id;
-    delete params._id; 
+    let _id = params._id,
+    token = params.token;
+    delete params._id;
+    delete params.token; 
     return dispatch => {
-        RestClient.put(`transcriptions/interview_title/${_id}`, params)
+        RestClient.put(`transcriptions/interview_title/${_id}`, params, token)
             .then(result => { 
                 if (result.success) {
                     toastAction(true,"Record Updated!")

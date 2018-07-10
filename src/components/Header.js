@@ -16,11 +16,7 @@ import "./_styles/header.css";
 class Header extends Component {
   onLogoutClick = () => {
     const { user, history, logOut } = this.props;
-    logOut({ token: user.token }, res => {
-      if (res) {
-        history.push("/");
-      }
-    });
+    logOut({ token: user.token }, res => { });
   };
 
   render() {
@@ -66,7 +62,7 @@ class Header extends Component {
 
             <ul className="navbar-nav ml-auto mt-2 mt-md-0">
               <li>
-                <span className="proicon">{user.name.charAt(0)}</span>
+                <span className="proicon">{user.loggedIn ? user.name.charAt(0) : ''}</span>
 
                 <i className="fa fa-angle-down"> </i>
               </li>

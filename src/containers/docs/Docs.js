@@ -28,10 +28,8 @@ class Docs extends Component {
             tagValue: '',
             audioLoaded: false,
             loaderStatus: false
-        };
-        
+        };        
     }
-
 
     componentWillMount() {
        const { records, match } = this.props, 
@@ -141,15 +139,16 @@ class Docs extends Component {
     editTitle() {
        this.setState({loaderStatus: true}); 
        const title = document.getElementById("title").innerHTML,
-       {records, match, updateRecord} = this.props,
+       {records, match, updateRecord, user} = this.props,
        recordObj = _.findWhere(records, {_id: match.params._id}),
        record = {
             _id: match.params._id,
+            token: user.token,
             title,
             timeStamps : recordObj.markers
         }; 
        updateRecord(record, res =>  {
-        if(res){
+        if(res || !res){
             this.setState({loaderStatus: false}); 
             this.setState({titleEdit: false})
         }
@@ -159,16 +158,17 @@ class Docs extends Component {
     editTag(index){
         this.setState({loaderStatus: true}); 
         const tagValue = document.getElementById(index).innerHTML,
-        {records, match, updateRecord} = this.props,
+        {records, match, updateRecord, user} = this.props,
         recordObj = _.findWhere(records, {_id: match.params._id});
         recordObj.markers[index].label = tagValue; 
         const record = {
             _id: match.params._id,
+            token: user.token,
             title: recordObj.title,
             timeStamps : recordObj.markers
         } 
         updateRecord(record, res =>  {
-            if(res){
+            if(res || !res){
             this.setState({loaderStatus: false}); 
             this.setState({tagEdit: null})
         }
@@ -244,7 +244,7 @@ class Docs extends Component {
 
                             </div>
 
-                            <a href={record ? `${ env.API_ROOT + record.blob_str}` : ''} download className="download-icon">
+                            <a href={record ? `${ env.API_ROOT + record.blob_str}` : ''} target="_blank" download className="download-icon">
 
                                 <i className="fa fa-download" aria-hidden="true"> </i>
 
@@ -364,11 +364,13 @@ class Docs extends Component {
 }
 
 Docs.propTypes = {
+    user: PropTypes.object.isRequired,
     records: PropTypes.array.isRequired,
     updateRecord: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
+  user: state.user,  
   records: state.records    
 });
 

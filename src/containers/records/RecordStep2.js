@@ -12,6 +12,11 @@ export default class Step2 extends Component {
     };
   }
 
+  changePermission = name => event => {
+    this.state.permissions[name] = event.target.checked;
+    this.setState({ ...this.state });
+  };
+
   render() {
     return (
       <div className="row record-step2">
@@ -91,9 +96,5 @@ export default class Step2 extends Component {
       </div>
     );
   }
-
-  changePermission = name => event => {
-    this.state.permissions[name] = event.target.checked;
-    this.setState({ ...this.state });
-  };
+  
 }

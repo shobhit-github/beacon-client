@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import InputMask from "react-input-mask";
 import { Link } from "react-router-dom";
 import { Switch } from "@material-ui/core/es/index";
-import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import { CircularProgress } from "@material-ui/core/es/index";
 import AlertMsg from "../components/AlertMsg";
 import { register } from "../actions/user";
 import lockActive from "../assets/images/lock-active.png";

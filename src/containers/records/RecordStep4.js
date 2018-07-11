@@ -275,4 +275,7 @@ const mapDispatchToProps = dispatch => ({
   saveRecord: bindActionCreators(saveRecord, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecordStep4);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RecordStep4);

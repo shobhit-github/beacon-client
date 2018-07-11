@@ -242,4 +242,7 @@ const mapDispatchToProps = dispatch => ({
   login: bindActionCreators(login, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

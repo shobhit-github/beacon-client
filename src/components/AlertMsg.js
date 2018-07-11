@@ -24,7 +24,9 @@ const AlertMsg = props => {
           type={
             props.status == false
               ? "error"
-              : props.status == "warning" ? "warning" : "success"
+              : props.status == "warning"
+                ? "warning"
+                : "success"
           }
           title={props.type}
           allowEscape

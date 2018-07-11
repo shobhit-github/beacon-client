@@ -350,4 +350,7 @@ const mapDispatchToProps = dispatch => ({
   register: bindActionCreators(register, dispatch)
 });
 
-export default connect(null, mapDispatchToProps)(RegisterPayment);
+export default connect(
+  null,
+  mapDispatchToProps
+)(RegisterPayment);

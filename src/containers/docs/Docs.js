@@ -43,14 +43,14 @@ class Docs extends Component {
       ? record.markers.map((number, index) => {
           let timeArr = number.timeConstraint.split(":");
           let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
-          let prog = secs / record.media_length * 100;
+          let prog = (secs / record.media_length) * 100;
 
           if (index > 0) {
             let lastTimeArr = record.markers[index - 1].timeConstraint.split(
               ":"
             );
             let lastSecs = lastTimeArr[0] * 60 + lastTimeArr[1];
-            let lastProg = lastSecs / record.media_length * 100;
+            let lastProg = (lastSecs / record.media_length) * 100;
             prog = prog - lastProg;
           }
 
@@ -118,7 +118,7 @@ class Docs extends Component {
     if (!this.state.isPaused) {
       this.state.sec += 1;
       this.state.percent =
-        this.state.sec / this.state.record.media_length * 100;
+        (this.state.sec / this.state.record.media_length) * 100;
       this.setState({ ...this.state });
       if (this.state.percent === 100) {
         this.endProgress();
@@ -128,7 +128,8 @@ class Docs extends Component {
 
   skipPlay = data => () => {
     this.state.sec = data - 1;
-    this.state.percent = this.state.sec / this.state.record.media_length * 100;
+    this.state.percent =
+      (this.state.sec / this.state.record.media_length) * 100;
     document.getElementById("audio").currentTime = data;
     document.getElementById("audio").play();
     this.setState({ ...this.state });
@@ -462,4 +463,7 @@ const mapDispatchToProps = dispatch => ({
   updateRecord: bindActionCreators(updateRecord, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Docs);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Docs);

@@ -99,4 +99,9 @@ const mapDispatchToProps = dispatch => ({
   logOut: bindActionCreators(logOut, dispatch)
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Header)
+);

@@ -6,7 +6,7 @@
  */
 
 export const environment = {
-  API_ROOT: `http://172.24.0.194:4101/`
+  API_ROOT: `http://ec2-34-229-162-12.compute-1.amazonaws.com:4101/`
 };
 
 export const google_keys = {

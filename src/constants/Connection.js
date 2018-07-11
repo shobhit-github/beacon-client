@@ -5,7 +5,7 @@
  * @author: Jasdeep Singh
  * */
 
-const runningUrl = "172.24.0.194:4101",
+const runningUrl = "ec2-34-229-162-12.compute-1.amazonaws.com:4101",
   httpUrl = `${window.location.protocol}//${runningUrl}`;
 // httpUrl = "https://1d41aef3.ngrok.io";
 

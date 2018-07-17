@@ -96,5 +96,4 @@ export default class Step2 extends Component {
       </div>
     );
   }
-  
 }

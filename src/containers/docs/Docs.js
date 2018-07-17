@@ -59,7 +59,7 @@ class Docs extends Component {
               key={index}
               className="bubble"
               style={{ marginLeft: prog + "%" }}
-              onClick={this.skipPlay(secs)}
+              onClick={() => this.skipPlay(secs)}
             />
           );
         })
@@ -126,7 +126,13 @@ class Docs extends Component {
     }
   };
 
-  skipPlay = data => () => {
+  pointPlayBubble = seconds => {
+    let timeArr = seconds.split(":");
+    let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
+    this.skipPlay(secs);
+  };
+
+  skipPlay = data => {
     this.state.sec = data - 1;
     this.state.percent =
       (this.state.sec / this.state.record.media_length) * 100;
@@ -143,7 +149,7 @@ class Docs extends Component {
   };
 
   /************ Edit records title ***********/
-  editTitle() {
+  editTitle = () => {
     this.setState({ loaderStatus: true });
     const title = document.getElementById("title").innerHTML,
       { records, match, updateRecord, user } = this.props,
@@ -160,9 +166,9 @@ class Docs extends Component {
         this.setState({ titleEdit: false });
       }
     });
-  }
+  };
   /********** Edit tag values *********/
-  editTag(index) {
+  editTag = index => {
     this.setState({ loaderStatus: true });
     const tagValue = document.getElementById(index).innerHTML,
       { records, match, updateRecord, user } = this.props,
@@ -180,19 +186,19 @@ class Docs extends Component {
         this.setState({ tagEdit: null });
       }
     });
-  }
+  };
 
-  tagEdit(index, value) {
+  tagEdit = (index, value) => {
     this.setState({ tagEdit: index, tagValue: value });
-  }
+  };
 
   audioLoaded = () => {
     this.setState({ audioLoaded: true });
   };
 
-  createMarkup(value) {
+  createMarkup = value => {
     return { __html: value.replace(/\n/g, "<br />") };
-  }
+  };
 
   render() {
     const {
@@ -320,6 +326,7 @@ class Docs extends Component {
                     id="title"
                     onClick={() => this.setState({ titleEdit: true })}
                     dangerouslySetInnerHTML={this.createMarkup(title)}
+                    style={{ cursor: "pointer" }}
                   />,
                   <span style={{ marginLeft: 15 }}>{TITLE_ICONS}</span>
                 ]
@@ -334,7 +341,14 @@ class Docs extends Component {
                   record.markers.map((value, index) => {
                     return (
                       <div className="timeline" key={index}>
-                        <span>{value.timeConstraint}</span>
+                        <span
+                          onClick={() =>
+                            this.pointPlayBubble(value.timeConstraint)
+                          }
+                          style={{ cursor: "pointer" }}
+                        >
+                          {value.timeConstraint}
+                        </span>
                         <span style={{ marginLeft: 50 }}>
                           <p
                             id={index}
@@ -342,6 +356,7 @@ class Docs extends Component {
                               tagEdit === index ? "true" : "false"
                             }
                             onClick={() => this.tagEdit(index, value.label)}
+                            style={{ cursor: "pointer" }}
                           >
                             {" "}
                             <span

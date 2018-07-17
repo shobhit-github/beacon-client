@@ -6,15 +6,13 @@ export default props => {
   return (
     <GooglePicker
       clientId={KEY.CLIENT_ID}
-      // developerKey={KEY.DEVELOPER_KEY}
       scope={["https://www.googleapis.com/auth/drive"]}
       onChange={data => console.log("on change:", data)}
       multiselect={true}
       navHidden={true}
       authImmediate={false}
-      viewId={"FOLDERS"}
       createPicker={(google, oauthToken) => {
-        console.log("google.picker", google);
+        props._getOauthToken(oauthToken);
         const googleViewId = google.picker.ViewId.FOLDERS;
         const docsView = new google.picker.DocsView(googleViewId)
           .setIncludeFolders(true)
@@ -35,9 +33,8 @@ export default props => {
           .addView(new google.picker.DocsUploadView())
           .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
           .setOAuthToken(oauthToken)
-          //.setDeveloperKey(KEY.DEVELOPER_KEY)
           .setCallback(data => {
-            console.log(data, google.picker.Action);
+            //console.log(data, google.picker.Action);
             switch (data.action) {
               case google.picker.Action.PICKED:
                 window.open(data.docs[0].url, "_blank");

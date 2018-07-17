@@ -11,5 +11,6 @@ export const environment = {
 
 export const google_keys = {
   CLIENT_ID: `1027930501428-99gtt21gilpn117cugdms5qfj6hoh5u1.apps.googleusercontent.com`,
-  DEVELOPER_KEY: `AIzaSyBp0_oFgCT3gdKezC-EdT-wheqph0zPE4s`
+  DEVELOPER_KEY: `AIzaSyBp0_oFgCT3gdKezC-EdT-wheqph0zPE4s`,
+  CLIENT_SECRET: `8ZrFbQPEBZ3cfoRJ7A-c2vLh`
 };

@@ -5,18 +5,20 @@
  * @author: Jasdeep Singh
  * */
 
-const runningUrl = "ec2-34-229-162-12.compute-1.amazonaws.com:4101",
-  httpUrl = `${window.location.protocol}//${runningUrl}`;
-// httpUrl = "https://1d41aef3.ngrok.io";
+import { environment as PATH } from './app-config';
+
+const httpUrl = `https://${PATH.STAGING_API_URL}`;
 
 class Connection {
   static getResturl(url) {
     return `${httpUrl}/${url}`;
   }
-
   static getBaseUrl() {
     return httpUrl;
   }
+  static getThirdPartyApiUrl(url) {
+    return `${PATH.THIRD_PARTY_API_URL}/${url}`;
+  }
 }
 
-module.exports = Connection;
+export default Connection;

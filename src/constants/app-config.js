@@ -6,7 +6,13 @@
  */
 
 export const environment = {
-  API_ROOT: `http://ec2-34-229-162-12.compute-1.amazonaws.com:4101/`
+  API_ROOT:
+    window.location.protocol === 'https:'
+      ? `https://stagingsdei.com:4190/`
+      : `http://localhost:4190/`,
+  LOCAL_API_URL: `localhost:4190`,
+  STAGING_API_URL: `stagingsdei.com:4190`,
+  THIRD_PARTY_API_URL: `https://47260545.ngrok.io` //`http://172.24.1.52:8080`
 };
 
 export const google_keys = {

@@ -5,12 +5,12 @@
  * @author: Jasdeep Singh
 */
 
-import React from "react";
-import Footer from "./Footer";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from 'react';
+import Footer from './Footer';
+import Sidebar from './Sidebar';
+import Header from './Header';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 /*************** Front Layout ***************/
 export const frontLayout = props => (
   <section className="main-content frontend" id="home">
@@ -20,12 +20,18 @@ export const frontLayout = props => (
 
 /*************** Dashboard Layout ***************/
 export const dashboardLayout = props => {
+  let navClass = 'main-container';
+  const navToggle = status => {
+    console.log("status", status);
+    navClass = status ? 'main-container collapse-sidebar' : 'main-container';
+  };
+  
   return (
     <div>
-      <Header />
+      <Header _navToggle={navToggle}/>
       <ToastContainer />
       <div className="appContent">
-        <div className="main-container collapse-sidebar">
+        <div id="myDIV" className="main-container">
           <Sidebar />
           {props.children}
         </div>

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import lock from "../assets/images/lock.png";
-import sale from "../assets/images/sale-banner.png";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import React, { Component } from 'react';
+import lock from '../assets/images/lock.png';
+import sale from '../assets/images/sale-banner.png';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { CircularProgress, Icon } from '@material-ui/core/es/index';
 
 class Register extends Component {
   constructor(props) {
@@ -18,27 +18,20 @@ class Register extends Component {
     this.setState({
       password_visibility: !this.state.password_visibility
     });
-    this.refs.password.setAttribute(
-      "type",
-      !this.state.password_visibility ? `text` : `password`
-    );
+    this.refs.password.setAttribute('type', !this.state.password_visibility ? `text` : `password`);
   };
 
   passDataToPaymentSection = evt => {
     evt.preventDefault();
 
-    if (
-      !this.refs.name.value ||
-      !this.refs.email.value ||
-      !this.refs.password.value
-    ) {
+    if (!this.refs.name.value || !this.refs.email.value || !this.refs.password.value) {
       this.setState({
         registerError: true
       });
       return false;
     }
 
-    this.props.history.push("/register-payment", {
+    this.props.history.push('/register-payment', {
       email: this.refs.email.value,
       name: this.refs.name.value,
       password: this.refs.password.value
@@ -55,9 +48,7 @@ class Register extends Component {
             <div className="inner-wrapper">
               <div className="col-sm-12">
                 <ul className="list-inline">
-                  <li className="list-inline-item">
-                    {/*<img src="images/logo.png">*/} Logo
-                  </li>
+                  <li className="list-inline-item">{/*<img src="images/logo.png">*/} Logo</li>
 
                   <li className="list-inline-item">Nav Item 1</li>
 
@@ -73,7 +64,7 @@ class Register extends Component {
 
                   <div className="d-flex plan-action">
                     <span className="plan-name">
-                      {" "}
+                      {' '}
                       <img src={sale} className="sale-img" />Yearly
                     </span>
 
@@ -92,29 +83,24 @@ class Register extends Component {
                     <p className="head-title">Monthly</p>
 
                     <p className="form-link-text">
-                      Document your user interviews faster and get more from
-                      your research over time.
+                      Document your user interviews faster and get more from your research over
+                      time.
                     </p>
 
                     <ul className="points-list">
                       <li>
-                        <i className="material-icons">done</i>{" "}
-                        <span>
-                          Tag important moments live , during user interviews
-                        </span>
+                        <i className="material-icons">done</i>{' '}
+                        <span>Tag important moments live , during user interviews</span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{" "}
+                        <i className="material-icons">done</i>{' '}
                         <span> Synthesize your researchacross Google docs</span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{" "}
-                        <span>
-                          {" "}
-                          Documents user insights quickly and efficiently{" "}
-                        </span>
+                        <i className="material-icons">done</i>{' '}
+                        <span> Documents user insights quickly and efficiently </span>
                       </li>
                     </ul>
 
@@ -190,15 +176,10 @@ class Register extends Component {
                       />
 
                       <div className="input-group-append">
-                        <span
-                          onClick={this.changePasswordVisibility}
-                          className="input-group-text"
-                        >
+                        <span onClick={this.changePasswordVisibility} className="input-group-text">
                           <Icon>
-                            {" "}
-                            {!this.state.password_visibility
-                              ? `visibility_off`
-                              : `visibility`}
+                            {' '}
+                            {!this.state.password_visibility ? `visibility_off` : `visibility`}
                           </Icon>
                         </span>
                       </div>
@@ -212,11 +193,7 @@ class Register extends Component {
                       disabled={registerIn}
                       className="btn primary-btn"
                     >
-                      {!registerIn ? (
-                        `Continue`
-                      ) : (
-                        <CircularProgress size={15} color={"white"} />
-                      )}
+                      {!registerIn ? `Continue` : <CircularProgress size={15} color={'white'} />}
                     </button>
                   </div>
 

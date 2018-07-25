@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { login } from "../actions/user";
-import AlertMsg from "../components/AlertMsg";
-import { Link } from "react-router-dom";
-import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
+import { CircularProgress, Icon } from '@material-ui/core/es/index';
+import { login } from '../actions/user';
+import AlertMsg from '../components/AlertMsg';
 
 class Login extends Component {
   constructor(props) {
@@ -29,15 +29,15 @@ class Login extends Component {
         password: remember.password
       });
     } else {
-      this.setState({ remember: false, email: "", password: "" });
+      this.setState({ remember: false, email: '', password: '' });
     }
   }
 
   /*************** User Login *************/
   handleLogin = event => {
     event.preventDefault();
-    if (this.refs.username.value === "" || this.refs.password.value === "") {
-      this.setState({ validationErr: "Email and password is required!" });
+    if (this.refs.username.value === '' || this.refs.password.value === '') {
+      this.setState({ validationErr: 'Email and password is required!' });
     } else {
       let context = this,
         params = {
@@ -49,7 +49,7 @@ class Login extends Component {
       this.props.login(params, res => {
         if (res.status) {
           this.refs.username.value = this.refs.password.value = ``;
-          context.props.history.replace("/dashboard");
+          context.props.history.replace('/dashboard');
         } else {
           context.setState({
             open: true,
@@ -68,10 +68,7 @@ class Login extends Component {
     this.setState({
       password_visibility: !this.state.password_visibility
     });
-    this.refs.password.setAttribute(
-      "type",
-      !this.state.password_visibility ? `text` : `password`
-    );
+    this.refs.password.setAttribute('type', !this.state.password_visibility ? `text` : `password`);
   };
   /************ Remember me function *********/
   remember() {
@@ -119,7 +116,7 @@ class Login extends Component {
                 {!user.loggedIn &&
                   validationErr && (
                     <div className="error-msg ">
-                      <i className="material-icons">clear</i>{" "}
+                      <i className="material-icons">clear</i>{' '}
                       <span> {this.state.validationErr}. </span>
                     </div>
                   )}
@@ -146,21 +143,14 @@ class Login extends Component {
                         className="form-control"
                         placeholder="Password"
                         value={this.state.password}
-                        onChange={e =>
-                          this.setState({ password: e.target.value })
-                        }
+                        onChange={e => this.setState({ password: e.target.value })}
                       />
 
                       <div className="input-group-append">
-                        <span
-                          onClick={this.changePasswordVisibility}
-                          className="input-group-text"
-                        >
+                        <span onClick={this.changePasswordVisibility} className="input-group-text">
                           <Icon>
-                            {" "}
-                            {!this.state.password_visibility
-                              ? `visibility_off`
-                              : `visibility`}
+                            {' '}
+                            {!this.state.password_visibility ? `visibility_off` : `visibility`}
                           </Icon>
                         </span>
                       </div>
@@ -168,16 +158,8 @@ class Login extends Component {
                   </div>
 
                   <div className="col-sm-12 form-group">
-                    <button
-                      disabled={loggingIn}
-                      type="submit"
-                      className="btn primary-btn"
-                    >
-                      {loggingIn ? (
-                        <CircularProgress size={15} color={"inherit"} />
-                      ) : (
-                        `Sign in`
-                      )}
+                    <button disabled={loggingIn} type="submit" className="btn primary-btn">
+                      {loggingIn ? <CircularProgress size={15} color={'inherit'} /> : `Sign in`}
                     </button>
                   </div>
 
@@ -206,7 +188,7 @@ class Login extends Component {
                     </span>
 
                     <span className="float-right form-link-text">
-                      <a href="">Forgot Password?</a>
+                      <Link to="/forgot-password">Forgot Password?</Link>
                     </span>
                   </div>
 

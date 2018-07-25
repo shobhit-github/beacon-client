@@ -13,7 +13,7 @@ import '../_styles/docs.css';
 const ITEM_PER_PAGE = 10,
   PAGE_RANGE_SHOW = 10;
 
-class DocsList extends Component {
+class Archives extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,7 +45,7 @@ class DocsList extends Component {
   list() {
     const { records, user } = this.props;
     return records
-      .filter(value => value.status === 1)
+      .filter(value => value.status === 2)
       .slice(this.indexOfFirstList, this.indexOfLastList)
       .map((row, index) => (
         <tr key={index}>
@@ -59,14 +59,11 @@ class DocsList extends Component {
           />
           <td>{moment(row.updated_at).format('LLL')}</td>
           <td>
-            <Link to={row.type === 2 ? `/docs/${row._id}` : `/synthesis-doc/${row._id}`}>
-              <img src={row.type === 2 ? `./images/doc.png` : `./images/doc-green.png`} />{' '}
-              {row.type === 2 ? 'BeaconDoc' : 'Summary'}
-            </Link>
+            <img src="./images/doc.png" /> {row.media_length} sec.
           </td>
           <td>{user.name.capitalizeEachLetter()}</td>
           <td>
-            <Link to={row.type === 2 ? `/docs/${row._id}` : `/synthesis-doc/${row._id}`}>View Detail</Link>
+            <Link to={`/docs/${row._id}`}>View Detail</Link>
           </td>
         </tr>
       ));
@@ -74,7 +71,7 @@ class DocsList extends Component {
 
   render() {
     let { records } = this.props;
-    records = records.filter(value => value.status === 1);
+    records = records.filter(value => value.status === 2);
     return (
       <div className="main-content">
         <div className="row">
@@ -87,7 +84,7 @@ class DocsList extends Component {
                     <th />
                     <th>Title</th>
                     <th>Last Updated</th>
-                    <th>Type</th>
+                    <th>Media length</th>
                     <th>Created by</th>
                     <th />
                   </tr>
@@ -95,10 +92,7 @@ class DocsList extends Component {
                 <tbody>{this.list()}</tbody>
               </table>
             ) : (
-              <h4 className="text-center">
-                You have't created any file yet.<br />Add new interview and synthesized<br />research
-                files here.
-              </h4>
+              <h4 className="text-center">You have't any archive file yet.</h4>
             )}
           </div>
           <Pagination
@@ -118,7 +112,7 @@ class DocsList extends Component {
   }
 }
 
-DocsList.propTypes = {
+Archives.propTypes = {
   records: PropTypes.array.isRequired,
   getRecord: PropTypes.func.isRequired
 };
@@ -135,4 +129,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DocsList);
+)(Archives);

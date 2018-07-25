@@ -1,18 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { ReactMic } from "react-mic";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import Timer from "../../../node_modules/easytimer.js/dist/easytimer";
-import { saveRecord } from "../../actions/records";
-import { Icon } from "@material-ui/core/";
-import Chip from "@material-ui/core/Chip";
-import { CircularProgress } from "@material-ui/core/es/index";
-import AlertMsg from "../../components/AlertMsg";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ReactMic } from 'react-mic';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import Timer from '../../../node_modules/easytimer.js/dist/easytimer';
+import { saveRecord } from '../../actions/records';
+import { Icon } from '@material-ui/core/';
+import Chip from '@material-ui/core/Chip';
+import { CircularProgress } from '@material-ui/core/es/index';
+import AlertMsg from '../../components/AlertMsg';
 
 class RecordStep4 extends Component {
-  timerInstance = null;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,13 +24,15 @@ class RecordStep4 extends Component {
       markers: localStorage.chipData ? JSON.parse(localStorage.chipData) : [],
       interviewSave: false
     };
+    this.timerInstance = null;
+    this.recordingBufferEvent = this.recordingBufferEvent.bind(this);
   }
 
   componentDidMount() {
     this.timerInstance = new Timer();
     const $this = this;
 
-    this.timerInstance.addEventListener("secondsUpdated", e => {
+    this.timerInstance.addEventListener('secondsUpdated', e => {
       let timeVal = e.detail.timer
         .getTimeValues()
         .toString()
@@ -47,7 +47,7 @@ class RecordStep4 extends Component {
   }
 
   componentWillUnmount() {
-    localStorage.removeItem("chipData");
+    localStorage.removeItem('chipData');
   }
 
   onRecordingChange = () => {
@@ -77,10 +77,8 @@ class RecordStep4 extends Component {
   };
 
   addMarker = e => {
-    if (e.key === "Enter" && this.refs.marker.value !== "") {
-      this.state.markers = this.state.markers.filter(
-        r => r.label !== this.refs.marker.value
-      );
+    if (e.key === 'Enter' && this.refs.marker.value !== '') {
+      this.state.markers = this.state.markers.filter(r => r.label !== this.refs.marker.value);
       this.state.markers.push({ label: this.refs.marker.value });
       this.setState({
         ...this.state,
@@ -142,14 +140,7 @@ class RecordStep4 extends Component {
 
   render() {
     const context = this;
-    const {
-      recordTimer,
-      audioStr,
-      markers,
-      recording,
-      audioUrl,
-      interviewSave
-    } = this.state;
+    const { recordTimer, audioStr, markers, recording, audioUrl, interviewSave } = this.state;
 
     return (
       <div className="main-content">
@@ -181,26 +172,23 @@ class RecordStep4 extends Component {
                     />
                     {!audioUrl && (
                       <button
-                        className={recording ? "on-rec" : "off-rec"}
-                        onClick={this.onRecordingChange}
+                        className={recording ? 'on-rec' : 'off-rec'}
+                        onClick={() => this.onRecordingChange()}
                         type="button"
                       >
                         {!recording && (
                           <span>
-                            {" "}
-                            <Icon style={{ lineHeight: "18px", fontSize: 15 }}>
+                            {' '}
+                            <Icon style={{ lineHeight: '18px', fontSize: 15 }}>
                               fiber_manual_record
-                            </Icon>{" "}
-                            Record{" "}
+                            </Icon>{' '}
+                            Record{' '}
                           </span>
                         )}
                         {recording && (
                           <span>
-                            {" "}
-                            <Icon style={{ lineHeight: "25px", fontSize: 18 }}>
-                              stop
-                            </Icon>{" "}
-                            Stop{" "}
+                            {' '}
+                            <Icon style={{ lineHeight: '25px', fontSize: 18 }}>stop</Icon> Stop{' '}
                           </span>
                         )}
                       </button>
@@ -240,12 +228,12 @@ class RecordStep4 extends Component {
               </div>
 
               <button
-                disabled={interviewSave}
-                onClick={this.saveRecord}
+                disabled={audioStr == null || interviewSave}
+                onClick={() => this.saveRecord()}
                 className="btn btn-primary"
               >
                 {interviewSave ? (
-                  <CircularProgress size={15} color={"white"} />
+                  <CircularProgress size={15} color={'inherit'} />
                 ) : (
                   `Save my interview`
                 )}

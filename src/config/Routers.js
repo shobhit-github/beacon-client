@@ -1,29 +1,34 @@
 /*********** Routes for applications **************/
-import React from "react";
-import { Switch } from "react-router-dom";
-import AppRoute from "./AppRoute";
-import { auth } from "../utilities/auth";
-import NotFound from "../components/NotFound";
-import { frontLayout, dashboardLayout } from "../components/Layouts";
-import ForgotPassword from "../containers/ForgotPassword";
-import Login from "../containers/Login";
-import Register from "../containers/Register";
-import RegisterPayment from "../containers/RegisterPayment";
-import RegisterSuccess from "../containers/RegisterSuccess";
-import Home from "../containers/Home";
-import RecordStep1 from "../containers/records/RecordStep1";
-import RecordStep2 from "../containers/records/RecordStep2";
-import RecordStep3 from "../containers/records/RecordStep3";
-import RecordStep4 from "../containers/records/RecordStep4";
-import Docs from "../containers/docs/Docs";
-import DocsList from "../containers/docs/DocsList";
-import GoogleDrive from "../containers/google-drive/GoogleDrive";
-import GdriveSteps from "../containers/google-drive/GdriveSteps";
+import React from 'react';
+import { Switch } from 'react-router-dom';
+import AppRoute from './AppRoute';
+import { auth } from '../utilities/auth';
+import NotFound from '../components/NotFound';
+import { frontLayout, dashboardLayout } from '../components/Layouts';
+import ForgotPassword from '../containers/ForgotPassword';
+import ResetPassword from '../containers/ResetPassword';
+import Login from '../containers/Login';
+import Register from '../containers/Register';
+import RegisterPayment from '../containers/RegisterPayment';
+import RegisterSuccess from '../containers/RegisterSuccess';
+import Home from '../containers/Home';
+import RecordStep1 from '../containers/records/RecordStep1';
+import RecordStep2 from '../containers/records/RecordStep2';
+import RecordStep3 from '../containers/records/RecordStep3';
+import RecordStep4 from '../containers/records/RecordStep4';
+import Docs from '../containers/docs/Docs';
+import DocsList from '../containers/docs/DocsList';
+import Archives from '../containers/docs/Archives';
+import GoogleDrive from '../containers/google-drive/GoogleDrive';
+import GdriveSteps from '../containers/google-drive/GdriveSteps';
+import SynthesisDoc from '../containers/docs/SynthesisDoc';
+import Profile from '../containers/profile';
 
 const Routers = store => {
   return (
     <div>
-      <Switch>
+      <Switch>  
+
         <AppRoute
           exact={true}
           path="/"
@@ -41,6 +46,16 @@ const Routers = store => {
           requireAuth={auth}
           layout={dashboardLayout}
           store={store}
+        />
+
+        <AppRoute
+          exact
+          path="/forgot-password"
+          component={ForgotPassword}
+          requireAuth={() => false}
+          layout={frontLayout}
+          store={store}
+          type="public"
         />
 
         <AppRoute
@@ -67,16 +82,6 @@ const Routers = store => {
           exact
           path="/register-success"
           component={RegisterSuccess}
-          requireAuth={() => false}
-          layout={frontLayout}
-          store={store}
-          type="public"
-        />
-
-        <AppRoute
-          exact
-          path="/forgot-password"
-          component={ForgotPassword}
           requireAuth={() => false}
           layout={frontLayout}
           store={store}
@@ -139,8 +144,53 @@ const Routers = store => {
 
         <AppRoute
           exact
+          path="/archives"
+          component={Archives}
+          requireAuth={auth}
+          layout={dashboardLayout}
+          store={store}
+        />
+
+        <AppRoute
+          exact
           path="/google-drive"
           component={GoogleDrive}
+          requireAuth={auth}
+          layout={dashboardLayout}
+          store={store}
+        />
+
+        <AppRoute
+          exact
+          path="/google-sync"
+          component={GdriveSteps}
+          requireAuth={auth}
+          layout={dashboardLayout}
+          store={store}
+        />
+        <AppRoute
+          exact
+          path="/synthesis-doc/:_id"
+          component={SynthesisDoc}
+          requireAuth={auth}
+          layout={dashboardLayout}
+          store={store}
+        />
+
+        <AppRoute
+          exact
+          path="/reset-password/:token"
+          component={ResetPassword}
+          requireAuth={() => false}
+          layout={frontLayout}
+          store={store}
+          type="public"
+        />
+
+        <AppRoute
+          exact
+          path="/profile"
+          component={Profile}
           requireAuth={auth}
           layout={dashboardLayout}
           store={store}

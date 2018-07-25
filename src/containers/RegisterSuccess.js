@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import successBanner from "../assets/images/successsign.jpg";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import successBanner from '../assets/images/successsign.jpg';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class RegisterSuccess extends Component {
   render() {
@@ -13,9 +13,7 @@ class RegisterSuccess extends Component {
             <div className="inner-wrapper">
               <div className="col-sm-12">
                 <ul className="list-inline">
-                  <li className="list-inline-item">
-                    {/*<img src="images/logo.png">*/} Logo
-                  </li>
+                  <li className="list-inline-item">{/*<img src="images/logo.png">*/} Logo</li>
 
                   <li className="list-inline-item">Nav Item 1</li>
 
@@ -48,7 +46,7 @@ class RegisterSuccess extends Component {
 
                   <div className="col-sm-12 form-group">
                     <Link to="/" className="btn primary-btn">
-                      Login{" "}
+                      Login{' '}
                     </Link>
                   </div>
                   <div className="col-sm-12 form-group">

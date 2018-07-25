@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 // ui dependencies
-import Checkbox from "@material-ui/core/Checkbox";
+import Checkbox from '@material-ui/core/Checkbox';
 
 export default class Step2 extends Component {
   constructor(props) {
@@ -32,56 +32,51 @@ export default class Step2 extends Component {
 
             <div className="card-block">
               <p>
-                You are required to ask your interviewee for permission to
-                record in order to use Beacon. Here are some examples of how to
-                ask for consent:
+                You are required to ask your interviewee for permission to record in order to use
+                Beacon. Here are some examples of how to ask for consent:
               </p>
 
               <ol>
                 <li>"We would like to record this interview. is that okay?"</li>
 
                 <li>
-                  "We are taking in a lot of new information today. Would it be
-                  okay to record the interview for notemaking purposes?"
+                  "We are taking in a lot of new information today. Would it be okay to record the
+                  interview for notemaking purposes?"
                 </li>
               </ol>
 
               <div className="form-check text-left d-flex">
                 <Checkbox
-                  onChange={this.changePermission("checkOne")}
+                  onChange={this.changePermission('checkOne')}
                   id="check1"
                   checked={this.state.permissions.checkOne}
                   color="primary"
                 />
 
                 <label className="form-check-label" for="check1">
-                  {" "}
-                  Check here to indicate that you will ask participants for
-                  permission to record the conversation. US federal law
-                  prohibits recording a conversation without consent.{" "}
+                  {' '}
+                  Check here to indicate that you will ask participants for permission to record the
+                  conversation. US federal law prohibits recording a conversation without consent.{' '}
                 </label>
               </div>
 
               <div className="form-check text-left">
                 <Checkbox
-                  onChange={this.changePermission("checkTwo")}
+                  onChange={this.changePermission('checkTwo')}
                   id="check2"
                   checked={this.state.permissions.checkTwo}
                   color="primary"
                 />
 
                 <label className="form-check-label" for="check2">
-                  {" "}
-                  Do not show this message again{" "}
+                  {' '}
+                  Do not show this message again{' '}
                 </label>
               </div>
 
               <button
-                onClick={() => this.props.history.push("/records/step_three")}
-                disabled={
-                  !this.state.permissions.checkOne ||
-                  !this.state.permissions.checkTwo
-                }
+                onClick={() => this.props.history.push('/records/step_three')}
+                disabled={!this.state.permissions.checkOne || !this.state.permissions.checkTwo}
                 className="btn btn-primary"
               >
                 I will ask for permission to record

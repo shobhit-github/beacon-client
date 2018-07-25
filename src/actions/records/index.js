@@ -5,16 +5,16 @@
  * @author: Jasdeep Singh
  */
 
-import RestClient from "../../utilities/RestClient";
-import message from "../../utilities/messages";
-import * as TYPE from "../../constants/action-types";
-import { toastAction } from "../toast-actions";
+import RestClient from '../../utilities/RestClient';
+import message from '../../utilities/messages';
+import * as TYPE from '../../constants/action-types';
+import { toastAction } from '../toast-actions';
 //Action Creator For Reducers
 
 export const save_records = data => ({ type: TYPE.SAVE_RECORD, data });
 export const get_records = data => ({ type: TYPE.GET_RECORD, data });
 export const update_records = data => ({ type: TYPE.UPDATE_RECORD, data });
-
+export const update_records_status = data => ({ type: TYPE.UPDATE_RECORD_STATUS, data });
 // Thunk Action Creators For Api
 
 /****** action creator for save records ********/
@@ -86,10 +86,10 @@ export const updateRecord = (params, cb) => {
   delete params._id;
   delete params.token;
   return dispatch => {
-    RestClient.put(`transcriptions/interview_title/${_id}`, params, token)
+    RestClient.put(`transcriptions/interview_update/${_id}`, params, token)
       .then(result => {
         if (result.success) {
-          toastAction(true, "Record Updated!");
+          toastAction(true, 'Record Updated!');
           params._id = _id;
           dispatch(update_records(params));
           cb(true);
@@ -101,6 +101,57 @@ export const updateRecord = (params, cb) => {
       .catch(error => {
         toastAction(false, message.commonError);
         cb(false);
+      });
+  };
+};
+
+/****** action creator for save records ********/
+export const updateRecordStatus = (params, cb) => {
+  let _id = params._id,
+    token = params.token;
+  delete params._id;
+  delete params.token;
+  return dispatch => {
+    RestClient.put(`transcriptions/interview_status/${_id}`, params, token)
+      .then(result => {
+        if (result.success) {
+          toastAction(true, result.message);
+          params._id = _id;
+          dispatch(update_records_status(params));
+          cb(true);
+        } else {
+          toastAction(false, result.message);
+          cb(false);
+        }
+      })
+      .catch(error => {
+        toastAction(false, message.commonError);
+        cb(false);
+      });
+  };
+};
+
+/****** action creator for save records ********/
+export const saveSynthesisDoc = (params, cb) => {
+  let _id = params._id,
+    token = params.token;
+  delete params._id;
+  delete params.token;
+  return dispatch => {
+    RestClient.post(`transcriptions/saveSynthesisDoc/${_id}`, params, token)
+      .then(result => { 
+        if (result.success) {
+          toastAction(true, result.message);
+          dispatch(save_records(result.data));
+          cb({ status:true, _id: result.data._id });
+        } else {
+          toastAction(false, result.message);
+          cb({ status:false });
+        }
+      })
+      .catch(error => {
+        toastAction(false, message.commonError);
+        cb({ status:false });
       });
   };
 };

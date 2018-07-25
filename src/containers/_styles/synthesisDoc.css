@@ -1,0 +1,130 @@
+
+.main-title{
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0px 0px 10px;
+    color: #69727b;
+}
+
+.main-container .main-content .docs-wrapper2 {
+    background-color: #fff;
+    width: 100%;
+    float: left;
+    padding: 25px;
+    min-height: 400px;
+    box-shadow: -1px 1px 6px rgba(0,0,0,0.035);
+}
+
+.userinfocol{
+  background-color: #fff;   
+    
+    -webkit-box-shadow: -1px 1px 6px rgba(0,0,0,0.035);
+    box-shadow: -1px 1px 6px rgba(0,0,0,0.035);
+    border-radius: 5px;
+}
+
+
+.userinfocol .section-title{
+      padding: 10px 0px;
+    text-align: center;
+    background: #707f90;
+    color: #fff;
+    border-radius: 5px 5px 0px 0px;
+}
+
+
+.userinfocol  .user-info {
+    padding: 15px;
+    display: flex;
+}
+
+.userinfocol  .user-info  .imagecol {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #707e8f;
+    display: flex;
+}
+
+.userinfocol  .user-info  .textcol {
+    padding-left: 15px;
+    font-size: 15px;
+}
+
+
+.userinfocol  .user-info  .username {
+    display: block;
+}
+
+.userinfocol  .user-info  .username  span {
+    display: block;
+    color: #6f7d8e;
+}
+
+
+.userinfocol  .user-info  .update-date {
+    color: #707e8f;
+}
+
+.userinfocol  .action-counts {
+    padding: 20px 15px;
+    background: #f6f8fb;
+    text-align: center;
+    color: #6f7d8e;
+}
+
+.userinfocol  .action-counts  .icon {
+    width: 30px;
+    height: 30px;
+    background: #707e8f;
+    margin: 0 auto 10px;
+}
+
+.userinfocol  .action-counts  .count {
+    font-size: 25px;
+}
+
+
+.userinfocol  .action-counts  .type {
+    font-size: 14px;
+}
+
+
+.userinfocol  .most-used-tags {
+    padding: 15px;
+}
+.userinfocol  .most-used-tags ul li{ list-style: none }
+
+.userinfocol  .cloud-tags {
+    padding: 15px;
+}
+
+
+.userinfocol .col-title {
+    font-size: 18px;
+    color: #6f7d8e;
+    margin-bottom: 10px;
+}
+
+.userinfocol .most-used-tags ul{ padding: 0px; }
+.userinfocol .most-used-tags ul li {
+    list-style: none;
+    background: #2dd1ac;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 0px 0px 15px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 15px;
+    line-height: 27px;
+}
+
+.userinfocol .most-used-tags ul li span {
+    background: rgba(0,0,0,0.15);
+    border-radius: 50%;
+    height: 27px;
+    width: 27px;
+    text-align: center;
+    line-height: 27px;
+}

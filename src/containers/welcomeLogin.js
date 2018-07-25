@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { login } from "../actions/auth";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { login } from '../actions/auth';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 // material components
-import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import { CircularProgress, Icon } from '@material-ui/core/es/index';
 
 class Login extends Component {
   constructor(props) {
@@ -27,11 +27,11 @@ class Login extends Component {
       // logged in, let's show redirect if any, or show home
       try {
         const { from } = this.props.location.state || {
-          from: { pathname: "/" }
+          from: { pathname: '/' }
         };
         nextProps.history.replace(from);
       } catch (err) {
-        nextProps.history.replace("/");
+        nextProps.history.replace('/');
       }
     }
   }
@@ -69,7 +69,7 @@ class Login extends Component {
                 {!user &&
                   loginError && (
                     <div className="error-msg ">
-                      <i className="material-icons">clear</i>{" "}
+                      <i className="material-icons">clear</i>{' '}
                       <span> Please provide valid input. </span>
                     </div>
                   )}
@@ -88,10 +88,7 @@ class Login extends Component {
                     </select>
                   </div>
                   <div className="col-sm-12 form-group">
-                    <p className="text-left">
-                      {" "}
-                      What's the name of your organisation?
-                    </p>
+                    <p className="text-left"> What's the name of your organisation?</p>
 
                     <input
                       type="text"
@@ -103,12 +100,7 @@ class Login extends Component {
                   <div className="col-sm-12 form-group">
                     <p className="text-left"> What's your role?</p>
 
-                    <input
-                      type="text"
-                      name=""
-                      placeholder="Job title"
-                      class="form-control"
-                    />
+                    <input type="text" name="" placeholder="Job title" class="form-control" />
                   </div>
                   <div className="col-sm-12 form-group">
                     <p className="text-left"> How big is your team? </p>
@@ -121,10 +113,8 @@ class Login extends Component {
                   </div>
 
                   <div className="col-sm-12 form-group welcome-bottom-bar">
-                    <div className="skip">skip</div>{" "}
-                    <button className="btn primary-btn">
-                      Update my profile
-                    </button>
+                    <div className="skip">skip</div>{' '}
+                    <button className="btn primary-btn">Update my profile</button>
                   </div>
                 </form>
               </div>
@@ -137,9 +127,7 @@ class Login extends Component {
 
   handleLogin = event => {
     event.preventDefault();
-    this.props.dispatch(
-      login(this.refs.username.value, this.refs.password.value)
-    );
+    this.props.dispatch(login(this.refs.username.value, this.refs.password.value));
     this.refs.username.value = this.refs.password.value = ``;
   };
 
@@ -147,13 +135,10 @@ class Login extends Component {
     this.setState({
       password_visibility: !this.state.password_visibility
     });
-    this.refs.password.setAttribute(
-      "type",
-      !this.state.password_visibility ? `text` : `password`
-    );
+    this.refs.password.setAttribute('type', !this.state.password_visibility ? `text` : `password`);
   };
 
-  handleLogout = event => localStorage.removeItem("id_token");
+  handleLogout = event => localStorage.removeItem('id_token');
 }
 
 Login.contextTypes = {

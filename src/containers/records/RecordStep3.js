@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 // ui dependencies
-import Checkbox from "@material-ui/core/Checkbox";
+import Checkbox from '@material-ui/core/Checkbox';
 
 export default class Step2 extends Component {
   constructor(props) {
@@ -32,40 +32,38 @@ export default class Step2 extends Component {
 
             <div className="card-block">
               <p>
-                In the next step you'll begin recording your interview. Here is
-                a quick overview of everything your need to know.
+                In the next step you'll begin recording your interview. Here is a quick overview of
+                everything your need to know.
               </p>
 
               <ol>
                 <li>Click Record to begin recording.</li>
 
                 <li>
-                  Click the markers to tag important moments when they happen
-                  throughout your interview.
+                  Click the markers to tag important moments when they happen throughout your
+                  interview.
                 </li>
-                <li>
-                  Remove markers you don't need or add new ones as you go.
-                </li>
+                <li>Remove markers you don't need or add new ones as you go.</li>
                 <li>Don't forget to click once you're finished.</li>
                 <li>If you are recording a call, keep it on your speaker.</li>
               </ol>
 
               <div className="form-check text-left">
                 <Checkbox
-                  onChange={this.changePermission("checkTwo")}
+                  onChange={this.changePermission('checkTwo')}
                   id="check2"
                   checked={this.state.permissions.checkTwo}
                   color="primary"
                 />
 
                 <label className="form-check-label" for="check2">
-                  {" "}
-                  Do not show this message again{" "}
+                  {' '}
+                  Do not show this message again{' '}
                 </label>
               </div>
 
               <button
-                onClick={() => this.props.history.push("/records/step_four")}
+                onClick={() => this.props.history.push('/records/step_four')}
                 className="btn btn-primary"
               >
                 Got it! I'm ready to begin

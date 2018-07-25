@@ -4,7 +4,7 @@
       *                                                            *
         ==========================================================
         ==========                                      ==========
-        ==========     Page for service hit loader      ==========
+        ==========              Front header            ==========
         ==========                                      ==========
         ==========================================================
       *                                                            *
@@ -12,29 +12,23 @@
       *                                                            *
 */
 
-import React, { Component } from 'react';
-import { ScaleLoader } from 'halogenium';
+import React from 'react';
 
-class ProcessingLoader extends Component {
-  render() {
-    return (
-      <div>
-        <div
-          style={{
-            display: 'block',
-            fontSize: '0',
-            position: 'fixed',
-            zIndex: '9999',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
-          }}
-        >
-          {this.props.isShowingLoader && <ScaleLoader color="#3d8dbc" size="26px" margin="4px" />}
-        </div>
-      </div>
-    );
-  }
-}
+export default () => {
+  return (
+    <div className="col-sm-12">
+      <ul className="list-inline">
+        <li className="list-inline-item">
+          {/*<img src="images/logo.png"> */}
+          Logo
+        </li>
 
-export default ProcessingLoader;
+        <li className="list-inline-item">Nav Item 1</li>
+
+        <li className="list-inline-item">Nav Item 2</li>
+
+        <li className="list-inline-item">Nav Item 3</li>
+      </ul>
+    </div>
+  );
+};

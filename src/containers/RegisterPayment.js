@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import InputMask from "react-input-mask";
-import { Link } from "react-router-dom";
-import { Switch } from "@material-ui/core/es/index";
-import { CircularProgress } from "@material-ui/core/es/index";
-import AlertMsg from "../components/AlertMsg";
-import { register } from "../actions/user";
-import lockActive from "../assets/images/lock-active.png";
-import sale from "../assets/images/sale-banner.png";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import InputMask from 'react-input-mask';
+import { Link } from 'react-router-dom';
+import { Switch } from '@material-ui/core/es/index';
+import { CircularProgress } from '@material-ui/core/es/index';
+import AlertMsg from '../components/AlertMsg';
+import { register } from '../actions/user';
+import lockActive from '../assets/images/lock-active.png';
+import sale from '../assets/images/sale-banner.png';
 
 class RegisterPayment extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class RegisterPayment extends Component {
       coupon: false,
       couponErr: false,
       open: false,
-      plan_type: "startup-plan-yr",
+      plan_type: 'startup-plan-yr',
       isPayment: false
     };
     this.makePayment = this.makePayment.bind(this);
@@ -38,35 +38,32 @@ class RegisterPayment extends Component {
   makePayment = event => {
     event.preventDefault();
     if (!this.validateInput()) {
-      console.log("vcxv");
+      console.log('vcxv');
       this.setState({
         ...this.state,
-        ...{ validateErr: "Please fill valid details!" }
+        ...{ validateErr: 'Please fill valid details!' }
       });
     } else {
       this.setState({ isPayment: true });
-      this.props.register(
-        { ...this.state.userInfo, plan_type: this.state.plan_type },
-        res => {
-          if (res.status) {
-            this.setState({
-              ...this.state,
-              ...{ userInfo: {} }
-            });
-            this.props.history.push("/register-success");
-          } else {
-            this.setState({
-              open: true,
-              msg: res.message,
-              msgType: res.type,
-              msgStatus: res.status,
-              loggingIn: false,
-              validateErr: res.message,
-              isPayment: false
-            });
-          }
+      this.props.register({ ...this.state.userInfo, plan_type: this.state.plan_type }, res => {
+        if (res.status) {
+          this.setState({
+            ...this.state,
+            ...{ userInfo: {} }
+          });
+          this.props.history.push('/register-success');
+        } else {
+          this.setState({
+            open: true,
+            msg: res.message,
+            msgType: res.type,
+            msgStatus: res.status,
+            loggingIn: false,
+            validateErr: res.message,
+            isPayment: false
+          });
         }
-      );
+      });
     }
   };
 
@@ -87,8 +84,7 @@ class RegisterPayment extends Component {
       this.state.userInfo.card_number.length < 16 ||
       this.state.userInfo.card_number.length < 3 ||
       parseInt(this.state.userInfo.card_exp[0], 0) > 12 ||
-      parseInt(this.state.userInfo.card_exp[1], 0) <
-        parseInt(new Date().getFullYear(), 0)
+      parseInt(this.state.userInfo.card_exp[1], 0) < parseInt(new Date().getFullYear(), 0)
     );
   };
 
@@ -100,15 +96,8 @@ class RegisterPayment extends Component {
   };
 
   render() {
-    const {
-      validateErr,
-      userInfo,
-      coupon,
-      couponErr,
-      plan_type,
-      isPayment
-    } = this.state;
-    console.log("isPayment", isPayment);
+    const { validateErr, userInfo, coupon, couponErr, plan_type, isPayment } = this.state;
+    console.log('isPayment', isPayment);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -123,9 +112,7 @@ class RegisterPayment extends Component {
             <div className="inner-wrapper">
               <div className="col-sm-12">
                 <ul className="list-inline">
-                  <li className="list-inline-item">
-                    {/*<img src="images/logo.png">*/} Logo
-                  </li>
+                  <li className="list-inline-item">{/*<img src="images/logo.png">*/} Logo</li>
 
                   <li className="list-inline-item">Nav Item 1</li>
 
@@ -141,15 +128,12 @@ class RegisterPayment extends Component {
 
                   <div className="d-flex plan-action">
                     <span className="plan-name">
-                      {" "}
+                      {' '}
                       <img src={sale} className="sale-img" />Yearly
                     </span>
 
                     <span>
-                      <Switch
-                        onChange={this.changeBillingPlan}
-                        color={"primary"}
-                      />
+                      <Switch onChange={this.changeBillingPlan} color={'primary'} />
                     </span>
 
                     <span className="plan-name"> Monthly </span>
@@ -159,29 +143,24 @@ class RegisterPayment extends Component {
                     <p className="head-title">Monthly</p>
 
                     <p className="form-link-text">
-                      Document your user interviews faster and get more from
-                      your research over time.
+                      Document your user interviews faster and get more from your research over
+                      time.
                     </p>
 
                     <ul className="points-list">
                       <li>
-                        <i className="material-icons">done</i>{" "}
-                        <span>
-                          Tag important moments live , during user interviews
-                        </span>
+                        <i className="material-icons">done</i>{' '}
+                        <span>Tag important moments live , during user interviews</span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{" "}
+                        <i className="material-icons">done</i>{' '}
                         <span> Synthesize your researchacross Google docs</span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{" "}
-                        <span>
-                          {" "}
-                          Documents user insights quickly and efficiently{" "}
-                        </span>
+                        <i className="material-icons">done</i>{' '}
+                        <span> Documents user insights quickly and efficiently </span>
                       </li>
                     </ul>
 
@@ -294,14 +273,10 @@ class RegisterPayment extends Component {
 
                   {coupon && (
                     <div className="col-sm-12 d-flex">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Discount code"
-                      />
+                      <input type="text" className="form-control" placeholder="Discount code" />
 
                       <button type="button" className="btn discount_btn">
-                        {" "}
+                        {' '}
                         Apply
                       </button>
                     </div>
@@ -321,7 +296,7 @@ class RegisterPayment extends Component {
                       className="btn primary-btn"
                     >
                       {isPayment ? (
-                        <CircularProgress size={15} color={"inherit"} />
+                        <CircularProgress size={15} color={'inherit'} />
                       ) : (
                         `Pay $ 13 USD`
                       )}

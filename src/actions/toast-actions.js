@@ -5,8 +5,8 @@
  * @author: Jasdeep Singh
  */
 
-import { push } from "react-router-redux";
-import { toast } from "react-toastify";
+import { push } from 'react-router-redux';
+import { toast } from 'react-toastify';
 
 export const toastAction = (status, message) => {
   if (status) {
@@ -27,8 +27,8 @@ export const toastErrorAction = (dispatch, message) => {
     position: toast.POSITION.TOP_CENTER,
     autoClose: 2000,
     onClose: () => {
-      dispatch(push("/"));
+      dispatch(push('/'));
     }
   });
-  dispatch({ type: "LOG_OUT" });
+  dispatch({ type: 'LOG_OUT' });
 };

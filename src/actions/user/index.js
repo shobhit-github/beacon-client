@@ -5,16 +5,16 @@
  * @author: Jasdeep Singh
  */
 
-import { push } from "react-router-redux";
-import RestClient from "../../utilities/RestClient";
-import message from "../../utilities/messages";
-import * as TYPE from "../../constants/action-types";
-
+import { push } from 'react-router-redux';
+import RestClient from '../../utilities/RestClient';
+import message from '../../utilities/messages';
+import * as TYPE from '../../constants/action-types';
+import { toastAction } from '../toast-actions';
 //Action Creator For Reducers
 
 export const login_Success = data => ({ type: TYPE.LOGIN_SUCCESS, data: data });
+export const update_profile = data => ({ type: TYPE.UPDATE_PROFILE, data });
 export const log_out = () => ({ type: TYPE.LOG_OUT });
-export const reset_password = data => ({ type: TYPE.RESET_PASSWORD });
 
 // Thunk Action Creators For Api
 
@@ -23,7 +23,7 @@ export const login = (params, cb) => {
   let remember = params.remember;
   delete params.remember;
   return dispatch => {
-    RestClient.post("user/login", params)
+    RestClient.post('user/login', params)
       .then(result => {
         if (result.success) {
           if (remember) {
@@ -66,7 +66,7 @@ export const login = (params, cb) => {
 /****** action creator for register ********/
 export const register = (params, cb) => {
   return dispatch => {
-    RestClient.post("user/register", params)
+    RestClient.post('user/register', params)
       .then(result => {
         if (result.success) {
           let res = {
@@ -96,16 +96,42 @@ export const register = (params, cb) => {
   };
 };
 
-/********** action creator to reset Password  **********/
-export const resetPassword = (params, type, cb) => {
-  let token = params.token;
+/********** action creator to set Password  **********/
+export const updateProfile = (params, cb) => {
+  let _id = params._id,
+    token = params.token;
+  delete params._id;
   delete params.token;
   return dispatch => {
-    RestClient.put(`user/password/${type}`, params, token)
+    RestClient.put(`user/${_id}`, params, token)
       .then(result => {
-        if (result.statusCode === 200) {
-          dispatch(reset_password(result.response));
+        if (result.success) {
+          delete params.password;
+          dispatch(update_profile(params));
+          toastAction(true, result.message);
+          cb(true);
+        } else {
+          toastAction(false, result.message);
+          cb(false);
+        }
+      })
+      .catch(error => {
+        let res = {
+          status: false,
+          message: message.commonError,
+          type: message.error
+        };
+        cb(res);
+      });
+  };
+};
 
+/********** action creator to set Password  **********/
+export const forgotPassword = (params, cb) => {
+  return dispatch => {
+    RestClient.put(`user/forgotPassword`, params)
+      .then(result => {
+        if (result.success) {
           let res = {
             status: true,
             message: result.message,
@@ -132,14 +158,78 @@ export const resetPassword = (params, type, cb) => {
   };
 };
 
-/******** action creator to log user out of the application **********/
+/********** action creator check token valid or not valid  **********/
+export const checkToken = (token, cb) => {
+  return dispatch => {
+    RestClient.get(`user/checkToken/${token}`)
+      .then(result => {
+        if (result.success) {
+          let res = {
+            status: true,
+            message: result.message,
+            type: message.success
+          };
+          cb(res);
+        } else {
+          let res = {
+            status: false,
+            message: result.message,
+            type: message.error
+          };
+          cb(res);
+        }
+      })
+      .catch(error => {
+        let res = {
+          status: false,
+          message: message.commonError,
+          type: message.error
+        };
+        cb(res);
+      });
+  };
+};
+
+/********** action creator to set Password  **********/
+export const setPassword = (params, type, cb) => {
+  return dispatch => {
+    RestClient.put(`user/password/${type}`, params)
+      .then(result => {
+        if (result.success) {
+          let res = {
+            status: true,
+            message: result.message,
+            type: message.success
+          };
+          cb(res);
+        } else {
+          let res = {
+            status: false,
+            message: result.message,
+            type: message.error
+          };
+          cb(res);
+        }
+      })
+      .catch(error => {
+        let res = {
+          status: false,
+          message: message.commonError,
+          type: message.error
+        };
+        cb(res);
+      });
+  };
+};
+
+/******** action creator to user logout of the application **********/
 export const logOut = (params, cb) => {
   return dispatch => {
-    RestClient.delete("user/logout", "", params.token)
+    RestClient.delete('user/logout', '', params.token)
       .then(result => {
         if (result) {
           dispatch(log_out());
-          dispatch(push("/"));
+          dispatch(push('/'));
           cb(true);
         }
       })

@@ -1,13 +1,17 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import _ from "underscore";
-import Loader from "../../components/ProcessingLoader";
-import { environment as env } from "../../constants/app-config";
-import { updateRecord } from "../../actions/records";
-import "../_styles/docs.css";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import _ from 'underscore';
+import { CircularProgress } from '@material-ui/core/es/index';
+import Loader from '../../components/ProcessingLoader';
+import { environment as env } from '../../constants/app-config';
+import { saveUserDriveDetails, googleSaveDoc } from '../../actions/google-drive';
+import GoogleDriveGenricFunc from '../../components/GoogleDriveGenricFunc';
+import { updateRecord, updateRecordStatus } from '../../actions/records';
+import { google_keys as KEY } from '../../constants/app-config';
+import '../_styles/docs.css';
 
 class Docs extends Component {
   constructor(props) {
@@ -17,17 +21,20 @@ class Docs extends Component {
         markers: []
       },
       playing: false,
-      percent: "0",
+      percent: '0',
       sec: 0,
       isPaused: 1,
       duration: 0,
       titleEdit: false,
-      title: "",
+      title: '',
       tagEdit: null,
-      tagValue: "",
+      tagValue: '',
       audioLoaded: false,
-      loaderStatus: false
+      loaderStatus: false,
+      fileSaving: false
     };
+    this.getOauthToken = this.getOauthToken.bind(this);
+    this.getDocDetail = this.getDocDetail.bind(this);
   }
 
   componentWillMount() {
@@ -37,18 +44,16 @@ class Docs extends Component {
 
     this.state.record = record;
     this.state.duration = record ? record.media_length : 0;
-    this.state.title = record ? record.title : "";
+    this.state.title = record ? record.title : '';
 
     this.state.listItems = record
       ? record.markers.map((number, index) => {
-          let timeArr = number.timeConstraint.split(":");
+          let timeArr = number.timeConstraint.split(':');
           let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
           let prog = (secs / record.media_length) * 100;
 
           if (index > 0) {
-            let lastTimeArr = record.markers[index - 1].timeConstraint.split(
-              ":"
-            );
+            let lastTimeArr = record.markers[index - 1].timeConstraint.split(':');
             let lastSecs = lastTimeArr[0] * 60 + lastTimeArr[1];
             let lastProg = (lastSecs / record.media_length) * 100;
             prog = prog - lastProg;
@@ -58,7 +63,7 @@ class Docs extends Component {
             <span
               key={index}
               className="bubble"
-              style={{ marginLeft: prog + "%" }}
+              style={{ marginLeft: prog + '%' }}
               onClick={() => this.skipPlay(secs)}
             />
           );
@@ -66,8 +71,8 @@ class Docs extends Component {
       : [];
     this.setState(...this.state);
     /************ Load script for google drive **********/
-    const script = document.createElement("script");
-    script.src = "https://apis.google.com/js/platform.js";
+    const script = document.createElement('script');
+    script.src = 'https://apis.google.com/js/platform.js';
     script.async = true;
     document.body.appendChild(script);
   }
@@ -78,7 +83,7 @@ class Docs extends Component {
 
   playPauseSong = () => {
     if (this.state.playing) {
-      document.getElementById("audio").pause();
+      document.getElementById('audio').pause();
       clearInterval(this.state.interval);
       this.state.interval = 0;
       this.state.isPaused = 1;
@@ -91,7 +96,7 @@ class Docs extends Component {
         this.state.isPaused = 0;
         this.setState({ ...this.state });
       }
-      document.getElementById("audio").play();
+      document.getElementById('audio').play();
       this.progressUpdate();
     }
     this.state.playing = !this.state.playing;
@@ -117,8 +122,7 @@ class Docs extends Component {
   updateProgress = () => {
     if (!this.state.isPaused) {
       this.state.sec += 1;
-      this.state.percent =
-        (this.state.sec / this.state.record.media_length) * 100;
+      this.state.percent = (this.state.sec / this.state.record.media_length) * 100;
       this.setState({ ...this.state });
       if (this.state.percent === 100) {
         this.endProgress();
@@ -127,17 +131,16 @@ class Docs extends Component {
   };
 
   pointPlayBubble = seconds => {
-    let timeArr = seconds.split(":");
+    let timeArr = seconds.split(':');
     let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
     this.skipPlay(secs);
   };
 
   skipPlay = data => {
     this.state.sec = data - 1;
-    this.state.percent =
-      (this.state.sec / this.state.record.media_length) * 100;
-    document.getElementById("audio").currentTime = data;
-    document.getElementById("audio").play();
+    this.state.percent = (this.state.sec / this.state.record.media_length) * 100;
+    document.getElementById('audio').currentTime = data;
+    document.getElementById('audio').play();
     this.setState({ ...this.state });
 
     if (this.state.isPaused) {
@@ -151,7 +154,7 @@ class Docs extends Component {
   /************ Edit records title ***********/
   editTitle = () => {
     this.setState({ loaderStatus: true });
-    const title = document.getElementById("title").innerHTML,
+    const title = document.getElementById('title').innerHTML,
       { records, match, updateRecord, user } = this.props,
       recordObj = _.findWhere(records, { _id: match.params._id }),
       record = {
@@ -164,6 +167,7 @@ class Docs extends Component {
       if (res || !res) {
         this.setState({ loaderStatus: false });
         this.setState({ titleEdit: false });
+        this.setState({ title: title });
       }
     });
   };
@@ -197,9 +201,89 @@ class Docs extends Component {
   };
 
   createMarkup = value => {
-    return { __html: value.replace(/\n/g, "<br />") };
+    return { __html: value.replace(/\n/g, '<br />') };
   };
 
+  /********* Handle delete and archive actions **********/
+  handleAction = status => {
+    const { updateRecordStatus, match, user, history } = this.props,
+      obj = {
+        _id: match.params._id,
+        token: user.token,
+        status
+      };
+    updateRecordStatus(obj, res => {
+      if (res) {
+        let path = status === 0 ? '/docs' : '/archives';
+        history.push(path);
+      }
+    });
+  };
+  getOauthToken(token) {
+    const { user, saveUserDriveDetails } = this.props;
+    if (token) {
+      const obj = {
+        details: {
+          access_token: token,
+          client_id: KEY.CLIENT_ID,
+          client_secret: KEY.CLIENT_SECRET,
+          refresh_token: token,
+          token_expiry: '',
+          token_uri: 'https://accounts.google.com/o/oauth2/token',
+          user_agent: 'GDrive',
+          revoke_uri: 'https://accounts.google.com/o/oauth2/revoke',
+          id_token: null,
+          id_token_jwt: null,
+          token_response: {
+            access_token: token,
+            expires_in: 3600,
+            refresh_token: token,
+            token_type: 'Bearer'
+          },
+          scopes: ['https://www.googleapis.com/auth/drive'],
+          token_info_uri: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
+          invalid: false,
+          _class: 'OAuth2Credentials',
+          _module: 'oauth2client.client'
+        },
+        user_id: user._id
+      };
+      saveUserDriveDetails(obj, res => {
+        //console.log(res, 'res');
+      });
+    }
+  }
+  /************** get docs detail from google *********/
+  getDocDetail(folder_id, folder_name) {
+    const { user, match, records, googleSaveDoc, updateRecord } = this.props,
+      recordObj = _.findWhere(records, { _id: match.params._id });
+    if (folder_id && folder_name) {
+      this.setState({ fileSaving: true });
+      const obj = {
+        title: this.state.title,
+        time_stamps: recordObj.markers,
+        user_id: user._id,
+        folder_id: folder_id
+      };
+      googleSaveDoc(obj, res => {
+        if (res.status) {
+          const data = {
+            _id: recordObj._id,
+            token: user.token,
+            status: 1,
+            type: 2,
+            drive_path: res.url
+          };
+          updateRecord(data, response => {
+            this.setState({ fileSaving: false });
+          });
+          // console.log('res', res);
+        } else {
+          this.setState({ fileSaving: false });
+        }
+      });
+    }
+  }
   render() {
     const {
       record,
@@ -212,7 +296,8 @@ class Docs extends Component {
       title,
       tagEdit,
       tagValue,
-      audioLoaded
+      audioLoaded,
+      fileSaving
     } = this.state;
 
     const totalDurationMin = Math.trunc(duration / 60);
@@ -221,25 +306,30 @@ class Docs extends Component {
     const compDurationSec = sec % 60;
 
     const totalAudioDuration = `${
-      totalDurationMin < 9 ? "0" + totalDurationMin : totalDurationMin
-    }:${totalDurationSec < 9 ? "0" + totalDurationSec : totalDurationSec}`;
+      totalDurationMin < 9 ? '0' + totalDurationMin : totalDurationMin
+    }:${totalDurationSec < 9 ? '0' + totalDurationSec : totalDurationSec}`;
     const completedAudioDuration = `${
-      compDurationMin < 9 ? "0" + compDurationMin : compDurationMin
-    }:${compDurationSec < 9 ? "0" + compDurationSec : compDurationSec}`;
+      compDurationMin < 9 ? '0' + compDurationMin : compDurationMin
+    }:${compDurationSec < 9 ? '0' + compDurationSec : compDurationSec}`;
 
     let TITLE_ICONS = titleEdit
       ? [
           <i className="material-icons" onClick={() => this.editTitle()}>
             save
           </i>,
-          <i
-            className="material-icons"
-            onClick={() => this.setState({ titleEdit: false, title })}
-          >
+          <i className="material-icons" onClick={() => this.setState({ titleEdit: false, title })}>
             cancel
           </i>
         ]
-      : "";
+      : '';
+
+    const button = () => {
+      return (
+        <button disabled={fileSaving} className="btn btn-secondary">
+          {fileSaving ? <CircularProgress size={15} color={'inherit'} /> : `Save`}
+        </button>
+      );
+    };
 
     return (
       <div className="main-content">
@@ -253,19 +343,19 @@ class Docs extends Component {
             </div>
 
             <div className="player">
-              <div style={{ float: "left" }} className="play-icons">
+              <div style={{ float: 'left' }} className="play-icons">
                 <i className="fa fa-step-backward" aria-hidden="true">
-                  {" "}
+                  {' '}
                 </i>
                 <i
                   onClick={this.playPauseSong}
-                  className={`fa fa-${isPaused ? "play" : "pause"} active`}
+                  className={`fa fa-${isPaused ? 'play' : 'pause'} active`}
                   aria-hidden="true"
                 >
-                  {" "}
+                  {' '}
                 </i>
                 <i className="fa fa-step-forward" aria-hidden="true">
-                  {" "}
+                  {' '}
                 </i>
               </div>
 
@@ -273,8 +363,8 @@ class Docs extends Component {
                 onLoadedData={this.audioLoaded}
                 id="audio"
                 onEnded={this.endProgress}
-                src={record ? `${env.API_ROOT + record.blob_str}` : ""}
-                style={{ display: "none" }}
+                src={record ? `${env.API_ROOT + record.blob_str}` : ''}
+                style={{ display: 'none' }}
               >
                 <source type="audio/webm" />
                 Your Browser does not support this HTML Tag
@@ -282,10 +372,10 @@ class Docs extends Component {
 
               <div
                 style={{
-                  width: "calc(100% - 160px)",
-                  marginLeft: "103px",
+                  width: 'calc(100% - 160px)',
+                  marginLeft: '103px',
                   lineHeight: 0,
-                  marginTop: "13px"
+                  marginTop: '13px'
                 }}
               >
                 {listItems}
@@ -293,23 +383,23 @@ class Docs extends Component {
 
               <div className="progressBar">
                 <div className="progress" style={{ width: `${percent}%` }}>
-                  {" "}
+                  {' '}
                 </div>
 
                 <small>
-                  {" "}
-                  {completedAudioDuration}/{totalAudioDuration}{" "}
+                  {' '}
+                  {completedAudioDuration}/{totalAudioDuration}{' '}
                 </small>
               </div>
 
               <a
-                href={record ? `${env.API_ROOT + record.blob_str}` : ""}
+                href={record ? `${env.API_ROOT + record.blob_str}` : ''}
                 target="_blank"
                 download
                 className="download-icon"
               >
                 <i className="fa fa-download" aria-hidden="true">
-                  {" "}
+                  {' '}
                 </i>
               </a>
             </div>
@@ -322,19 +412,43 @@ class Docs extends Component {
               {record ? (
                 [
                   <h1
+                    key="first"
                     contentEditable={`${titleEdit}`}
                     id="title"
                     onClick={() => this.setState({ titleEdit: true })}
                     dangerouslySetInnerHTML={this.createMarkup(title)}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   />,
-                  <span style={{ marginLeft: 15 }}>{TITLE_ICONS}</span>
+                  <span style={{ marginLeft: 15 }} key="second">
+                    {TITLE_ICONS}
+                  </span>
                 ]
               ) : (
                 <h1>Record not found!</h1>
               )}
 
-              {/* <a href="" className="dropToggle"><i className="fa fa-ellipsis-h"> </i></a> */}
+              <div className="dropdown">
+                <a href="javascript:void(0);" className="dropToggle" data-toggle="dropdown">
+                  <i className="fa fa-ellipsis-h"> </i>
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a href="javascript:void(0);">Download</a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0);" onClick={() => this.handleAction(0)}>
+                      Delete
+                    </a>
+                  </li>
+                  {record.status !== 2 && (
+                    <li>
+                      <a href="javascript:void(0);" onClick={() => this.handleAction(2)}>
+                        Archive
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
 
               <div className="timers">
                 {record &&
@@ -342,49 +456,41 @@ class Docs extends Component {
                     return (
                       <div className="timeline" key={index}>
                         <span
-                          onClick={() =>
-                            this.pointPlayBubble(value.timeConstraint)
-                          }
-                          style={{ cursor: "pointer" }}
+                          onClick={() => this.pointPlayBubble(value.timeConstraint)}
+                          style={{ cursor: 'pointer' }}
                         >
                           {value.timeConstraint}
                         </span>
                         <span style={{ marginLeft: 50 }}>
                           <p
                             id={index}
-                            contentEditable={
-                              tagEdit === index ? "true" : "false"
-                            }
+                            contentEditable={tagEdit === index ? 'true' : 'false'}
                             onClick={() => this.tagEdit(index, value.label)}
-                            style={{ cursor: "pointer" }}
+                            style={{ cursor: 'pointer' }}
                           >
-                            {" "}
-                            <span
-                              dangerouslySetInnerHTML={this.createMarkup(
-                                value.label
-                              )}
-                            />{" "}
+                            {' '}
+                            <span dangerouslySetInnerHTML={this.createMarkup(value.label)} />{' '}
                           </p>
                         </span>
-                        <span>
+                        <span className="edit-icons">
                           {tagEdit === index
                             ? [
                                 <i
                                   className="material-icons"
                                   onClick={() => this.editTag(index)}
+                                  key="third"
                                 >
                                   save
                                 </i>,
                                 <i
                                   className="material-icons"
-                                  onClick={() =>
-                                    this.setState({ tagEdit: false })
-                                  }
+                                  onClick={() => this.setState({ tagEdit: false })}
+                                  key="fourth"
                                 >
                                   cancel
                                 </i>
                               ]
-                            : ""}
+                            : ''}
                         </span>
                       </div>
                     );
@@ -401,14 +507,9 @@ class Docs extends Component {
 
               <h4>Quick tips:</h4>
               <ul>
-                <li>
-                  -Ctrl+I adds italic formatting and Ctrl+B adds bold formatting
-                </li>
+                <li>-Ctrl+I adds italic formatting and Ctrl+B adds bold formatting</li>
 
-                <li>
-                  -Press ESC to play/pause, and Ctrl+j to insert the current
-                  timestamp
-                </li>
+                <li>-Press ESC to play/pause, and Ctrl+j to insert the current timestamp</li>
               </ul>
             </div>
             <div className="quicktip">
@@ -417,42 +518,36 @@ class Docs extends Component {
               </a>
               <h4>Quick tips:</h4>
               <ul>
-                <li>
-                  -Ctrl+I adds italic formatting and Ctrl+B adds bold formatting
-                </li>
+                <li>-Ctrl+I adds italic formatting and Ctrl+B adds bold formatting</li>
 
-                <li>
-                  -Press ESC to play/pause, and Ctrl+j to insert the current
-                  timestamp
-                </li>
+                <li>-Press ESC to play/pause, and Ctrl+j to insert the current timestamp</li>
               </ul>
             </div>
           </div>
           <div className="col-sm-2 sharebox">
             <ul>
               <li>
-                History{" "}
+                History{' '}
                 <span>
-                  {" "}
-                  <i className=""> </i>{" "}
+                  {' '}
+                  <i className=""> </i>{' '}
                 </span>
               </li>
 
               <li>
-                {" "}
+                {' '}
                 Save to Google Drive &nbsp;
-                <div
-                  className="g-savetodrive"
-                  data-src={`${env.API_ROOT + record.blob_str}`}
-                  data-filename={record.blob_str}
-                  data-sitename="Beacon"
+                <GoogleDriveGenricFunc
+                  _button={button}
+                  _getOauthToken={this.getOauthToken}
+                  _getDocDetail={this.getDocDetail}
                 />
               </li>
               <li>
-                Quick tips{" "}
+                Quick tips{' '}
                 <span>
-                  {" "}
-                  <i className=""> </i>{" "}
+                  {' '}
+                  <i className=""> </i>{' '}
                 </span>
               </li>
             </ul>
@@ -466,7 +561,10 @@ class Docs extends Component {
 Docs.propTypes = {
   user: PropTypes.object.isRequired,
   records: PropTypes.array.isRequired,
-  updateRecord: PropTypes.func.isRequired
+  updateRecord: PropTypes.func.isRequired,
+  updateRecordStatus: PropTypes.func.isRequired,
+  saveUserDriveDetails: PropTypes.func.isRequired,
+  googleSaveDoc: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -475,7 +573,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateRecord: bindActionCreators(updateRecord, dispatch)
+  updateRecord: bindActionCreators(updateRecord, dispatch),
+  updateRecordStatus: bindActionCreators(updateRecordStatus, dispatch),
+  saveUserDriveDetails: bindActionCreators(saveUserDriveDetails, dispatch),
+  googleSaveDoc: bindActionCreators(googleSaveDoc, dispatch)
 });
 
 export default connect(

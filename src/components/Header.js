@@ -1,31 +1,67 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { withRouter } from "react-router";
-//import injectTapEventPlugin from 'react-tap-event-plugin';
-import { logOut } from "../actions/user";
-import logo from "../assets/images/logo.png";
-import menu from "../assets/images/hamburgr.png";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import { withStyles } from '@material-ui/core/styles';
+import { logOut } from '../actions/user';
+import logo from '../assets/images/logo.png';
+import menu from '../assets/images/hamburgr.png';
+import './_styles/header.css';
 
-import "./_styles/header.css";
-
-//injectTapEventPlugin();
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
+  paper: {
+    marginRight: theme.spacing.unit * 2,
+  },
+});
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      navToggle: false,
+      open: false
+    };
+    this.navToggle = this.navToggle.bind(this);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
+    this.profileLink = this.profileLink.bind(this);
+  }
+
+ 
   onLogoutClick = () => {
     const { user, history, logOut } = this.props;
     logOut({ token: user.token }, res => {});
   };
 
+  navToggle() {
+    this.props._navToggle(!this.state.navToggle);
+    console.log(!this.state.navToggle);
+    this.setState({ navToggle: !this.state.navToggle });
+  }
+
+  profileLink = () => {
+    this.props.history.replace('/profile');
+  }
+
   render() {
     const { user, history } = this.props;
+    const { classes } = this.props;
+    const { open } = this.state;
     const pathname = history.location.pathname;
-    const isLoginPage = pathname.indexOf("register") > -1;
-    const isRegisterPage = pathname.indexOf("login") > -1;
-    const isForgotPasswordPage = pathname.indexOf("forgot_password") > -1;
-
+    const isLoginPage = pathname.indexOf('register') > -1;
+    const isRegisterPage = pathname.indexOf('login') > -1;
+    const isForgotPasswordPage = pathname.indexOf('forgot_password') > -1;
+   
     return (
       !isLoginPage &&
       !isRegisterPage &&
@@ -36,7 +72,7 @@ class Header extends Component {
               <img src={logo} alt="logo" />
             </Link>
 
-            <Link to="/" className="pull-right">
+            <Link to="/" className="pull-right" onClick={this.navToggle}>
               <img src={menu} alt="logo" />
             </Link>
           </div>
@@ -45,7 +81,7 @@ class Header extends Component {
             type="button"
             className="navbar-toggler"
             data-toggle="collapse"
-            data-target="#navbarCollapse"
+            //data-target="#navbarCollapse"
           >
             <span className="navbar-toggler-icon" />
           </button>
@@ -62,22 +98,37 @@ class Header extends Component {
 
             <ul className="navbar-nav ml-auto mt-2 mt-md-0">
               <li>
-                <span className="proicon">
-                  {user.loggedIn ? user.name.charAt(0) : ""}
-                </span>
+                <span className="proicon">{user.loggedIn ? user.name.charAt(0).capitalizeFirstLetter() : ''}</span>
 
-                <i className="fa fa-angle-down"> </i>
               </li>
 
-              <li>
-                <button
-                  onClick={() => this.onLogoutClick()}
-                  className="btn btn-danger"
-                >
-                  {" "}
-                  Logout{" "}
-                </button>
-              </li>
+              <li style={{width:80}}>
+              <i  
+                className={open ? 'fa fa-angle-up' : 'fa fa-angle-down'}
+                onClick={() => this.setState({ open: !open })}
+                style={{marginTop:12,width:10}}
+              />
+
+              <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    id="menu-list-grow"
+                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={() => this.setState({ open: false })}>
+                        <MenuList>
+                          <MenuItem onClick={this.profileLink}>Profile</MenuItem>
+                          <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+
+             </li>
             </ul>
           </div>
         </nav>
@@ -88,7 +139,9 @@ class Header extends Component {
 
 Header.propTypes = {
   user: PropTypes.object.isRequired,
-  logOut: PropTypes.func.isRequired
+  logOut: PropTypes.func.isRequired,
+  _navToggle: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -103,5 +156,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Header)
+  )(withStyles(styles)(Header))
 );

@@ -7,7 +7,9 @@
 
 import { environment as PATH } from './app-config';
 
-const httpUrl = `https://${PATH.STAGING_API_URL}`;
+const httpUrl = `${window.location.protocol}//${
+  window.location.protocol === 'http:' ? PATH.STAGING_API_URL : PATH.STAGING_API_URL
+}`;
 
 class Connection {
   static getResturl(url) {

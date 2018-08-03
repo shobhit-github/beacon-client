@@ -13,14 +13,19 @@ export default class Step2 extends Component {
   }
 
   changePermission = name => event => {
+    if(name === 'checkTwo') {
+      localStorage.setItem('checkTwo',event.target.checked );
+    }
     this.state.permissions[name] = event.target.checked;
     this.setState({ ...this.state });
   };
 
   render() {
+    console.log("aa",this.state.permissions.checkTwo);
     return (
+      <div className="main-content">
       <div className="row record-step2">
-        <div className="offset-sm-3 col-sm-6">
+        <div className="step_section">
           <div className="card text-center single">
             <div className="beta-tag">Beta</div>
 
@@ -76,7 +81,7 @@ export default class Step2 extends Component {
 
               <button
                 onClick={() => this.props.history.push('/records/step_three')}
-                disabled={!this.state.permissions.checkOne || !this.state.permissions.checkTwo}
+                disabled={!this.state.permissions.checkOne}
                 className="btn btn-primary"
               >
                 I will ask for permission to record
@@ -88,6 +93,7 @@ export default class Step2 extends Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

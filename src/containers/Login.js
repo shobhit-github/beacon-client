@@ -89,7 +89,7 @@ class Login extends Component {
             type={context.state.msgType}
             status={context.state.msgStatus}
           />
-          <div className="col-sm-7 p-0">
+          <div className="col-sm-12 col-md-7 p-0">
             <div className="inner-wrapper">
               <div className="col-sm-12">
                 <ul className="list-inline">
@@ -110,7 +110,7 @@ class Login extends Component {
             </div>
           </div>
 
-          <div className="col-sm-5">
+          <div className="col-sm-12 col-md-5">
             <div className="login-wrapper animated fadeIn">
               <div className="col-sm-12 center-form">
                 {!user.loggedIn &&

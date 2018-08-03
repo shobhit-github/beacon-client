@@ -17,7 +17,7 @@
 
 .userinfocol{
   background-color: #fff;   
-    
+  max-width: 80%;
     -webkit-box-shadow: -1px 1px 6px rgba(0,0,0,0.035);
     box-shadow: -1px 1px 6px rgba(0,0,0,0.035);
     border-radius: 5px;
@@ -75,18 +75,18 @@
 
 .userinfocol  .action-counts  .icon {
     width: 30px;
-    height: 30px;
-    background: #707e8f;
+    height: 30px; 
+    text-align: center;
     margin: 0 auto 10px;
 }
 
 .userinfocol  .action-counts  .count {
-    font-size: 25px;
+    font-size: 18px;
 }
 
 
 .userinfocol  .action-counts  .type {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 
@@ -127,4 +127,54 @@
     width: 27px;
     text-align: center;
     line-height: 27px;
+}
+.pink{background: #EB4986 !important;}
+.blue{background: #46C4F3 !important;}
+.purple{background: #865FC1 !important;}
+.red{background: #EC7255 !important;} 
+.state-collapse .userinfocol{
+    position: absolute;
+    display: inline-block;
+    right: 60px;
+    width: 219px;
+    max-width: 220px;
+    top: -50px;
+}
+.stats_icon{
+    cursor: pointer;
+    display: none;
+}
+@media screen and (max-width:1280px){
+.userinfocol{
+    max-width: 100%;
+}
+.cloud-tags svg{
+    max-width: 100%;
+}
+}
+@media screen and (max-width:991px){    
+    .userinfocol{
+        display: none;
+    }
+    .stats_icon{
+        display: inline-block;
+    }
+}
+@media screen and (max-width:767px){        
+    .stats_icon { 
+        position: fixed;
+        right: 15px;
+        bottom: 15px;
+        float: right;
+    }
+    .state-collapse .userinfocol {
+        position: absolute;
+        display: inline-block;
+        right: 60px;
+        width: 219px;
+        max-width: 220px;
+        top: -500px;
+        max-height: 84vh;
+        overflow: auto;
+    }
 }

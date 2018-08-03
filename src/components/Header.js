@@ -11,10 +11,14 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { withStyles } from '@material-ui/core/styles';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { logOut } from '../actions/user';
 import logo from '../assets/images/logo.png';
+import sm_logo from "../assets/images/sm_logo.svg";
 import menu from '../assets/images/hamburgr.png';
 import './_styles/header.css';
+import Sidebar from "./Sidebar";
 
 const styles = theme => ({
   root: {
@@ -29,10 +33,11 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      navToggle: false,
-      open: false
+      navClass: false,
+      open: false,
+      toggleLogo: false
     };
-    this.navToggle = this.navToggle.bind(this);
+    // this.navToggle = this.navToggle.bind(this);
     this.onLogoutClick = this.onLogoutClick.bind(this);
     this.profileLink = this.profileLink.bind(this);
   }
@@ -43,11 +48,11 @@ class Header extends Component {
     logOut({ token: user.token }, res => {});
   };
 
-  navToggle() {
-    this.props._navToggle(!this.state.navToggle);
-    console.log(!this.state.navToggle);
-    this.setState({ navToggle: !this.state.navToggle });
-  }
+  // navToggle() {
+  //   this.props._navToggle(!this.state.navToggle);
+  //   console.log(!this.state.navToggle);
+  //   this.setState({ navToggle: !this.state.navToggle });
+  // }
 
   profileLink = () => {
     this.props.history.replace('/profile');
@@ -56,7 +61,7 @@ class Header extends Component {
   render() {
     const { user, history } = this.props;
     const { classes } = this.props;
-    const { open } = this.state;
+    const { open,navClass, toggleLogo } = this.state;
     const pathname = history.location.pathname;
     const isLoginPage = pathname.indexOf('register') > -1;
     const isRegisterPage = pathname.indexOf('login') > -1;
@@ -66,25 +71,18 @@ class Header extends Component {
       !isLoginPage &&
       !isRegisterPage &&
       !isForgotPasswordPage && (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+        <div>
+        <nav className={toggleLogo ? "navbar navbar-expand-md navbar-dark bg-dark collapse-logo" : "navbar navbar-expand-md navbar-dark bg-dark"}>
           <div className="navbar-brand">
             <Link to="/" className="pull-left">
-              <img src={logo} alt="logo" />
+              <img src={logo} alt="logo" className="lg_logo" />
+              <img src={sm_logo} alt="logo" className="sm_logo" />
             </Link>
 
-            <Link to="/" className="pull-right" onClick={this.navToggle}>
+            <a href="javascript:void(0);" className="pull-right" onClick={() => this.setState({navClass: !navClass, toggleLogo: !toggleLogo})}>
               <img src={menu} alt="logo" />
-            </Link>
+            </a>
           </div>
-
-          <button
-            type="button"
-            className="navbar-toggler"
-            data-toggle="collapse"
-            //data-target="#navbarCollapse"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
 
           <div id="navbarCollapse" className="collapse navbar-collapse">
             <form className="form-inline my-2 my-lg-0">
@@ -98,26 +96,35 @@ class Header extends Component {
 
             <ul className="navbar-nav ml-auto mt-2 mt-md-0">
               <li>
-                <span className="proicon">{user.loggedIn ? user.name.charAt(0).capitalizeFirstLetter() : ''}</span>
-
+                <span className="proicon">
+                {user.loggedIn 
+                  ? user.name.charAt(0).capitalizeFirstLetter() 
+                  : ''}
+                  </span>
               </li>
 
-              <li style={{width:80}}>
+              <li className="profile_dropdown">
               <i  
                 className={open ? 'fa fa-angle-up' : 'fa fa-angle-down'}
                 onClick={() => this.setState({ open: !open })}
                 style={{marginTop:12,width:10}}
               />
 
-              <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
+              <Popper open={open} 
+              anchorEl={this.anchorEl} 
+              transition 
+              disablePortal>
                 {({ TransitionProps, placement }) => (
                   <Grow
                     {...TransitionProps}
                     id="menu-list-grow"
-                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                    style={{ transformOrigin: placement === 'bottom' 
+                    ? 'center top' 
+                    : 'center bottom' }}
                   >
                     <Paper>
-                      <ClickAwayListener onClickAway={() => this.setState({ open: false })}>
+                      <ClickAwayListener 
+                      onClickAway={() => this.setState({ open: false })}>
                         <MenuList>
                           <MenuItem onClick={this.profileLink}>Profile</MenuItem>
                           <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
@@ -132,6 +139,14 @@ class Header extends Component {
             </ul>
           </div>
         </nav>
+        <ToastContainer />
+          <div className="appContent">
+            <div id="myDIV" className={navClass ? "main-container collapse-sidebar" : "main-container"}>
+              <Sidebar />
+              {this.props.children}
+            </div>
+          </div>
+        </div>
       )
     );
   }

@@ -102,7 +102,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
-    "start-js": "PORT=4189 node scripts/start.js",
+    "start-js": "PORT=4189 HTTPS=true node scripts/start.js",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "node scripts/build.js && react-snapshot",
     "build": "npm-run-all build-css build-js",

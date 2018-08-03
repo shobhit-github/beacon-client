@@ -8,7 +8,8 @@
   margin-left: 2em; }
 
 .record-step1 .card-header h2 {
-  font-weight: bold; }
+  font-weight: normal;
+  font-size: 24px;}
 
 .record-step1 .card-block p {
   color: #414965;
@@ -36,7 +37,7 @@
   .record-step1 .input-group span {
     position: absolute;
     right: 13px;
-    top: 15px;
+    top: 13px;
     z-index: 9; }
     .record-step1 .input-group span i {
       border: 1px solid gray;
@@ -49,7 +50,7 @@
   margin-top: 2em; }
   .record-step1 .chip-sec .chip {
     margin: 3px;
-    height: 27px; }
+    min-height: 27px;     height: auto;}
     .record-step1 .chip-sec .chip span {
       font-size: smaller; }
     .record-step1 .chip-sec .chip svg {

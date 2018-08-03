@@ -48,59 +48,61 @@ class GdriveSteps extends Component {
   render() {
     const { processing, error, docId } = this.state;
     return (
-      <div className="row record-step1">
-        <div className="offset-sm-3 col-sm-6">
-          <div className="card text-center single">
-            <div className="back-link">
-              <Link to="/google-drive">
-                <i className="fa fa-chevron-left" aria-hidden="true" /> back
-              </Link>
-            </div>
+      <div className="main-content">
+        <div className="row record-step1">
+          <div className="offset-sm-3 col-sm-6">
+            <div className="card text-center single">
+              <div className="back-link">
+                <Link to="/google-drive">
+                  <i className="fa fa-chevron-left" aria-hidden="true" /> back
+                </Link>
+              </div>
 
-            <div className="upload-file text-center">GIF</div>
-            {processing ? (
-              [
-                <div className="card-block" key="first">
-                  <p>
-                    We are processing your file. You can access it using the link below once it's
-                    ready.
-                  </p>
-                </div>,
-                <div className="row justify-content-center" key="second">
-                  <button className="btn drive-btn">
-                    <CircularProgress size={15} color={'inherit'} /> Not stored on drive yet
-                  </button>
-                </div>
-              ]
-            ) : !error ? (
-              [
-                <div className="card-block" key="third">
-                  <h3> You're all set!</h3>
+              <div className="upload-file text-center">GIF</div>
+              {processing ? (
+                [
+                  <div className="card-block" key="first">
+                    <p>
+                      We are processing your file. You can access it using the link below once it's
+                      ready.
+                    </p>
+                  </div>,
+                  <div className="row justify-content-center" key="second">
+                    <button className="btn drive-btn">
+                      <CircularProgress size={15} color={'inherit'} /> Not stored on drive yet
+                    </button>
+                  </div>
+                ]
+              ) : !error ? (
+                [
+                  <div className="card-block" key="third">
+                    <h3> You're all set!</h3>
 
+                    <p>
+                      Use the libnk below to access your file. If you have any feedback, questions, or
+                      comments send us a note to{' '}
+                      <span className="back-link"> hello@experiencebeacon.io </span>
+                    </p>
+                  </div>,
+                  <div className="row justify-content-center" key="fourth">
+                    <Link to={`/synthesis-doc/${docId}`} className="btn btn-primary"> Open my file</Link>
+                  </div>
+                ]
+              ) : (
+                <div className="card-block">
+                  <h3> Something went wrong</h3>
                   <p>
-                    Use the libnk below to access your file. If you have any feedback, questions, or
-                    comments send us a note to{' '}
+                    We couldn't process your files.{' '}
+                    <Link to="/google-drive" className="back-link">
+                      {' '}
+                      Go back{' '}
+                    </Link>{' '}
+                    and try again. If you have any feedback, questions, or comments send us a note to{' '}
                     <span className="back-link"> hello@experiencebeacon.io </span>
                   </p>
-                </div>,
-                <div className="row justify-content-center" key="fourth">
-                  <Link to={`/synthesis-doc/${docId}`} className="btn btn-primary"> Open my file</Link>
                 </div>
-              ]
-            ) : (
-              <div className="card-block">
-                <h3> Something went wrong</h3>
-                <p>
-                  We couldn't process your files.{' '}
-                  <Link to="/google-drive" className="back-link">
-                    {' '}
-                    Go back{' '}
-                  </Link>{' '}
-                  and try again. If you have any feedback, questions, or comments send us a note to{' '}
-                  <span className="back-link"> hello@experiencebeacon.io </span>
-                </p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

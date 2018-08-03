@@ -7,7 +7,7 @@ export default () => {
   return (
     <div className="main-content">
       <div className="row">
-        <div className="offset-sm-1 col-sm-5">
+        <div className="offset-lg-1 offset-md-0 col-md-6 offset-lg-1 col-lg-5 offset-sm-1 col-sm-10">
           <div className="card text-center dashboard">
             <div className="card-header">
               <h2>Record an interview</h2>
@@ -27,7 +27,7 @@ export default () => {
             </div>
           </div>
         </div>
-        <div className="col-sm-5">
+        <div className="offset-md-0 col-md-6 col-lg-5 offset-sm-1 col-sm-10">
           <div className="card text-center dashboard">
             <div className="card-header">
               <h2>Synthesize my research</h2>

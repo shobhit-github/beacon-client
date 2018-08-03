@@ -13,14 +13,18 @@ export default class Step2 extends Component {
   }
 
   changePermission = name => event => {
+    if(name === 'checkThree') {
+      localStorage.setItem('checkThree',event.target.checked );
+    }
     this.state.permissions[name] = event.target.checked;
     this.setState(this.state);
   };
 
   render() {
     return (
+      <div className="main-content">      
       <div className="row record-step3">
-        <div className="offset-sm-3 col-sm-6">
+        <div className="step_section">
           <div className="card text-center single">
             <div className="beta-tag">Beta</div>
 
@@ -50,9 +54,9 @@ export default class Step2 extends Component {
 
               <div className="form-check text-left">
                 <Checkbox
-                  onChange={this.changePermission('checkTwo')}
+                  onChange={this.changePermission('checkThree')}
                   id="check2"
-                  checked={this.state.permissions.checkTwo}
+                  checked={this.state.permissions.checkThree}
                   color="primary"
                 />
 
@@ -75,6 +79,7 @@ export default class Step2 extends Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

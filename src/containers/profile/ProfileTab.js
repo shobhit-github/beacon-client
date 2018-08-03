@@ -91,6 +91,7 @@ class ProfileTab extends Component {
     const { classes, user } = this.props;
     const { name, email, update, role, company } = this.state;
     return (
+      <div className="tab_content">
         <div className="row">
             <div className="col-sm-12 col-md-6 profile-form">
 
@@ -153,7 +154,7 @@ class ProfileTab extends Component {
                   margin="normal"
                   value={email}
                 />
-
+                  <div className="password_option">
                 <InputLabel htmlFor="adornment-password" className="label-class">Password</InputLabel>
                   <Input
                     id="pasword"
@@ -177,6 +178,8 @@ class ProfileTab extends Component {
                       </InputAdornment>
                     }
                   />
+            </div>
+
                 <button disabled={update} type="submit" className="btn btn-primary">
                     {update ? <CircularProgress size={15} color={'inherit'} /> : `Save Changes`}
                     </button>
@@ -185,8 +188,13 @@ class ProfileTab extends Component {
               
             <div className="col-sm-12 col-md-5">
               <div className="profile-pic"><span>{name.charAt(0).capitalizeFirstLetter()}</span></div>
+               <div className="profile_text">
+              <a href="" className="btn btn-primary"><img src="../../images/google.svg"/> Connect a Google account</a>
+              <p>Add a Google account to get the most from Beacon<br/> and synthesize your research across docs.</p>
+          </div>
             </div>
 
+          </div>
           </div>
       );
   }

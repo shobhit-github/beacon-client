@@ -59,11 +59,11 @@ class RecordStep4 extends Component {
   };
 
   recordingBufferEvent = AudioRecorderChangeEvent => {
-    console.log(AudioRecorderChangeEvent);
+   
 
     const fileReader = new FileReader();
     fileReader.readAsDataURL(AudioRecorderChangeEvent.blob);
-
+     console.log("fileReader", fileReader, AudioRecorderChangeEvent);
     fileReader.onload = () => {
       this.setState({
         ...this.state,
@@ -152,7 +152,7 @@ class RecordStep4 extends Component {
             type={this.state.msgType}
             status={this.state.msgStatus}
           />
-          <div className="offset-sm-3 col-sm-6">
+          <div className="step_section">
             <div className="card text-center single">
               <div className="beta-tag">Beta</div>
 
@@ -214,9 +214,10 @@ class RecordStep4 extends Component {
                 </div>
 
                 <div className="chip-sec">
-                  {markers.map(data => {
+                  {markers.map( (data, index) => {
                     return (
                       <Chip
+                        key={index}
                         label={data.label}
                         onDelete={this.deleteMarker(data)}
                         onClick={this.onChipClick(data.label)}
@@ -238,10 +239,6 @@ class RecordStep4 extends Component {
                   `Save my interview`
                 )}
               </button>
-
-              <div className="card-footer">
-                <a href="">Skip this step</a>
-              </div>
             </div>
           </div>
         </div>

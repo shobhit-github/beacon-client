@@ -22,7 +22,7 @@ class RegisterPayment extends Component {
       coupon: false,
       couponErr: false,
       open: false,
-      plan_type: 'startup-plan-yr',
+      plan_type: '',
       isPayment: false
     };
     this.makePayment = this.makePayment.bind(this);
@@ -31,7 +31,7 @@ class RegisterPayment extends Component {
   componentDidMount() {
     this.setState({
       ...this.state,
-      ...{ userInfo: this.props.location.state }
+      ...{ userInfo: this.props.location.state, plan_type : this.props.location.state.plan_type }
     });
   }
 
@@ -97,7 +97,6 @@ class RegisterPayment extends Component {
 
   render() {
     const { validateErr, userInfo, coupon, couponErr, plan_type, isPayment } = this.state;
-    console.log('isPayment', isPayment);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -133,7 +132,7 @@ class RegisterPayment extends Component {
                     </span>
 
                     <span>
-                      <Switch onChange={this.changeBillingPlan} color={'primary'} />
+                      <Switch onChange={this.changeBillingPlan} color={'primary'} checked = { plan_type === "startup-plan" ? true:false } />
                     </span>
 
                     <span className="plan-name"> Monthly </span>

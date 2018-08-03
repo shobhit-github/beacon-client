@@ -83,28 +83,30 @@ class GoogleDrive extends Component {
 
   render() {
     return (
-      <div className="row record-step1">
-        <div className="offset-sm-3 col-sm-6">
-          <div className="card text-center single">
-            <div className="back-link">
-              <Link to="/dashboard">
-                <i className="fa fa-chevron-left" aria-hidden="true" /> back
-              </Link>
-            </div>
+      <div className="main-content">
+        <div className="row record-step1">
+          <div className="offset-sm-3 col-sm-6">
+            <div className="card text-center single">
+              <div className="back-link">
+                <Link to="/dashboard">
+                  <i className="fa fa-chevron-left" aria-hidden="true" /> back
+                </Link>
+              </div>
 
-            <div className="card-header">
-              <label className="step-count">STEP 1 of 1</label>
+              <div className="card-header">
+                <label className="step-count">STEP 1 of 1</label>
 
-              <h2>Choose your folder</h2>
-            </div>
-            <div className="card-block">
-              <p>Select the folder that conatins the documents you want to summarize</p>
+                <h2>Choose your folder</h2>
+              </div>
+              <div className="card-block">
+                <p>Select the folder that conatins the documents you want to summarize</p>
 
-              <GoogleDriveGenricFunc
-                _button={this.button}
-                _getOauthToken={this.getOauthToken}
-                _getDocDetail={this.getDocDetail}
-              />
+                <GoogleDriveGenricFunc
+                  _button={this.button}
+                  _getOauthToken={this.getOauthToken}
+                  _getDocDetail={this.getDocDetail}
+                />
+              </div>
             </div>
           </div>
         </div>

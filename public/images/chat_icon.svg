@@ -1,0 +1,30 @@
+
+<svg width="121px" height="121px" viewBox="0 0 121 121" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M42.498624,1.999284 L42.498624,1.999284 C64.89588,1.999284 82.999644,20.102712 82.999644,42.499212 L82.999644,42.499212 C82.999644,64.895712 64.89588,82.99914 42.498624,82.99914 L42.498624,82.99914 C20.10246,82.99914 1.99878,64.895712 1.99878,42.499212 L1.99878,42.499212 C1.99878,20.102712 20.10246,1.999284 42.498624,1.999284 Z" id="path-1"></path>
+        <filter x="-41.7%" y="-29.8%" width="183.3%" height="183.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="10" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.30588236   0 0 0 0 0.5176471   0 0 0 0 0.99215686  0 0 0 0.4 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect x="28" y="28" width="30" height="30" id="rect-3"></rect>
+    </defs>
+    <g id="MVP-v2-master" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Play---Page-with-Otranscribe-functionality" transform="translate(-1299.000000, -855.000000)">
+            <g id="Project-6" transform="translate(1317.000000, 863.000000)">
+                <g id="Group-12">
+                    <g id="Rectangle-11">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#2DD1AC" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="ic_question_answer_black_24dp_2x">
+                        <image x="28" y="28" width="30" height="30" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAARZJREFUSA3tlk0KwjAQhccfpFfwEtK9C3sV8QRuXfUQehC9gL2BegR3LgSXdSHU9woJpaRBND8uOvCaNpPM1xmmNCIiO6iEKoe6INYcspprKBN4QRsbdQhnYlvwpW+EfRPbXoKjWA/2VfYcgdVXw2bexig1m3kVAwyuJLHA0oNZ/yDWl9pVme8IdLUFG3c4z5jfd/g+mSb0YFtoAhO6hgrbxl997eYibAlx9GrNjFWmHGl5fXVzWZjC8K9xgrKWU/1NfI1yBDBtQfnoC6jiGqEE+zgEKmjFQ9mNFINNMTeDmn1gWPa/Uzle7QHpbHnPjH0bv5IBxD7SR+kQ4CeACp7hvrYQYIIILyCdeSgwmLWpzNPQYF32N50ZlYNTt6wJAAAAAElFTkSuQmCC"></image>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#rect-3"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

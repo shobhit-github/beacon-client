@@ -49,14 +49,21 @@ class Archives extends Component {
       .slice(this.indexOfFirstList, this.indexOfLastList)
       .map((row, index) => (
         <tr key={index}>
-          <td className="check">
+          {/* <td className="check">
             <span className="float-left form-link-text" />
-          </td>
-          <td
+          </td> */}
+          {/* <td
             dangerouslySetInnerHTML={{
               __html: row.title.replace(/\n/g, '<br />')
-            }}
-          />
+            }}/> */}
+          <td>
+            <span> {row.title.replace(/\n/g, '<br />')}</span>
+            <div className="tablet_view_content">
+              <span>15 Dec 2017</span>
+              <span>Laura Smith</span>
+            </div>
+          </td>
+
           <td>{moment(row.updated_at).format('LLL')}</td>
           <td>
             <img src="./images/doc.png" /> {row.media_length} sec.
@@ -74,14 +81,13 @@ class Archives extends Component {
     records = records.filter(value => value.status === 2);
     return (
       <div className="main-content">
-        <div className="row">
-          <div className="col-sm-12">
+          <div className="col-sm-12 ">
             <Loader isShowingLoader={this.state.loaderStatus} />
             {records.length ? (
+              <div className="table-responsive custom_responsive_table">
               <table className="table">
                 <thead>
-                  <tr>
-                    <th />
+                  <tr> 
                     <th>Title</th>
                     <th>Last Updated</th>
                     <th>Media length</th>
@@ -91,6 +97,7 @@ class Archives extends Component {
                 </thead>
                 <tbody>{this.list()}</tbody>
               </table>
+              </div>
             ) : (
               <h4 className="text-center">You have't any archive file yet.</h4>
             )}
@@ -106,7 +113,6 @@ class Archives extends Component {
             pageRangeDisplayed={PAGE_RANGE_SHOW}
             onChange={this.handlePageChange.bind(this)}
           />
-        </div>
       </div>
     );
   }

@@ -34,13 +34,19 @@ class Register extends Component {
     this.props.history.push('/register-payment', {
       email: this.refs.email.value,
       name: this.refs.name.value,
-      password: this.refs.password.value
+      password: this.refs.password.value,
+      plan_type : this.state.plan_type
     });
   };
-
+  changeBillingPlan = evt => {
+    this.setState({
+      ...this.state,
+      ...{ plan_type: !evt.target.checked ? `startup-plan-yr` : `startup-plan` }
+    });
+  };
   render() {
     const { registerError, registerIn } = this.state;
-
+    console.log("sssss",this.state);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -70,7 +76,7 @@ class Register extends Component {
 
                     <span>
                       <label className="switch">
-                        <input type="checkbox" />
+                        <input type="checkbox" onChange={this.changeBillingPlan} />
 
                         <span className="slider round"> </span>
                       </label>
@@ -122,14 +128,14 @@ class Register extends Component {
           </div>
 
           <div className="col-sm-5">
-            <div className="login-wrapper animated fadeIn">
-              <div className="col-sm-12 text-right">
+            <div className="login-wrapper animated fadeIn register_wraper">
+              <div className="text-right">
                 <Link to="/" className="btn signin-btn">
                   Sign in
                 </Link>
               </div>
 
-              <div className="col-sm-12 center-form register-form">
+              <div className="center-form register-form">
                 {registerError && (
                   <div className="error-msg ">
                     <i className="material-icons">clear</i>

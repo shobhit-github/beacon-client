@@ -16,20 +16,20 @@ const Sidebar = props => {
       <div className="sidebar">
         <ul className="sidenav">
           <li className={pathname.includes('/dashboard') ? ' dashboard active' : 'dashboard'}>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard"><span>Dashboard</span></Link>
           </li>
           <li
             className={ pathname.includes('doc') ? 'files active' : 'files'}
           >
-            <Link to="/docs">My Files</Link>
+            <Link to="/docs"><span>My Files</span></Link>
           </li>
 
           <li className="help">
-            <a href="">Help</a>
+            <a href=""><span>Help</span></a>
           </li>
 
           <li className={pathname.includes('/archives') ? 'archive active' : 'archive'}>
-            <Link to="/archives">Archives</Link>
+            <Link to="/archives"><span>Archives</span></Link>
           </li>
         </ul>
       </div>

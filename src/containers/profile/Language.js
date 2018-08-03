@@ -73,8 +73,9 @@ render() {
 	const { classes } = this.props;
 	const { update } = this.state;
 	return (
+    <div className="tab_content">
         <div className="row">
-            <div className="col-sm-12 col-md-6 language">       
+            <div className="col-lg-5 col-md-6 offset-md-1 language profile-form">
               <p>Enter the language youʼll use in your interviews and research docs. Weʼll use this setting to enable</p>              
               <form className={classes.container} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
               	<TextField
@@ -97,11 +98,12 @@ render() {
     	          ))}
 	             </TextField>
 
-		              <button disabled={update} type="submit" className="btn btn-primary">
+		              <button disabled={update} type="submit" className="btn btn-primary m_top180">
                       {update ? <CircularProgress size={15} color={'inherit'} /> : `Save Changes`}
                   </button>
               </form>
             </div>
+        </div>
         </div>
 	);
 	}

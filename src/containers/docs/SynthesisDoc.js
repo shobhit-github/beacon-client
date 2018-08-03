@@ -23,12 +23,15 @@ const data = [
 class SynthesisDoc extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { active: false};
   }
 
   createMarkup = value => {
     return { __html: value.replace(/\n/g, '<br />') };
   };
+
+  toggleClass = () => {this.setState( {...this.state, ...{active: !this.state.active}});}
+
 
   render() {
     const fontSizeMapper = word => word.value * 5,
@@ -57,7 +60,7 @@ class SynthesisDoc extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-6 sidearea offset-md-1">
+          <div className="col-sm-12 col-md-10 col-lg-6 sidearea offset-md-1">
             <div className="docs-wrapper2">
               <div className="row">
                 <div className="col-sm-10 sidearea offset-md-1">
@@ -91,7 +94,10 @@ class SynthesisDoc extends Component {
             </div>
           </div>
 
-          <div className="col-sm-3 offset-md-1">
+          <div className={!this.state.active ? 'col-sm-12 col-md-1 col-lg-4 offset-md-0 no-stats' : 'col-sm-12 col-md-1 col-lg-4 offset-md-0 state-collapse'}>
+
+            <span onClick={this.toggleClass} className="stats_icon"><img src="../../images/tags.png"/></span>
+
             <div className="userinfocol">
               <div className="section-title">Summary</div>
 
@@ -107,20 +113,20 @@ class SynthesisDoc extends Component {
 
               <div className="action-counts">
                 <div className="row">
-                  <div className="col-md-4">
-                    <div className="icon" />
+                  <div className="col-md-4 col-sm-4 col-4">
+                    <div className="icon"><img src="../../images/doc.svg"/></div>
                     <div className="count">
                       {records.filter(value => value.status === 1).length}
                     </div>
                     <div className="type">Docs</div>
                   </div>
-                  <div className="col-md-4">
-                    <div className="icon" />
+                  <div className="col-md-4 col-sm-4 col-4">
+                  <div className="icon"><img src="../../images/tags.svg"/></div>
                     <div className="count">5</div>
                     <div className="type">Tags</div>
                   </div>
-                  <div className="col-md-4">
-                    <div className="icon" />
+                  <div className="col-md-4 col-sm-4 col-4">
+                  <div className="icon"><img src="../../images/moment.png"/></div> 
                     <div className="count">12</div>
                     <div className="type">Moments</div>
                   </div>
@@ -130,21 +136,11 @@ class SynthesisDoc extends Component {
               <div className="most-used-tags">
                 <div className="col-title">Most frequently used tags</div>
                 <ul className="all-tags">
-                  <li>
-                    Most frequently used tags <span>10</span>
-                  </li>
-                  <li>
-                    MVideoconferencing <span>7</span>
-                  </li>
-                  <li>
-                    Whiteboarding<span>5</span>
-                  </li>
-                  <li>
-                    Synthesis<span>5</span>
-                  </li>
-                  <li>
-                    Multi-device collab<span>4</span>
-                  </li>
+                  <li className="pink">Remote Collaborate <span>10</span></li>
+                  <li className="blue">Videoconferencing <span>7</span></li>
+                  <li className="">Whiteboarding<span>5</span></li>
+                  <li className="purple">Synthesis<span>5</span></li>
+                  <li className="red">Multi-device collab<span>4</span></li>
                 </ul>
               </div>
 

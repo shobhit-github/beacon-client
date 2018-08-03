@@ -50,26 +50,31 @@ class Docs extends Component {
       ? record.markers.map((number, index) => {
           let timeArr = number.timeConstraint.split(':');
           let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
-          let prog = (secs / record.media_length) * 100;
-
-          if (index > 0) {
+          let prog = ((secs / record.media_length) * 100);
+          if(index==0){
+            prog = prog-(5.012531328320802/2);
+          }
+          else{
             let lastTimeArr = record.markers[index - 1].timeConstraint.split(':');
-            let lastSecs = lastTimeArr[0] * 60 + lastTimeArr[1];
-            let lastProg = (lastSecs / record.media_length) * 100;
+            let lastSecs = parseInt(lastTimeArr[0] * 60) + parseInt(lastTimeArr[1]);
+            let lastProg = (lastSecs / record.media_length) * 100;            
             prog = prog - lastProg;
           }
 
           return (
             <span
               key={index}
-              className="bubble"
+              className="bubble" id={'bubble'+index}
               style={{ marginLeft: prog + '%' }}
               onClick={() => this.skipPlay(secs)}
             />
           );
+          
         })
       : [];
     this.setState(...this.state);
+    
+
     /************ Load script for google drive **********/
     const script = document.createElement('script');
     script.src = 'https://apis.google.com/js/platform.js';
@@ -137,6 +142,11 @@ class Docs extends Component {
   };
 
   skipPlay = data => {
+    if(data=='forward'){
+      data = this.state.sec + 10 >= this.state.record.media_length?this.state.record.media_length:this.state.sec + 10;
+    }else if(data=='back'){
+      data = (this.state.sec - 10)<=0?0:this.state.sec - 10;
+    }
     this.state.sec = data - 1;
     this.state.percent = (this.state.sec / this.state.record.media_length) * 100;
     document.getElementById('audio').currentTime = data;
@@ -253,6 +263,10 @@ class Docs extends Component {
       });
     }
   }
+
+  runProgress(e){
+    this.skipPlay(Math.round((e.nativeEvent.offsetX/399)*this.state.record.media_length));    
+  }
   /************** get docs detail from google *********/
   getDocDetail(folder_id, folder_name) {
     const { user, match, records, googleSaveDoc, updateRecord } = this.props,
@@ -335,7 +349,7 @@ class Docs extends Component {
       <div className="main-content">
         <div className="row">
           <Loader isShowingLoader={this.state.loaderStatus} />
-          <div className="col-sm-7 sidearea player-div">
+          <div className="col-sm-12 col-md-7 col-lg-7 sidearea player-div p_left_50">
             <div className="back">
               <Link to="/docs">
                 <i className="fa fa-angle-left"> </i>
@@ -344,7 +358,7 @@ class Docs extends Component {
 
             <div className="player">
               <div style={{ float: 'left' }} className="play-icons">
-                <i className="fa fa-step-backward" aria-hidden="true">
+                <i className="play_backward" onClick={() => this.skipPlay('back')} aria-hidden="true">
                   {' '}
                 </i>
                 <i
@@ -354,7 +368,7 @@ class Docs extends Component {
                 >
                   {' '}
                 </i>
-                <i className="fa fa-step-forward" aria-hidden="true">
+                <i className="play_forward" onClick={() => this.skipPlay('forward')} aria-hidden="true">
                   {' '}
                 </i>
               </div>
@@ -375,13 +389,13 @@ class Docs extends Component {
                   width: 'calc(100% - 160px)',
                   marginLeft: '103px',
                   lineHeight: 0,
-                  marginTop: '13px'
+                  marginTop: '18px'
                 }}
               >
                 {listItems}
               </div>
 
-              <div className="progressBar">
+              <div className="progressBar" style={{cursor:'pointer'}} id="pb" onClick={this.runProgress.bind(this)}>
                 <div className="progress" style={{ width: `${percent}%` }}>
                   {' '}
                 </div>
@@ -398,7 +412,7 @@ class Docs extends Component {
                 download
                 className="download-icon"
               >
-                <i className="fa fa-download" aria-hidden="true">
+                <i aria-hidden="true">
                   {' '}
                 </i>
               </a>
@@ -407,7 +421,7 @@ class Docs extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-7 sidearea">
+          <div className="col-sm-12 col-md-7 col-lg-7 sidearea p_left_50">
             <div className="docs-wrapper">
               {record ? (
                 [
@@ -499,7 +513,7 @@ class Docs extends Component {
             </div>
           </div>
 
-          <div className="col-sm-3">
+          <div className="col-sm-10 col-10 col-md-3 col-lg-3 p_rlt_zero">
             <div className="quicktip greenbg">
               <a href="" className="close">
                 x
@@ -524,9 +538,9 @@ class Docs extends Component {
               </ul>
             </div>
           </div>
-          <div className="col-sm-2 sharebox">
+          <div className="col-sm-2 col-2 col-md-2 col-lg-2 sharebox">
             <ul>
-              <li>
+              <li className="clock">
                 History{' '}
                 <span>
                   {' '}
@@ -534,7 +548,7 @@ class Docs extends Component {
                 </span>
               </li>
 
-              <li>
+              <li className="google_drive">
                 {' '}
                 Save to Google Drive &nbsp;
                 <GoogleDriveGenricFunc
@@ -543,7 +557,7 @@ class Docs extends Component {
                   _getDocDetail={this.getDocDetail}
                 />
               </li>
-              <li>
+              <li className="tips">
                 Quick tips{' '}
                 <span>
                   {' '}

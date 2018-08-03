@@ -9,10 +9,33 @@ export default class RecordStep1 extends Component {
     chipData: localStorage.chipData ? JSON.parse(localStorage.chipData) : []
   };
 
+
+  
+  handleDelete = data => () => {
+    const chipData = [...this.state.chipData];
+    const chipToDelete = chipData.indexOf(data);
+    chipData.splice(chipToDelete, 1);
+    this.setState({ chipData });
+  };
+
+  saveChips = () => {
+    localStorage.setItem('chipData', JSON.stringify(this.state.chipData));
+    localStorage.getItem('checkTwo') ?localStorage.getItem('checkThree')? this.props.history.push('/records/step_four') : this.props.history.push('/records/step_three'): this.props.history.push('/records/step_two');
+  };
+
+  addMarker = e => {
+    if (e.key === 'Enter') {
+      this.state.chipData.push({ label: this.refs.marker.value });
+      this.refs.marker.value = null;
+      this.setState(this.state);
+    }
+  };
+
   render() {
     return (
+      <div className="main-content">
       <div className="row record-step1">
-        <div className="offset-sm-3 col-sm-6">
+        <div className="step_section">
           <div className="card text-center single">
             <div className="card-header">
               <label className="step-count">STEP 1 of 1</label>
@@ -37,14 +60,14 @@ export default class RecordStep1 extends Component {
                 />
 
                 <span>
-                  <i className="material-icons">add</i>
+                  <i className="add_icon"></i>
                 </span>
               </div>
 
               <div className="chip-sec">
-                {this.state.chipData.map(data => {
+                {this.state.chipData.map( (data, index) => {
                   return (
-                    <Chip label={data.label} onDelete={this.handleDelete(data)} className="chip" />
+                    <Chip key={index} label={data.label} onDelete={this.handleDelete(data)} className="chip" />
                   );
                 })}
               </div>
@@ -64,26 +87,7 @@ export default class RecordStep1 extends Component {
           </div>
         </div>
       </div>
+      </div>
     );
   }
-
-  handleDelete = data => () => {
-    const chipData = [...this.state.chipData];
-    const chipToDelete = chipData.indexOf(data);
-    chipData.splice(chipToDelete, 1);
-    this.setState({ chipData });
-  };
-
-  saveChips = () => {
-    localStorage.setItem('chipData', JSON.stringify(this.state.chipData));
-    this.props.history.push('/records/step_two');
-  };
-
-  addMarker = e => {
-    if (e.key === 'Enter') {
-      this.state.chipData.push({ label: this.refs.marker.value });
-      this.refs.marker.value = null;
-      this.setState(this.state);
-    }
-  };
 }

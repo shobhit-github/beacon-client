@@ -20,24 +20,10 @@ export const frontLayout = props => (
 
 /*************** Dashboard Layout ***************/
 export const dashboardLayout = props => {
-  let navClass = 'main-container';
-  const navToggle = status => {
-    console.log("status", status);
-    navClass = status ? 'main-container collapse-sidebar' : 'main-container';
-  };
-  
   return (
     <div>
-      <Header _navToggle={navToggle}/>
-      <ToastContainer />
-      <div className="appContent">
-        <div id="myDIV" className="main-container">
-          <Sidebar />
-          {props.children}
-        </div>
-      </div>
-
-      <Footer />
+      <Header {...props}/>
+       <Footer />
     </div>
   );
 };

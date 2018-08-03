@@ -50,7 +50,7 @@ class ProfileTabs extends Component {
 
     return (      
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar position="static" color="default" className="tabs_outer">
           <Tabs 
             value={value}
             indicatorColor="primary"
@@ -64,7 +64,9 @@ class ProfileTabs extends Component {
           </Tabs>
         </AppBar>
         {value === 0 && <TabContainer> <ProfileTab /> </TabContainer>}
-        {value === 1 && <TabContainer>Billings Tab Here</TabContainer>}
+        {value === 1 && <TabContainer>
+           <div className="tab_content"> Billings Tab Here</div>
+           </TabContainer>}
         {value === 2 && <TabContainer> <Language /></TabContainer>}
         {value === 3 && <TabContainer> <WordCloud /></TabContainer>}
       </div>       

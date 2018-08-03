@@ -115,6 +115,7 @@ export const updateRecordStatus = (params, cb) => {
     RestClient.put(`transcriptions/interview_status/${_id}`, params, token)
       .then(result => {
         if (result.success) {
+          result.message = params.status === 3 ? "Record Deleted successfully!" : result.message;
           toastAction(true, result.message);
           params._id = _id;
           dispatch(update_records_status(params));

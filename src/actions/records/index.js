@@ -79,6 +79,27 @@ export const getRecord = (params, cb) => {
   };
 };
 
+/****** action creator for get records ********/
+export const getHistory = (params, cb) => {
+  return dispatch => {
+    RestClient.get(`transcriptions/fetchDocumentHistory/${params._id}`)
+      .then(result => {
+        if (result) {
+          cb({ status: true, data: result.data });
+        }
+      })
+      .catch(error => {
+        let res = {
+          status: false,
+          message: message.commonError,
+          type: message.error
+        };
+
+        cb(res);
+      });
+  };
+};
+
 /****** action creator for save records ********/
 export const updateRecord = (params, cb) => {
   let _id = params._id,

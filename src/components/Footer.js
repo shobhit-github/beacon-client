@@ -19,7 +19,7 @@ class Footer extends Component {
         <div className="chat-float">
           <a href="">
             {' '}
-            <img src={chat} />
+            {/*<img src={chat} />*/}
           </a>
         </div>
       )

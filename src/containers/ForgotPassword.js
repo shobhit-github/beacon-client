@@ -63,22 +63,24 @@ class ForgotPassword extends Component {
             type={context.state.msgType}
             status={context.state.msgStatus}
           />
-          <div className="col-sm-7 p-0">
-            <div className="inner-wrapper">
-              <FrontHeader />
-              <div className="center-img">Image TBD</div>
-            </div>
+          <div className="col-sm-12 col-md-6 p-0">
+              <div className="inner-wrapper">
+                  <div className="col-sm-12">
+                      <FrontHeader />     
+                  </div>
+                  <div className="center-img">Image TBD</div>
+              </div>
           </div>
 
-          <div className="col-sm-5">
-            <div className="login-wrapper reset-module">
-              <div className="col-sm-12 text-right">
+          <div className="col-sm-6">
+            <div className="login-wrapper animated fadeIn register_wraper">
+              <div className="text-right">
                 <Link to="/" className="btn signin-btn">
                   Sign in
                 </Link>
               </div>
 
-              <div className="col-sm-12 center-form">
+              <div className="center-form register-form">
                 {validationErr && (
                   <div className="error-msg ">
                     <i className="material-icons">clear</i>

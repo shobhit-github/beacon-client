@@ -1,3 +1,7 @@
+
+.error{
+  color: red;
+}
 .Table {
   width: 100%;
   margin-top: 15px; }
@@ -186,7 +190,7 @@ content:'';
   -webkit-transition: ease-in-out 0.5s;
   cursor: pointer;
 }
-.google_drive div {display: inline-block; margin-left: 10px;}
+.google_drive div {display: inline-block; margin-left: 10px; overflow: hidden;}
 .google_drive div .btn{
   background: url(../../images/google_drive.svg)no-repeat center #C0C5D8;
   display: inline-block;
@@ -350,13 +354,14 @@ content: none;
 .login-wrapper {
   display: flex;
 }
-.list-inline-item{
+.list-inline-item, .main_navbar a{
   color: #414965;
-  font-size: 18px;
-  margin: 0 15px;
+  font-size: 16px;
+      padding: 7px 15px !important;
+    margin: 0px !important;
 }
 .card-footer{
-  padding-bottom: 60px !important;
+  padding-bottom: 5px !important;
 }
 .card-block .btn-primary{
   font-size: 16px !important;
@@ -503,6 +508,18 @@ h3{
 .edit_info .checkbox_edit{
 display: inline-block;
 }
+.rdw-link-decorator-wrapper a{
+  font-size: 12px;
+}
+.public-DraftStyleDefault-block{
+  position: relative;
+  padding-left: 90px;
+  min-height: 24px;
+}
+.rdw-link-decorator-wrapper {
+    position: absolute !important;
+    left: 0;
+}
 /*========= responsive css ===========*/
 
 @media screen and (max-width:1280px) {
@@ -607,17 +624,17 @@ display: inline-block;
     padding-top: 10px !important;
   }
   .collapse.navbar-collapse{
-    display: flex !important;
-    padding-left: 100px;
+    /*display: flex !important;
+    padding-left: 100px;*/
   }
   .navbar-brand{
-    position: absolute !important;
+    /*position: absolute !important;
     padding: 12px 15px !important;
-    background: #fff;
+    background: #fff;*/
   }
   .navbar .navbar-nav{
-    flex-direction: row;
-    margin-top: 0px !important;
+    /*flex-direction: row;
+    margin-top: 0px !important;*/
   }
 .main-container .main-content .sharebox ul li{
     flex-direction: column;

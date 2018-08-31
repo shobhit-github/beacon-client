@@ -35,7 +35,7 @@ const GoogleDriveGenricFunc = props => {
           .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
           .setOAuthToken(oauthToken)
           .setCallback(data => {
-            //console.log(data, google.picker.Action);
+            console.log(data, google.picker.Action);
             switch (data.action) {
               case google.picker.Action.PICKED:
                 props._getDocDetail(data.docs[0].id, data.docs[0].name);

@@ -22,14 +22,14 @@ const Sidebar = props => {
             className={ pathname.includes('doc') ? 'files active' : 'files'}
           >
             <Link to="/docs"><span>My Files</span></Link>
+          </li>          
+
+          <li className={pathname.includes('/archives') ? 'archive active' : 'archive'}>
+            <Link to="/archives"><span>Archives</span></Link>
           </li>
 
           <li className="help">
             <a href=""><span>Help</span></a>
-          </li>
-
-          <li className={pathname.includes('/archives') ? 'archive active' : 'archive'}>
-            <Link to="/archives"><span>Archives</span></Link>
           </li>
         </ul>
       </div>

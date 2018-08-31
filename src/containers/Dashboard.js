@@ -9,14 +9,14 @@ export default () => {
       <div className="row">
         <div className="offset-lg-1 offset-md-0 col-md-6 offset-lg-1 col-lg-5 offset-sm-1 col-sm-10">
           <div className="card text-center dashboard">
+          <div className="beta-tag">Beta</div>
             <div className="card-header">
               <h2>Record an interview</h2>
             </div>
             <div className="card-block">
               <img src={recordImage} alt="Record Interview" />
               <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry.
+                Record an audio interview and bookmark important moments as they happen.
               </p>
               <Link to="/records/step_one" className="btn btn-primary">
                 Get Started
@@ -29,14 +29,14 @@ export default () => {
         </div>
         <div className="offset-md-0 col-md-6 col-lg-5 offset-sm-1 col-sm-10">
           <div className="card text-center dashboard">
+          
             <div className="card-header">
               <h2>Synthesize my research</h2>
             </div>
             <div className="card-block">
               <img src={researchImage} alt="Research" />
               <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry.
+                Select the Google Drive folder that contains the docs you want to synthesize.
               </p>
               <Link to="/google-drive" className="btn btn-primary">
                 Open your Google Drive

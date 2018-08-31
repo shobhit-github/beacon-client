@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CircularProgress, Icon } from '@material-ui/core/es/index';
+import FrontHeader from '../components/FrontHeader';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      registerError: null
+      registerError: null,
+      agreed: false
     };
   }
 
@@ -26,11 +28,15 @@ class Register extends Component {
 
     if (!this.refs.name.value || !this.refs.email.value || !this.refs.password.value) {
       this.setState({
-        registerError: true
+        registerError: 'Please enter required fields.'
       });
       return false;
-    }
-
+    } else if(!this.state.agreed){
+      this.setState({
+        registerError: 'Please select agree the terms.'
+      });
+      return false;
+    } 
     this.props.history.push('/register-payment', {
       email: this.refs.email.value,
       name: this.refs.name.value,
@@ -45,25 +51,15 @@ class Register extends Component {
     });
   };
   render() {
-    const { registerError, registerIn } = this.state;
-    console.log("sssss",this.state);
+    const { registerError, registerIn, agreed } = this.state;
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-sm-7 p-0">
+          <div className="col-sm-6 p-0">
             <div className="inner-wrapper">
               <div className="col-sm-12">
-                <ul className="list-inline">
-                  <li className="list-inline-item">{/*<img src="images/logo.png">*/} Logo</li>
-
-                  <li className="list-inline-item">Nav Item 1</li>
-
-                  <li className="list-inline-item">Nav Item 2</li>
-
-                  <li className="list-inline-item">Nav Item 3</li>
-                </ul>
+                <FrontHeader />               
               </div>
-
               <div className="col-sm-12">
                 <div className="billing-section">
                   <label>Choose a billing cycle</label>
@@ -127,7 +123,7 @@ class Register extends Component {
             </div>
           </div>
 
-          <div className="col-sm-5">
+          <div className="col-sm-6">
             <div className="login-wrapper animated fadeIn register_wraper">
               <div className="text-right">
                 <Link to="/" className="btn signin-btn">
@@ -139,19 +135,13 @@ class Register extends Component {
                 {registerError && (
                   <div className="error-msg ">
                     <i className="material-icons">clear</i>
-                    <span> Please enter required fields. </span>
+                    <span> {registerError} </span>
                   </div>
                 )}
 
-                {/*<div className="success-msg ">
-
-                                    <i className="material-icons">done</i> <span> You're all set. Sign in with your new password below. </span>
-
-                                </div>*/}
-
                 <label>Get started with Beacon</label>
 
-                <form className="mt-5">
+                <form className="login_form">
                   <p>1. Create an account</p>
 
                   <div className="col-sm-12 form-group">
@@ -172,7 +162,7 @@ class Register extends Component {
                     />
                   </div>
 
-                  <div className="col-sm-12 form-group">
+                  <div className="col-sm-12 form-group m_btm30">
                     <div className="input-group">
                       <input
                         ref="password"
@@ -180,7 +170,6 @@ class Register extends Component {
                         className="form-control"
                         placeholder="Password"
                       />
-
                       <div className="input-group-append">
                         <span onClick={this.changePasswordVisibility} className="input-group-text">
                           <Icon>
@@ -191,6 +180,9 @@ class Register extends Component {
                       </div>
                     </div>
                   </div>
+
+                  <label className="checkbox" onClick={() => this.setState({agreed: !agreed})}> <input type="checkbox"/> 
+                  I agree to the Terms of Service and Privacy Policy</label>
 
                   <div className="col-sm-12 form-group">
                     <button

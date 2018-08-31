@@ -33,6 +33,10 @@ const languages = [
   {
     value: 'french',
     label: 'French',
+  },
+  {
+    value: 'spanish',
+    label: 'Spanish',
   }
 ];
 

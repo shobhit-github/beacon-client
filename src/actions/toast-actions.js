@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 export const toastAction = (status, message) => {
   if (status) {
     toast.success(message, {
-      position: toast.POSITION.BOTTOM_RIGHT,
+      position: toast.POSITION.TOP_CENTER,
       autoClose: 2000
     });
   } else {

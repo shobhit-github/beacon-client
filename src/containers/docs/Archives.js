@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Pagination from 'react-js-pagination';
+import { CircularProgress } from '@material-ui/core/es/index';
 import Loader from '../../components/ProcessingLoader';
-import { getRecord } from '../../actions/records';
+import { getRecord, updateRecordStatus } from '../../actions/records';
 import '../_styles/docs.css';
 
 /*********** PAGINATIONS CONFIG ************/
@@ -18,7 +19,11 @@ class Archives extends Component {
     super(props);
     this.state = {
       activePage: 1,
-      loaderStatus: false
+      loaderStatus: false,
+      isDelete: false,
+      isRefresh: false,
+      orderBy: true,
+      records: props.records,
     };
     this.indexOfLastList = 1 * ITEM_PER_PAGE;
     this.indexOfFirstList = this.indexOfLastList - ITEM_PER_PAGE;
@@ -29,7 +34,7 @@ class Archives extends Component {
     const { getRecord, user } = this.props;
     getRecord({ _id: user._id }, res => {
       if (res) {
-        this.setState({ loaderStatus: false });
+        this.setState({ loaderStatus: false, records: this.props.records });
       }
     });
   }
@@ -41,47 +46,121 @@ class Archives extends Component {
     this.indexOfFirstList = this.indexOfLastList - ITEM_PER_PAGE;
   }
 
+  /****************** update record status ****************/
+    updateStatus(_id, status) {
+        const { user, updateRecordStatus, history } = this.props;
+        if (status === 1) {
+            this.setState({ isRefresh: true, _id });
+        } else {
+            this.setState({ isDelete: true, _id });
+        }
+        updateRecordStatus({ _id, status, token: user.token }, res => {
+            if (res) {
+                if (status === 1) {
+                    history.push('/docs');
+                } else {
+                    this.setState({ isDelete: false, _id: null });
+                }
+            } else {
+                this.setState({ isRefresh: false, isDelete: false, _id: null });
+            }
+        });
+    }
+
   /************ List of docs **********/
   list() {
-    const { records, user } = this.props;
+    const { user, history } = this.props;
+    const { records, isRefresh, isDelete, _id } = this.state;
     return records
       .filter(value => value.status === 2)
       .slice(this.indexOfFirstList, this.indexOfLastList)
       .map((row, index) => (
         <tr key={index}>
-          {/* <td className="check">
-            <span className="float-left form-link-text" />
-          </td> */}
-          {/* <td
-            dangerouslySetInnerHTML={{
-              __html: row.title.replace(/\n/g, '<br />')
-            }}/> */}
-          <td>
-            <span> {row.title.replace(/\n/g, '<br />')}</span>
-            <div className="tablet_view_content">
-              <span>15 Dec 2017</span>
-              <span>Laura Smith</span>
-            </div>
+          <td onClick={()=> history.push(`/docs/${row._id}`)} style={{ cursor: 'pointer' }}>
+            <span dangerouslySetInnerHTML={{__html: row.title.replace(/\n/g, '')}}/>       
           </td>
 
-          <td>{moment(row.updated_at).format('LLL')}</td>
+          <td onClick={()=> history.push(`/docs/${row._id}`)} style={{ cursor: 'pointer' }}>{moment(row.updated_at).format('LLL')}</td>
           <td>
-            <img src="./images/doc.png" /> {row.media_length} sec.
+            <Link to={row.type === 2 || row.type === 1 ? `/docs/${row._id}` : `/synthesis-doc/${row._id}`}>
+                <img
+                    src={row.type === 2 || row.type === 1 ? `./images/doc.png` : `./images/doc-green.png`} />{' '}
+                {row.type === 2 || row.type === 1 ? 'BeaconDoc' : 'Summary'}
+            </Link>
           </td>
-          <td>{user.name.capitalizeEachLetter()}</td>
+          <td><Link to={`/docs/${row._id}`}>{user && user.name ? user.name.capitalizeEachLetter() : ''}</Link></td>
           <td>
-            <Link to={`/docs/${row._id}`}>View Detail</Link>
+              <span className="table_icons">
+                  <a href="javascript:void(0);" onClick={(e) => {
+                      e.stopPropagation();
+                      this.updateStatus(row._id, 1)
+                  }}
+                      disabled={isRefresh && _id === row._id}>
+                      {isRefresh && _id === row._id ? <CircularProgress size={15} color={'inherit'} /> : 
+                        <img src="../../images/refresh.svg" alt="" width="20px" height="20px"/>
+                      }
+                  </a>
+                  <a href="javascript:void(0);" onClick={(e) => {
+                      e.stopPropagation();
+                      this.updateStatus(row._id, 3)
+                  }}
+                      disabled={isDelete && _id === row._id}>
+                      {isDelete && _id === row._id ? <CircularProgress size={15} color={'inherit'} /> : 
+                        <img src="../../images/delete.svg" alt="" />
+                      }                      
+                  </a>
+              </span>
           </td>
         </tr>
       ));
   }
 
+  sortRecords = fieldBy => {
+
+        if (this.state.orderBy) {
+            this.setState({ ...this.state, ...{ orderBy: (!this.state.orderBy), records: this.state.records.sort((a, b) => a[fieldBy] > b[fieldBy] ? 1 : -1) } })
+        } else {
+            this.setState({ ...this.state, ...{ orderBy: (!this.state.orderBy), records: this.state.records.sort((a, b) => a[fieldBy] < b[fieldBy] ? 1 : -1) } })
+        }
+    };
+
+  filterRecords = types => { 
+      if(types.length === 0){
+        this.setState({records: this.props.records});
+      } else{
+        let records = this.props.records.filter(value => types.includes(value.type));
+        this.setState({records});
+      }
+  };  
+
   render() {
-    let { records } = this.props;
+    let { records } = this.state;
     records = records.filter(value => value.status === 2);
     return (
-      <div className="main-content">
+      <div style={{ paddingTop: '30px' }} className="main-content">
           <div className="col-sm-12 ">
+              <div style={{ marginBottom: '18px' }} className="fillter_section">
+                  <h2 className="title_tag">Archives</h2>
+                  <span>
+                      <a href="javascript:void(0);" className="icon dropdown">
+                          Sort by <img className="dropToggle" data-toggle="dropdown" src="../../images/sort.png" alt="" />
+                          <ul className="dropdown-menu">
+                              <li> <span onClick={() => this.sortRecords('title')}>Title</span> </li>
+                              <li> <span onClick={() => this.sortRecords('updated_at')}> Last Updated </span> </li>
+                          </ul>
+                      </a>
+                      <a href="javascript:void(0);" className="icon dropdown filter_dropdown" >
+                       Filter by  <img className="dropToggle" data-toggle="dropdown" src="../../images/filter.png" alt=""/>
+                           <ul className="dropdown-menu">
+                              <li> <span onClick={() => this.filterRecords([])}>All</span> </li>
+                              <li> <span onClick={() => this.filterRecords([1,2])}>Beacon Doc</span> </li>
+                              <li> <span onClick={() => this.filterRecords([3])}> Summary </span> </li>
+                          </ul>
+                          
+                      </a>
+                  </span>
+
+                </div>
             <Loader isShowingLoader={this.state.loaderStatus} />
             {records.length ? (
               <div className="table-responsive custom_responsive_table">
@@ -92,14 +171,14 @@ class Archives extends Component {
                     <th>Last Updated</th>
                     <th>Media length</th>
                     <th>Created by</th>
-                    <th />
+                    <th> Action </th>
                   </tr>
                 </thead>
                 <tbody>{this.list()}</tbody>
               </table>
               </div>
             ) : (
-              <h4 className="text-center">You have't any archive file yet.</h4>
+              <h4 className="text-center">You haven’t archived any files yet.</h4>
             )}
           </div>
           <Pagination
@@ -120,7 +199,8 @@ class Archives extends Component {
 
 Archives.propTypes = {
   records: PropTypes.array.isRequired,
-  getRecord: PropTypes.func.isRequired
+  getRecord: PropTypes.func.isRequired,
+  updateRecordStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -129,7 +209,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getRecord: bindActionCreators(getRecord, dispatch)
+  getRecord: bindActionCreators(getRecord, dispatch),
+  updateRecordStatus: bindActionCreators(updateRecordStatus, dispatch)
 });
 
 export default connect(

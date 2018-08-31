@@ -10,6 +10,7 @@ import AlertMsg from '../components/AlertMsg';
 import { register } from '../actions/user';
 import lockActive from '../assets/images/lock-active.png';
 import sale from '../assets/images/sale-banner.png';
+import FrontHeader from '../components/FrontHeader';
 
 class RegisterPayment extends Component {
   constructor(props) {
@@ -110,15 +111,7 @@ class RegisterPayment extends Component {
           <div className="col-sm-7 p-0">
             <div className="inner-wrapper">
               <div className="col-sm-12">
-                <ul className="list-inline">
-                  <li className="list-inline-item">{/*<img src="images/logo.png">*/} Logo</li>
-
-                  <li className="list-inline-item">Nav Item 1</li>
-
-                  <li className="list-inline-item">Nav Item 2</li>
-
-                  <li className="list-inline-item">Nav Item 3</li>
-                </ul>
+                <FrontHeader />     
               </div>
 
               <div className="col-sm-12">
@@ -132,7 +125,12 @@ class RegisterPayment extends Component {
                     </span>
 
                     <span>
-                      <Switch onChange={this.changeBillingPlan} color={'primary'} checked = { plan_type === "startup-plan" ? true:false } />
+                      <label className="switch">
+                      {console.log("value of pland > ", this.state.plan_type)}
+                        <input type="checkbox" onChange={this.changeBillingPlan} checked = {this.state.plan_type === 'startup-plan'} />
+
+                        <span className="slider round"> </span>
+                      </label>
                     </span>
 
                     <span className="plan-name"> Monthly </span>
@@ -186,9 +184,7 @@ class RegisterPayment extends Component {
                 <Link to="/" className="btn signin-btn">
                   Sign in
                 </Link>
-              </div>
-
-              <div className="col-sm-12 center-form register-payment">
+                <div className="col-sm-12 center-form register-payment">
                 {validateErr && (
                   <div className="error-msg ">
                     <i className="material-icons">clear</i>
@@ -232,7 +228,7 @@ class RegisterPayment extends Component {
                         id="card_num"
                         ref="card_number"
                         placeholder="Credit card number"
-                        className="form-control"
+                        className="form-control col-7"
                         mask="9999-9999-9999-9999"
                       />
 
@@ -255,7 +251,7 @@ class RegisterPayment extends Component {
                       />
                     </div>
                   </div>
-
+                  {/*
                   <div className="col-sm-12 form-group text-right">
                     <a
                       onClick={() =>
@@ -269,7 +265,7 @@ class RegisterPayment extends Component {
                       Enter a discount coupon
                     </a>
                   </div>
-
+                  */}
                   {coupon && (
                     <div className="col-sm-12 d-flex">
                       <input type="text" className="form-control" placeholder="Discount code" />
@@ -303,6 +299,9 @@ class RegisterPayment extends Component {
                   </div>
                 </form>
               </div>
+              </div>
+
+             
             </div>
           </div>
         </div>

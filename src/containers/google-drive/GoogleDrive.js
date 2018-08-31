@@ -69,7 +69,8 @@ class GoogleDrive extends Component {
         },
         user_id: user._id
       };
-
+      console.log("value to be saved >>> ", obj)
+      localStorage.googleToken = JSON.stringify(obj);
       saveUserDriveDetails(obj, res => {
         console.log(res, 'res');
       });
@@ -94,7 +95,7 @@ class GoogleDrive extends Component {
               </div>
 
               <div className="card-header">
-                <label className="step-count">STEP 1 of 1</label>
+                <label className="step-count">STEP 1 of 4</label>
 
                 <h2>Choose your folder</h2>
               </div>

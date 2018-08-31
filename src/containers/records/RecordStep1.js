@@ -36,9 +36,11 @@ export default class RecordStep1 extends Component {
       <div className="main-content">
       <div className="row record-step1">
         <div className="step_section">
+        
           <div className="card text-center single">
+          <div className="beta-tag">Beta</div>
             <div className="card-header">
-              <label className="step-count">STEP 1 of 1</label>
+              <label className="step-count">STEP 1 of 4</label>
 
               <h2>Choose your markers</h2>
             </div>

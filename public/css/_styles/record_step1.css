@@ -45,9 +45,9 @@
       font-size: 20px; }
 
 .record-step1 .chip-sec {
-  width: 75%;
+  width: 100%;
   margin: 0 auto;
-  margin-top: 2em; }
+  margin-top: 10px; }
   .record-step1 .chip-sec .chip {
     margin: 3px;
     min-height: 27px;     height: auto;}

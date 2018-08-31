@@ -60,8 +60,9 @@ export default class Step2 extends Component {
 
                 <label className="form-check-label" for="check1">
                   {' '}
-                  Check here to indicate that you will ask participants for permission to record the
-                  conversation. US federal law prohibits recording a conversation without consent.{' '}
+                  I will ask for permission to record the conversation.
+                  <label class="span_us">US federal law prohibits recording a conversation without consent.</label>
+                  {' '}
                 </label>
               </div>
 
@@ -84,8 +85,8 @@ export default class Step2 extends Component {
                 disabled={!this.state.permissions.checkOne}
                 className="btn btn-primary"
               >
-                I will ask for permission to record
-              </button>
+              Next Step
+               </button>
             </div>
 
             <div className="card-footer">

@@ -97,25 +97,26 @@ class ResetPassword extends Component {
             type={context.state.msgType}
             status={context.state.msgStatus}
           />
-          <div className="col-sm-7 p-0">
-            <div className="inner-wrapper">
-              <FrontHeader />
-
-              <div className="center-img">Image TBD</div>
-            </div>
+          <div className="col-sm-12 col-md-6 p-0">
+              <div className="inner-wrapper">
+                  <div className="col-sm-12">
+                      <FrontHeader />     
+                  </div>
+                  <div className="center-img">Image TBD</div>
+              </div>
           </div>
 
-          <div className="col-sm-5">
-            <div className="login-wrapper reset-module">
-              <div className="col-sm-12 text-right">
+          <div className="col-sm-6">
+            <div className="login-wrapper animated fadeIn register_wraper">
+              <div className="text-right">
                 <Link to="/" className="btn signin-btn">
                   Sign in
                 </Link>
               </div>
-              <form onSubmit={this.handleChangePassword}>
-                <div className="col-sm-12 center-form">
-                  <label>Input your new password</label>
-
+              
+              <div className="center-form register-form">
+              <form onSubmit={this.handleChangePassword}>                
+                  <label>New password</label>
                   <p className="mt-3">
                     {' '}
                     Enter your email below and we'll send you an emailwith instructions to reset
@@ -194,9 +195,9 @@ class ResetPassword extends Component {
                     <span>
                       <Link to="/register">Sign up</Link>
                     </span>
-                  </div>
-                </div>
-              </form>
+                  </div>                
+                </form>
+              </div>
             </div>
           </div>
         </div>

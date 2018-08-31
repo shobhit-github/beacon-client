@@ -112,7 +112,7 @@ class WordCloud extends Component {
           <Input
             id="full-width"
             className={classes.profile}
-            InputLabelProps={{
+            inputlabelprops={{
               shrink: true
             }}
             type="text"
@@ -128,7 +128,7 @@ class WordCloud extends Component {
                   color="action"
                   onClick={this.handleKeyword}
                 >
-                <i class="add_icon"></i>
+                <i className="add_icon"></i>
                 </Icon>
               </InputAdornment>
             }
@@ -154,7 +154,7 @@ class WordCloud extends Component {
           <ul className="word_list">
             {keywords.map( (value, index) => {
                   return (
-                   <li>
+                   <li key={index}>
                     <Chip label={value} className={classes.chip} onDelete={() => this.deleteTag(index)} />
                   </li>
                   );

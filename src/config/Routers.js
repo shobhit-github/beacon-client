@@ -11,7 +11,7 @@ import Login from '../containers/Login';
 import Register from '../containers/Register';
 import RegisterPayment from '../containers/RegisterPayment';
 import RegisterSuccess from '../containers/RegisterSuccess';
-import Home from '../containers/Home';
+import Dashboard from '../containers/Dashboard';
 import RecordStep1 from '../containers/records/RecordStep1';
 import RecordStep2 from '../containers/records/RecordStep2';
 import RecordStep3 from '../containers/records/RecordStep3';
@@ -42,7 +42,7 @@ const Routers = store => {
         <AppRoute
           exact
           path="/dashboard"
-          component={Home}
+          component={Dashboard}
           requireAuth={auth}
           layout={dashboardLayout}
           store={store}

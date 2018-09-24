@@ -5,11 +5,11 @@ String.prototype.capitalizeFirstLetter = function() {
 
 /************* Captilize first character of word ************/
 String.prototype.capitalizeEachLetter = function() {
-  return this.split(' ')
+  return this.split(" ")
     .map(function(word) {
       return word.capitalizeFirstLetter();
     })
-    .join(' ');
+    .join(" ");
 };
 
 /************* Get date without time ************/
@@ -24,6 +24,9 @@ Array.prototype.SHIFT = function(from, to) {
 
 /*************** insert at a specific index *********/
 String.prototype.insert = function(index, string) {
-  if (index > 0) return this.substring(0, index) + string + this.substring(index, this.length);
+  if (index > 0)
+    return (
+      this.substring(0, index) + string + this.substring(index, this.length)
+    );
   else return string + this;
 };

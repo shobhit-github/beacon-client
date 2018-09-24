@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import GooglePicker from 'react-google-picker';
-import { google_keys as KEY } from '../constants/app-config';
+import React from "react";
+import PropTypes from "prop-types";
+import GooglePicker from "react-google-picker";
+import { google_keys as KEY } from "../constants/app-config";
 
 const GoogleDriveGenricFunc = props => {
   return (
     <GooglePicker
       clientId={KEY.CLIENT_ID}
-      scope={['https://www.googleapis.com/auth/drive']}
-      onChange={data => console.log('on change:', data)}
+      scope={["https://www.googleapis.com/auth/drive"]}
+      onChange={data => console.log("on change:", data)}
       multiselect={true}
       navHidden={false}
       authImmediate={false}
@@ -17,7 +17,7 @@ const GoogleDriveGenricFunc = props => {
         const googleViewId = google.picker.ViewId.FOLDERS;
         const docsView = new google.picker.DocsView(googleViewId)
           .setIncludeFolders(true)
-          .setMimeTypes('application/vnd.google-apps.folder')
+          .setMimeTypes("application/vnd.google-apps.folder")
           .setSelectFolderEnabled(true);
 
         const picker = new window.google.picker.PickerBuilder()

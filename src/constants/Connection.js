@@ -5,10 +5,12 @@
  * @author: Jasdeep Singh
  * */
 
-import { environment as PATH } from './app-config';
+import { environment as PATH } from "./app-config";
 
 const httpUrl = `${window.location.protocol}//${
-  window.location.protocol === 'http:' ? PATH.LOCAL_API_URL : PATH.STAGING_API_URL
+  window.location.protocol === "http:"
+    ? PATH.LOCAL_API_URL
+    : PATH.STAGING_API_URL
 }`;
 
 class Connection {

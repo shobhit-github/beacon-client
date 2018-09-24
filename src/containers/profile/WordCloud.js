@@ -93,93 +93,99 @@ class WordCloud extends Component {
     const { classes } = this.props;
     const { update, keywords } = this.state;
     return (
-      <div className="tab_content">      
-       
+      <div className="tab_content">
         <div className="row language profile-form">
-        <div className="col-lg-6 col-md-7 offset-md-0 offset-lg-1 p_right100">
-          <p>
-            Weʼve already excluded a list of common words from your word
-            clouds. If youʼd like us to ignore any other words, enter
-            them here.
-          </p>
-          <div className="custom_input">
-          <InputLabel
-            htmlFor="adornment-password"
-            className="label-class"
-          >
-            Add a word to list
-          </InputLabel>
-          <Input
-            id="full-width"
-            className={classes.profile}
-            inputlabelprops={{
-              shrink: true
-            }}
-            type="text"
-            value={this.state.Keyword}
-            placeholder="Enter keyword"
-            fullWidth
-            margin="normal"
-            onChange={e => this.setState({ Keyword: e.target.value })}
-            endAdornment={
-              <InputAdornment position="end">
-                <Icon
-                  className={classes.icon}
-                  color="action"
-                  onClick={this.handleKeyword}
-                >
-                <i className="add_icon"></i>
-                </Icon>
-              </InputAdornment>
-            }
-          />
-          </div>
-          <div className="custom_checkbox">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={this.state.jason}
-                onChange={this.handleChange("jason")}
-                value="jason"
+          <div className="col-lg-6 col-md-7 offset-md-0 offset-lg-1 p_right100">
+            <p>
+              Weʼve already excluded a list of common words from your word
+              clouds. If youʼd like us to ignore any other words, enter them
+              here.
+            </p>
+            <div className="custom_input">
+              <InputLabel htmlFor="adornment-password" className="label-class">
+                Add a word to list
+              </InputLabel>
+              <Input
+                id="full-width"
+                className={classes.profile}
+                inputlabelprops={{
+                  shrink: true
+                }}
+                type="text"
+                value={this.state.Keyword}
+                placeholder="Enter keyword"
+                fullWidth
+                margin="normal"
+                onChange={e => this.setState({ Keyword: e.target.value })}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Icon
+                      className={classes.icon}
+                      color="action"
+                      onClick={this.handleKeyword}
+                    >
+                      <i className="add_icon" />
+                    </Icon>
+                  </InputAdornment>
+                }
               />
-            }
-            label="Use my project’s codes to generate the word cloud."
-          />
-          <small>Choose this option to enable a wordcloud based on your most frequently used tags, rather than the text in your research doc. </small>
+            </div>
+            <div className="custom_checkbox">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.jason}
+                    onChange={this.handleChange("jason")}
+                    value="jason"
+                  />
+                }
+                label="Use my project’s codes to generate the word cloud."
+              />
+              <small>
+                Choose this option to enable a wordcloud based on your most
+                frequently used tags, rather than the text in your research doc.{" "}
+              </small>
+            </div>
           </div>
-
-        </div>
-        <div className="col-lg-5 col-md-5">
-          <h3>Stop Word List</h3>
-          <ul className="word_list">
-            {keywords.map( (value, index) => {
-                  return (
-                   <li key={index}>
-                    <Chip label={value} className={classes.chip} onDelete={() => this.deleteTag(index)} />
+          <div className="col-lg-5 col-md-5">
+            <h3>Stop Word List</h3>
+            <ul className="word_list">
+              {keywords.map((value, index) => {
+                return (
+                  <li key={index}>
+                    <Chip
+                      label={value}
+                      className={classes.chip}
+                      onDelete={() => this.deleteTag(index)}
+                    />
                   </li>
-                  );
-            })}
-          </ul>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+        <div className="row language ">
+          <div className="col-lg-6 col-md-5 offset-md-0 offset-lg-1">
+            <button
+              disabled={update}
+              type="submit"
+              className="btn btn-primary"
+              onClick={this.handleSubmit}
+            >
+              {update ? (
+                <CircularProgress size={15} color={"inherit"} />
+              ) : (
+                `Save Changes`
+              )}
+            </button>
+          </div>
+          <div className="col-lg-5 col-md-5">
+            <p className="cloud-txt text-right">
+              <a href=""> Preview word cloud </a>
+            </p>
+          </div>
         </div>
       </div>
-      <div className="row language ">
-        <div className="col-lg-6 col-md-5 offset-md-0 offset-lg-1">
-         <button disabled={update} 
-           type="submit" 
-           className="btn btn-primary" 
-           onClick={this.handleSubmit}>
-            {update ? 
-              <CircularProgress size={15} color={'inherit'} /> 
-              : `Save Changes`}
-          </button>
-        </div>
-        <div className="col-lg-5 col-md-5">
-          <p className="cloud-txt text-right">
-            <a href=""> Preview word cloud </a>
-          </p>
-        </div>
-      </div>
-        </div> 
     );
   }
 }

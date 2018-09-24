@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
-import { CircularProgress, Icon } from '@material-ui/core/es/index';
-import { forgotPassword } from '../actions/user';
-import FrontHeader from '../components/FrontHeader';
-import AlertMsg from '../components/AlertMsg';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
+import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import { forgotPassword } from "../actions/user";
+import FrontHeader from "../components/FrontHeader";
+import AlertMsg from "../components/AlertMsg";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -21,8 +21,8 @@ class ForgotPassword extends Component {
   /*************** User Login *************/
   handleOnClick = event => {
     event.preventDefault();
-    if (this.refs.email.value === '') {
-      this.setState({ validationErr: 'Please enter email address.' });
+    if (this.refs.email.value === "") {
+      this.setState({ validationErr: "Please enter email address." });
     } else {
       this.setState({ processing: true });
       let context = this;
@@ -64,12 +64,12 @@ class ForgotPassword extends Component {
             status={context.state.msgStatus}
           />
           <div className="col-sm-12 col-md-6 p-0">
-              <div className="inner-wrapper">
-                  <div className="col-sm-12">
-                      <FrontHeader />     
-                  </div>
-                  <div className="center-img">Image TBD</div>
+            <div className="inner-wrapper">
+              <div className="col-sm-12">
+                <FrontHeader />
               </div>
+              <div className="center-img">Image TBD</div>
+            </div>
           </div>
 
           <div className="col-sm-6">
@@ -89,15 +89,18 @@ class ForgotPassword extends Component {
                 )}
 
                 <div className="success-msg ">
-                  <p>If you need additional assistance email hello@experiencebeacon.io</p>
+                  <p>
+                    If you need additional assistance email
+                    hello@experiencebeacon.io
+                  </p>
                 </div>
 
                 <label>Reset Password</label>
 
                 <p className="mt-3">
-                  {' '}
-                  Enter your email below and we'll send you an emailwith instructions to reset your
-                  password.
+                  {" "}
+                  Enter your email below and we'll send you an emailwith
+                  instructions to reset your password.
                 </p>
                 <form onSubmit={this.handleOnClick}>
                   <div className="col-sm-12 form-group">
@@ -112,7 +115,7 @@ class ForgotPassword extends Component {
                   <div className="col-sm-12 form-group">
                     <button type="submit" className="btn primary-btn">
                       {processing ? (
-                        <CircularProgress size={15} color={'inherit'} />
+                        <CircularProgress size={15} color={"inherit"} />
                       ) : (
                         `Reset my password`
                       )}

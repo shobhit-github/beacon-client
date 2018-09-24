@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import InputMask from 'react-input-mask';
-import { Link } from 'react-router-dom';
-import { Switch } from '@material-ui/core/es/index';
-import { CircularProgress } from '@material-ui/core/es/index';
-import AlertMsg from '../components/AlertMsg';
-import { register } from '../actions/user';
-import lockActive from '../assets/images/lock-active.png';
-import sale from '../assets/images/sale-banner.png';
-import FrontHeader from '../components/FrontHeader';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import InputMask from "react-input-mask";
+import { Link } from "react-router-dom";
+import { Switch } from "@material-ui/core/es/index";
+import { CircularProgress } from "@material-ui/core/es/index";
+import AlertMsg from "../components/AlertMsg";
+import { register } from "../actions/user";
+import lockActive from "../assets/images/lock-active.png";
+import sale from "../assets/images/sale-banner.png";
+import FrontHeader from "../components/FrontHeader";
 
 class RegisterPayment extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class RegisterPayment extends Component {
       coupon: false,
       couponErr: false,
       open: false,
-      plan_type: '',
+      plan_type: "",
       isPayment: false
     };
     this.makePayment = this.makePayment.bind(this);
@@ -32,39 +32,45 @@ class RegisterPayment extends Component {
   componentDidMount() {
     this.setState({
       ...this.state,
-      ...{ userInfo: this.props.location.state, plan_type : this.props.location.state.plan_type }
+      ...{
+        userInfo: this.props.location.state,
+        plan_type: this.props.location.state.plan_type
+      }
     });
   }
 
   makePayment = event => {
     event.preventDefault();
     if (!this.validateInput()) {
-      console.log('vcxv');
+      console.log("vcxv");
       this.setState({
         ...this.state,
-        ...{ validateErr: 'Please fill valid details!' }
+        ...{ validateErr: "Please fill valid details!" }
       });
     } else {
       this.setState({ isPayment: true });
-      this.props.register({ ...this.state.userInfo, plan_type: this.state.plan_type }, res => {
-        if (res.status) {
-          this.setState({
-            ...this.state,
-            ...{ userInfo: {} }
-          });
-          this.props.history.push('/register-success');
-        } else {
-          this.setState({
-            open: true,
-            msg: res.message,
-            msgType: res.type,
-            msgStatus: res.status,
-            loggingIn: false,
-            validateErr: res.message,
-            isPayment: false
-          });
+      this.props.register(
+        { ...this.state.userInfo, plan_type: this.state.plan_type },
+        res => {
+          if (res.status) {
+            this.setState({
+              ...this.state,
+              ...{ userInfo: {} }
+            });
+            this.props.history.push("/register-success");
+          } else {
+            this.setState({
+              open: true,
+              msg: res.message,
+              msgType: res.type,
+              msgStatus: res.status,
+              loggingIn: false,
+              validateErr: res.message,
+              isPayment: false
+            });
+          }
         }
-      });
+      );
     }
   };
 
@@ -85,7 +91,8 @@ class RegisterPayment extends Component {
       this.state.userInfo.card_number.length < 16 ||
       this.state.userInfo.card_number.length < 3 ||
       parseInt(this.state.userInfo.card_exp[0], 0) > 12 ||
-      parseInt(this.state.userInfo.card_exp[1], 0) < parseInt(new Date().getFullYear(), 0)
+      parseInt(this.state.userInfo.card_exp[1], 0) <
+        parseInt(new Date().getFullYear(), 0)
     );
   };
 
@@ -97,7 +104,14 @@ class RegisterPayment extends Component {
   };
 
   render() {
-    const { validateErr, userInfo, coupon, couponErr, plan_type, isPayment } = this.state;
+    const {
+      validateErr,
+      userInfo,
+      coupon,
+      couponErr,
+      plan_type,
+      isPayment
+    } = this.state;
     return (
       <div className="container-fluid">
         <div className="row">
@@ -111,7 +125,7 @@ class RegisterPayment extends Component {
           <div className="col-sm-7 p-0">
             <div className="inner-wrapper">
               <div className="col-sm-12">
-                <FrontHeader />     
+                <FrontHeader />
               </div>
 
               <div className="col-sm-12">
@@ -120,14 +134,18 @@ class RegisterPayment extends Component {
 
                   <div className="d-flex plan-action">
                     <span className="plan-name">
-                      {' '}
+                      {" "}
                       <img src={sale} className="sale-img" />Yearly
                     </span>
 
                     <span>
                       <label className="switch">
-                      {console.log("value of pland > ", this.state.plan_type)}
-                        <input type="checkbox" onChange={this.changeBillingPlan} checked = {this.state.plan_type === 'startup-plan'} />
+                        {console.log("value of pland > ", this.state.plan_type)}
+                        <input
+                          type="checkbox"
+                          onChange={this.changeBillingPlan}
+                          checked={this.state.plan_type === "startup-plan"}
+                        />
 
                         <span className="slider round"> </span>
                       </label>
@@ -140,24 +158,29 @@ class RegisterPayment extends Component {
                     <p className="head-title">Monthly</p>
 
                     <p className="form-link-text">
-                      Document your user interviews faster and get more from your research over
-                      time.
+                      Document your user interviews faster and get more from
+                      your research over time.
                     </p>
 
                     <ul className="points-list">
                       <li>
-                        <i className="material-icons">done</i>{' '}
-                        <span>Tag important moments live , during user interviews</span>
+                        <i className="material-icons">done</i>{" "}
+                        <span>
+                          Tag important moments live , during user interviews
+                        </span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{' '}
+                        <i className="material-icons">done</i>{" "}
                         <span> Synthesize your researchacross Google docs</span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{' '}
-                        <span> Documents user insights quickly and efficiently </span>
+                        <i className="material-icons">done</i>{" "}
+                        <span>
+                          {" "}
+                          Documents user insights quickly and efficiently{" "}
+                        </span>
                       </li>
                     </ul>
 
@@ -185,73 +208,73 @@ class RegisterPayment extends Component {
                   Sign in
                 </Link>
                 <div className="col-sm-12 center-form register-payment">
-                {validateErr && (
-                  <div className="error-msg ">
-                    <i className="material-icons">clear</i>
+                  {validateErr && (
+                    <div className="error-msg ">
+                      <i className="material-icons">clear</i>
 
-                    <span> {validateErr} </span>
-                  </div>
-                )}
+                      <span> {validateErr} </span>
+                    </div>
+                  )}
 
-                <label>Get started with Beacon</label>
+                  <label>Get started with Beacon</label>
 
-                <div className="col-sm-12 form-group last-step-header">
-                  <p>1. Create an account</p>
-                  <p>
-                    <i className="material-icons">done</i>
-                    <span>Done</span>
-                  </p>
-                </div>
-
-                <form className="mt-5 mb-4">
-                  <div className="headline">
+                  <div className="col-sm-12 form-group last-step-header">
+                    <p>1. Create an account</p>
                     <p>
-                      2. Payment <img src={lockActive} />
+                      <i className="material-icons">done</i>
+                      <span>Done</span>
                     </p>
-                    <p> Sign up and proceed to payment</p>
                   </div>
 
-                  <div className="col-sm-12 form-group mt-3">
-                    <input
-                      value={userInfo.name}
-                      ref="name"
-                      type="text"
-                      placeholder="Full name"
-                      className="form-control"
-                    />
-                  </div>
+                  <form className="mt-5 mb-4">
+                    <div className="headline">
+                      <p>
+                        2. Payment <img src={lockActive} />
+                      </p>
+                      <p> Sign up and proceed to payment</p>
+                    </div>
 
-                  <div className="col-sm-12 form-group">
-                    <div className="input-group d-flex credit-details">
-                      <InputMask
-                        maskChar=" "
-                        id="card_num"
-                        ref="card_number"
-                        placeholder="Credit card number"
-                        className="form-control col-7"
-                        mask="9999-9999-9999-9999"
-                      />
-
-                      <InputMask
-                        maskChar=" "
-                        id="card_exp"
-                        ref="card_expiry"
-                        placeholder="MM/YYYY"
-                        className="form-control card-month"
-                        mask="99/9999"
-                      />
-
-                      <InputMask
-                        maskChar=" "
-                        id="cvv"
-                        ref="cvv"
-                        placeholder="CVV"
-                        className="form-control card-cvv"
-                        mask="999"
+                    <div className="col-sm-12 form-group mt-3">
+                      <input
+                        value={userInfo.name}
+                        ref="name"
+                        type="text"
+                        placeholder="Full name"
+                        className="form-control"
                       />
                     </div>
-                  </div>
-                  {/*
+
+                    <div className="col-sm-12 form-group">
+                      <div className="input-group d-flex credit-details">
+                        <InputMask
+                          maskChar=" "
+                          id="card_num"
+                          ref="card_number"
+                          placeholder="Credit card number"
+                          className="form-control col-7"
+                          mask="9999-9999-9999-9999"
+                        />
+
+                        <InputMask
+                          maskChar=" "
+                          id="card_exp"
+                          ref="card_expiry"
+                          placeholder="MM/YYYY"
+                          className="form-control card-month"
+                          mask="99/9999"
+                        />
+
+                        <InputMask
+                          maskChar=" "
+                          id="cvv"
+                          ref="cvv"
+                          placeholder="CVV"
+                          className="form-control card-cvv"
+                          mask="999"
+                        />
+                      </div>
+                    </div>
+                    {/*
                   <div className="col-sm-12 form-group text-right">
                     <a
                       onClick={() =>
@@ -266,42 +289,44 @@ class RegisterPayment extends Component {
                     </a>
                   </div>
                   */}
-                  {coupon && (
-                    <div className="col-sm-12 d-flex">
-                      <input type="text" className="form-control" placeholder="Discount code" />
+                    {coupon && (
+                      <div className="col-sm-12 d-flex">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Discount code"
+                        />
 
-                      <button type="button" className="btn discount_btn">
-                        {' '}
-                        Apply
+                        <button type="button" className="btn discount_btn">
+                          {" "}
+                          Apply
+                        </button>
+                      </div>
+                    )}
+
+                    {couponErr && (
+                      <div className="col-sm-12 error-msg text-left mb-0">
+                        Your discount code is invalid. Check it and try again.
+                      </div>
+                    )}
+
+                    <div className="col-sm-12 form-group">
+                      <button
+                        disabled={isPayment}
+                        type="button"
+                        onClick={this.makePayment}
+                        className="btn primary-btn"
+                      >
+                        {isPayment ? (
+                          <CircularProgress size={15} color={"inherit"} />
+                        ) : (
+                          `Pay $ 13 USD`
+                        )}
                       </button>
                     </div>
-                  )}
-
-                  {couponErr && (
-                    <div className="col-sm-12 error-msg text-left mb-0">
-                      Your discount code is invalid. Check it and try again.
-                    </div>
-                  )}
-
-                  <div className="col-sm-12 form-group">
-                    <button
-                      disabled={isPayment}
-                      type="button"
-                      onClick={this.makePayment}
-                      className="btn primary-btn"
-                    >
-                      {isPayment ? (
-                        <CircularProgress size={15} color={'inherit'} />
-                      ) : (
-                        `Pay $ 13 USD`
-                      )}
-                    </button>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
-              </div>
-
-             
             </div>
           </div>
         </div>

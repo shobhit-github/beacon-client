@@ -5,16 +5,19 @@
  * @author: Jasdeep Singh
  */
 
-import RestClient from '../../utilities/RestClient';
-import message from '../../utilities/messages';
-import * as TYPE from '../../constants/action-types';
-import { toastAction } from '../toast-actions';
+import RestClient from "../../utilities/RestClient";
+import message from "../../utilities/messages";
+import * as TYPE from "../../constants/action-types";
+import { toastAction } from "../toast-actions";
 //Action Creator For Reducers
 
 export const save_records = data => ({ type: TYPE.SAVE_RECORD, data });
 export const get_records = data => ({ type: TYPE.GET_RECORD, data });
 export const update_records = data => ({ type: TYPE.UPDATE_RECORD, data });
-export const update_records_status = data => ({ type: TYPE.UPDATE_RECORD_STATUS, data });
+export const update_records_status = data => ({
+  type: TYPE.UPDATE_RECORD_STATUS,
+  data
+});
 // Thunk Action Creators For Api
 
 /****** action creator for save records ********/
@@ -110,7 +113,7 @@ export const updateRecord = (params, cb) => {
     RestClient.put(`transcriptions/interview_update/${_id}`, params, token)
       .then(result => {
         if (result.success) {
-          toastAction(true, 'Record Updated!');
+          toastAction(true, "Record Updated!");
           params._id = _id;
           dispatch(update_records(params));
           cb(true);
@@ -136,7 +139,10 @@ export const updateRecordStatus = (params, cb) => {
     RestClient.put(`transcriptions/interview_status/${_id}`, params, token)
       .then(result => {
         if (result.success) {
-          result.message = params.status === 3 ? "Record Deleted successfully!" : result.message;
+          result.message =
+            params.status === 3
+              ? "Record Deleted successfully!"
+              : result.message;
           toastAction(true, result.message);
           params._id = _id;
           dispatch(update_records_status(params));
@@ -161,19 +167,19 @@ export const saveSynthesisDoc = (params, cb) => {
   delete params.token;
   return dispatch => {
     RestClient.post(`transcriptions/saveSynthesisDoc/${_id}`, params, token)
-      .then(result => { 
+      .then(result => {
         if (result.success) {
           toastAction(true, result.message);
           dispatch(save_records(result.data));
-          cb({ status:true, _id: result.data._id });
+          cb({ status: true, _id: result.data._id });
         } else {
           toastAction(false, result.message);
-          cb({ status:false });
+          cb({ status: false });
         }
       })
       .catch(error => {
         toastAction(false, message.commonError);
-        cb({ status:false });
+        cb({ status: false });
       });
   };
 };

@@ -5,18 +5,18 @@
  * @author: Jasdeep Singh
  * */
 
-import Connection from '../constants/Connection';
-import querystring from 'querystring';
-import axios from 'axios';
+import Connection from "../constants/Connection";
+import querystring from "querystring";
+import axios from "axios";
 
 var config = {
-  headers: { 'Content-Type': 'application/json' }
+  headers: { "Content-Type": "application/json" }
 };
 
 class RestClient {
   static post(url, params, token) {
     return new Promise(function(fulfill, reject) {
-      config.headers['authorization'] = token;
+      config.headers["authorization"] = token;
       axios
         .post(Connection.getResturl(url), JSON.stringify(params), config)
 
@@ -37,7 +37,11 @@ class RestClient {
     return new Promise(function(fulfill, reject) {
       // config.headers["authorization"] = token;
       axios
-        .post(Connection.getThirdPartyApiUrl(url), JSON.stringify(params), config)
+        .post(
+          Connection.getThirdPartyApiUrl(url),
+          JSON.stringify(params),
+          config
+        )
 
         .then(function(response) {
           fulfill(response.data);
@@ -54,7 +58,7 @@ class RestClient {
 
   static put(url, params, token) {
     return new Promise(function(fulfill, reject) {
-      config.headers['authorization'] = token;
+      config.headers["authorization"] = token;
       axios
         .put(Connection.getResturl(url), JSON.stringify(params), config)
         .then(function(response) {
@@ -73,7 +77,7 @@ class RestClient {
   static get(url, params, token) {
     let query = querystring.stringify(params);
     return new Promise(function(fulfill, reject) {
-      config.headers['authorization'] = token;
+      config.headers["authorization"] = token;
       axios
         .get(`${Connection.getResturl(url)}?${query}`, config)
 
@@ -93,7 +97,7 @@ class RestClient {
   static delete(url, params, token) {
     let query = querystring.stringify(params);
     return new Promise(function(fulfill, reject) {
-      config.headers['authorization'] = token;
+      config.headers["authorization"] = token;
       axios
         .delete(`${Connection.getResturl(url)}?${query}`, config)
         .then(function(response) {

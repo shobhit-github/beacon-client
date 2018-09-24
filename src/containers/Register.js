@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import lock from '../assets/images/lock.png';
-import sale from '../assets/images/sale-banner.png';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { CircularProgress, Icon } from '@material-ui/core/es/index';
-import FrontHeader from '../components/FrontHeader';
+import React, { Component } from "react";
+import lock from "../assets/images/lock.png";
+import sale from "../assets/images/sale-banner.png";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { CircularProgress, Icon } from "@material-ui/core/es/index";
+import FrontHeader from "../components/FrontHeader";
 
 class Register extends Component {
   constructor(props) {
@@ -20,28 +20,35 @@ class Register extends Component {
     this.setState({
       password_visibility: !this.state.password_visibility
     });
-    this.refs.password.setAttribute('type', !this.state.password_visibility ? `text` : `password`);
+    this.refs.password.setAttribute(
+      "type",
+      !this.state.password_visibility ? `text` : `password`
+    );
   };
 
   passDataToPaymentSection = evt => {
     evt.preventDefault();
 
-    if (!this.refs.name.value || !this.refs.email.value || !this.refs.password.value) {
+    if (
+      !this.refs.name.value ||
+      !this.refs.email.value ||
+      !this.refs.password.value
+    ) {
       this.setState({
-        registerError: 'Please enter required fields.'
+        registerError: "Please enter required fields."
       });
       return false;
-    } else if(!this.state.agreed){
+    } else if (!this.state.agreed) {
       this.setState({
-        registerError: 'Please select agree the terms.'
+        registerError: "Please select agree the terms."
       });
       return false;
-    } 
-    this.props.history.push('/register-payment', {
+    }
+    this.props.history.push("/register-payment", {
       email: this.refs.email.value,
       name: this.refs.name.value,
       password: this.refs.password.value,
-      plan_type : this.state.plan_type
+      plan_type: this.state.plan_type
     });
   };
   changeBillingPlan = evt => {
@@ -58,7 +65,7 @@ class Register extends Component {
           <div className="col-sm-6 p-0">
             <div className="inner-wrapper">
               <div className="col-sm-12">
-                <FrontHeader />               
+                <FrontHeader />
               </div>
               <div className="col-sm-12">
                 <div className="billing-section">
@@ -66,13 +73,16 @@ class Register extends Component {
 
                   <div className="d-flex plan-action">
                     <span className="plan-name">
-                      {' '}
+                      {" "}
                       <img src={sale} className="sale-img" />Yearly
                     </span>
 
                     <span>
                       <label className="switch">
-                        <input type="checkbox" onChange={this.changeBillingPlan} />
+                        <input
+                          type="checkbox"
+                          onChange={this.changeBillingPlan}
+                        />
 
                         <span className="slider round"> </span>
                       </label>
@@ -85,24 +95,29 @@ class Register extends Component {
                     <p className="head-title">Monthly</p>
 
                     <p className="form-link-text">
-                      Document your user interviews faster and get more from your research over
-                      time.
+                      Document your user interviews faster and get more from
+                      your research over time.
                     </p>
 
                     <ul className="points-list">
                       <li>
-                        <i className="material-icons">done</i>{' '}
-                        <span>Tag important moments live , during user interviews</span>
+                        <i className="material-icons">done</i>{" "}
+                        <span>
+                          Tag important moments live , during user interviews
+                        </span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{' '}
+                        <i className="material-icons">done</i>{" "}
                         <span> Synthesize your researchacross Google docs</span>
                       </li>
 
                       <li>
-                        <i className="material-icons">done</i>{' '}
-                        <span> Documents user insights quickly and efficiently </span>
+                        <i className="material-icons">done</i>{" "}
+                        <span>
+                          {" "}
+                          Documents user insights quickly and efficiently{" "}
+                        </span>
                       </li>
                     </ul>
 
@@ -171,18 +186,29 @@ class Register extends Component {
                         placeholder="Password"
                       />
                       <div className="input-group-append">
-                        <span onClick={this.changePasswordVisibility} className="input-group-text">
+                        <span
+                          onClick={this.changePasswordVisibility}
+                          className="input-group-text"
+                        >
                           <Icon>
-                            {' '}
-                            {!this.state.password_visibility ? `visibility_off` : `visibility`}
+                            {" "}
+                            {!this.state.password_visibility
+                              ? `visibility_off`
+                              : `visibility`}
                           </Icon>
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <label className="checkbox" onClick={() => this.setState({agreed: !agreed})}> <input type="checkbox"/> 
-                  I agree to the Terms of Service and Privacy Policy</label>
+                  <label
+                    className="checkbox"
+                    onClick={() => this.setState({ agreed: !agreed })}
+                  >
+                    {" "}
+                    <input type="checkbox" />
+                    I agree to the Terms of Service and Privacy Policy
+                  </label>
 
                   <div className="col-sm-12 form-group">
                     <button
@@ -191,7 +217,11 @@ class Register extends Component {
                       disabled={registerIn}
                       className="btn primary-btn"
                     >
-                      {!registerIn ? `Continue` : <CircularProgress size={15} color={'white'} />}
+                      {!registerIn ? (
+                        `Continue`
+                      ) : (
+                        <CircularProgress size={15} color={"white"} />
+                      )}
                     </button>
                   </div>
 

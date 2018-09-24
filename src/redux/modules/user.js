@@ -5,7 +5,7 @@
  * @author: Jasdeep Singh
 */
 
-import * as TYPE from '../../constants/action-types';
+import * as TYPE from "../../constants/action-types";
 
 /******** Reducers ********/
 
@@ -20,8 +20,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, ...{ loggedIn: true }, ...action.data };
 
     case TYPE.UPDATE_PROFILE:
-      return {...state, ...action.data};
-        
+      return { ...state, ...action.data };
+
     case TYPE.LOG_OUT:
       let _remember = state.remember;
       return { ...initialState, ...{ remember: _remember } };

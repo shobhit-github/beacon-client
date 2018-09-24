@@ -5,12 +5,12 @@
  * @author: Jasdeep Singh
 */
 
-import React from 'react';
-import Footer from './Footer';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import Footer from "./Footer";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 /*************** Front Layout ***************/
 export const frontLayout = props => (
   <section className="main-content frontend" id="home">
@@ -22,8 +22,8 @@ export const frontLayout = props => (
 export const dashboardLayout = props => {
   return (
     <div>
-      <Header {...props}/>
-       <Footer />
+      <Header {...props} />
+      <Footer />
     </div>
   );
 };

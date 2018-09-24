@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { Icon } from '@material-ui/core/es/index';
-import { CircularProgress } from '@material-ui/core/es/index';
-import { checkToken, setPassword } from '../actions/user';
-import FrontHeader from '../components/FrontHeader';
-import AlertMsg from '../components/AlertMsg';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { Icon } from "@material-ui/core/es/index";
+import { CircularProgress } from "@material-ui/core/es/index";
+import { checkToken, setPassword } from "../actions/user";
+import FrontHeader from "../components/FrontHeader";
+import AlertMsg from "../components/AlertMsg";
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -38,7 +38,10 @@ class ResetPassword extends Component {
     this.setState({
       password: !this.state.password
     });
-    this.refs.password.setAttribute('type', !this.state.password ? `text` : `password`);
+    this.refs.password.setAttribute(
+      "type",
+      !this.state.password ? `text` : `password`
+    );
   }
 
   changeConfirmPasswordVisibility() {
@@ -46,7 +49,7 @@ class ResetPassword extends Component {
       confirm_password: !this.state.confirm_password
     });
     this.refs.confirm_password.setAttribute(
-      'type',
+      "type",
       !this.state.confirm_password ? `text` : `password`
     );
   }
@@ -58,29 +61,35 @@ class ResetPassword extends Component {
       confirm_password = this.refs.confirm_password.value;
     if (passowrd === confirm_password) {
       this.setState({ reset: true });
-      setPassword({ token: match.params.token, password: passowrd }, 'reset', res => {
-        if (res.status) {
-          this.setState({
-            open: true,
-            msg: res.message,
-            msgType: res.type,
-            msgStatus: res.status,
-            reset: false
-          });
-          this.refs.password.value = '';
-          this.refs.confirm_password.value = '';
-        } else {
-          this.setState({
-            open: true,
-            msg: res.message,
-            msgType: res.type,
-            msgStatus: res.status,
-            reset: false
-          });
+      setPassword(
+        { token: match.params.token, password: passowrd },
+        "reset",
+        res => {
+          if (res.status) {
+            this.setState({
+              open: true,
+              msg: res.message,
+              msgType: res.type,
+              msgStatus: res.status,
+              reset: false
+            });
+            this.refs.password.value = "";
+            this.refs.confirm_password.value = "";
+          } else {
+            this.setState({
+              open: true,
+              msg: res.message,
+              msgType: res.type,
+              msgStatus: res.status,
+              reset: false
+            });
+          }
         }
-      });
+      );
     } else {
-      this.setState({ errorMessage: "Password and comfirm password does't match." });
+      this.setState({
+        errorMessage: "Password and comfirm password does't match."
+      });
     }
   }
 
@@ -98,12 +107,12 @@ class ResetPassword extends Component {
             status={context.state.msgStatus}
           />
           <div className="col-sm-12 col-md-6 p-0">
-              <div className="inner-wrapper">
-                  <div className="col-sm-12">
-                      <FrontHeader />     
-                  </div>
-                  <div className="center-img">Image TBD</div>
+            <div className="inner-wrapper">
+              <div className="col-sm-12">
+                <FrontHeader />
               </div>
+              <div className="center-img">Image TBD</div>
+            </div>
           </div>
 
           <div className="col-sm-6">
@@ -113,14 +122,14 @@ class ResetPassword extends Component {
                   Sign in
                 </Link>
               </div>
-              
+
               <div className="center-form register-form">
-              <form onSubmit={this.handleChangePassword}>                
+                <form onSubmit={this.handleChangePassword}>
                   <label>New password</label>
                   <p className="mt-3">
-                    {' '}
-                    Enter your email below and we'll send you an emailwith instructions to reset
-                    your password.
+                    {" "}
+                    Enter your email below and we'll send you an emailwith
+                    instructions to reset your password.
                   </p>
 
                   <div className="col-sm-12 form-group">
@@ -138,7 +147,12 @@ class ResetPassword extends Component {
                           onClick={() => this.changePasswordVisibility()}
                           className="input-group-text"
                         >
-                          <Icon> {!this.state.password ? `visibility_off` : `visibility`}</Icon>
+                          <Icon>
+                            {" "}
+                            {!this.state.password
+                              ? `visibility_off`
+                              : `visibility`}
+                          </Icon>
                         </span>
                       </div>
                     </div>
@@ -165,8 +179,10 @@ class ResetPassword extends Component {
                           className="input-group-text"
                         >
                           <Icon>
-                            {' '}
-                            {!this.state.confirm_password ? `visibility_off` : `visibility`}
+                            {" "}
+                            {!this.state.confirm_password
+                              ? `visibility_off`
+                              : `visibility`}
                           </Icon>
                         </span>
                       </div>
@@ -182,7 +198,7 @@ class ResetPassword extends Component {
                       className="btn primary-btn"
                     >
                       {reset ? (
-                        <CircularProgress size={15} color={'inherit'} />
+                        <CircularProgress size={15} color={"inherit"} />
                       ) : (
                         `Change my password`
                       )}
@@ -190,12 +206,14 @@ class ResetPassword extends Component {
                   </div>
 
                   <div className="col-sm-12 bottom-bar">
-                    <span className="form-link-text">Don't have an account?</span>
+                    <span className="form-link-text">
+                      Don't have an account?
+                    </span>
 
                     <span>
                       <Link to="/register">Sign up</Link>
                     </span>
-                  </div>                
+                  </div>
                 </form>
               </div>
             </div>

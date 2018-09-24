@@ -5,21 +5,22 @@
  * @author: Jasdeep Singh
 */
 
-import * as TYPE from '../../constants/action-types';
+import * as TYPE from "../../constants/action-types";
 
 /******** Reducers ********/
 
 export default function reducer(state = [], action) {
   switch (action.type) {
     case TYPE.SAVE_RECORD:
-      const RIndex = state.findIndex(value => value.blob_str === action.data.blob_str && value.type === 3);
-      if(RIndex === -1){
+      const RIndex = state.findIndex(
+        value => value.blob_str === action.data.blob_str && value.type === 3
+      );
+      if (RIndex === -1) {
         return [action.data, ...state];
       } else {
         state[RIndex].drive_path = action.data.drive_path;
         return [...state];
       }
-      
 
     case TYPE.GET_RECORD:
       return action.data;

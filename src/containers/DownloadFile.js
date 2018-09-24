@@ -1,5 +1,5 @@
-import React from 'react'
-import { render, Document, Text } from 'redocx'
+import React from "react";
+import { render, Document, Text } from "redocx";
 
 export default class DownloadFile extends React.Component {
   render() {
@@ -7,7 +7,6 @@ export default class DownloadFile extends React.Component {
       <Document>
         <Text>Hello World</Text>
       </Document>
-    )
+    );
   }
 }
-

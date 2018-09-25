@@ -20,13 +20,15 @@ body {
 
 .table_icons{
   display:inline-flex !important;
+  width: 100%;
+  justify-content: end;
 }
 .card {
   background-color: #fff;
   border: 0;
   padding: 40px 34px;
   max-width: 70%;
-  margin: 0 auto;
+  margin: 0 auto;box-shadow: 0 2px 9px rgba(0,0,0,0.03); 
   position: relative; }
   .card .beta-tag {
     position: absolute;
@@ -52,18 +54,16 @@ body {
     background-color: transparent;
     border: 0px; }
     .card-header a, .card-footer a {
-      color: #4e84fd; }
+      color: #848DAF;font-size: 12px; text-decoration: underline; }
   .card-footer {
     font-size: 14px; }
   .card.dashboard {
-    padding: 10px 25px; }
+    padding: 10px 40px; }
     .card.dashboard img {
       display: block;
       margin: 40px auto; }
     .card.dashboard h2 {
-      margin-top: 50px; }
-    .card.dashboard .btn {
-      margin-bottom: 15px; }
+      margin-top: 80px; } 
   .card.single {
     padding-bottom: 20px !important;
     max-width: none;    min-height: calc(100vh - 100px);
@@ -105,6 +105,9 @@ body {
 }
 .card-block p{
   font-size: 16px !important;
+  line-height: 28px;
+  margin-bottom: 50px;
+  min-height: 108px;
 }
 .record-step1 .card-block p{
 padding: 0 40px !important;
@@ -138,7 +141,7 @@ padding: 0 40px !important;
       position: absolute;
   }
     .main-container .sidebar ul {
-      padding: 0;     margin-top: 50px; overflow: hidden;}
+      padding: 0;     margin-top: 0px; overflow: hidden;min-height: calc(100vh - 60px);}
       .main-container .sidebar ul li {
         display: block;
         font-size: 18px;
@@ -152,7 +155,7 @@ padding: 0 40px !important;
           display: block;
           padding: 15px;
           padding-left: 35px;
-          background: url("assets/images/dashboard.png") no-repeat left center;
+          background: url("assets/images/dashboard.svg") no-repeat left center;
           color: #8E96B5;
           text-decoration: none; }
           .main-container .sidebar ul li a span{ 
@@ -165,17 +168,17 @@ padding: 0 40px !important;
           .main-container .sidebar ul li.active a, .main-container .sidebar ul li:hover a {
             color: #4e84fd; }
         .main-container .sidebar ul li.dashboard a {
-          background-image: url("assets/images/dashboard.png"); }
+          background-image: url("assets/images/dashboard.svg"); background-size:24px;  }
         .main-container .sidebar ul li.dashboard.active a, .main-container .sidebar ul li.dashboard:hover a {
-          background-image: url("assets/images/dashboard-active.png"); }
+          background-image: url("assets/images/dashboard-active.svg"); }
         .main-container .sidebar ul li.files a {
-          background-image: url("assets/images/myfiles.png"); }
+          background-image: url("assets/images/myfiles.svg");background-size:22px;   }
         .main-container .sidebar ul li.files.active a, .main-container .sidebar ul li.files:hover a {
-          background-image: url("assets/images/myfiles-active.png"); }
+          background-image: url("assets/images/myfiles-active.svg"); }
         .main-container .sidebar ul li.help a {
-          background-image: url("assets/images/help-circle.png"); }
+          background-image: url("assets/images/help.svg");background-size:30px; }
         .main-container .sidebar ul li.help.active a, .main-container .sidebar ul li.help:hover a {
-          background-image: url("assets/images/help-circle-active.png"); }
+          background-image: url("assets/images/help-active.svg"); }
         .main-container .sidebar ul li.archive a {
           background-image: url("assets/images/archive.png"); }
         .main-container .sidebar ul li.archive.active a, .main-container .sidebar ul li.archive:hover a {
@@ -207,6 +210,7 @@ padding: 0 40px !important;
       position: relative;
       margin-bottom: 20px; }
       .main-container .main-content .player-div .back {
+        display: none;
         position: absolute;
         left: 60px;
         width: 40px;
@@ -277,7 +281,7 @@ padding: 0 40px !important;
       .main-container .main-content .docs-wrapper h1 {
         float: left;
         font-size: 30px;
-        margin-bottom: 60px; padding-left:85px;
+        margin-bottom: 20px; padding-left:85px;
       color:#C0C5D8}
       .main-container .main-content .docs-wrapper .dropToggle {
         float: right; }

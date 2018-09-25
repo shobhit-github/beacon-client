@@ -713,8 +713,7 @@ class Docs extends Component {
                     }}
                     dangerouslySetInnerHTML={this.createMarkup(title)}
                     style={{ cursor: "pointer", display: "inline" }}
-                  />
-                  ,
+                  /> 
                   <span style={{ marginLeft: 15 }}>{TITLE_ICONS}</span>
                 </React.Fragment>
               ) : (

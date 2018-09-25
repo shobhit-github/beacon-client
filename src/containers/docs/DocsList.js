@@ -149,9 +149,10 @@ class DocsList extends Component {
           >
             {user && user.name ? user.name.capitalizeEachLetter() : ""}
           </td>
+          <td></td>
           <td>
             <span className="table_icons">
-              {(row.type === 2 || row.type === 1) && (
+              {/* {(row.type === 2 || row.type === 1) && (
                 <Download
                   onClick={e => e.preventDefault()}
                   file={`${row.title.replace(/\n/g, "<br />")}.doc`}
@@ -165,7 +166,7 @@ class DocsList extends Component {
                     <img src="../../images/download.svg" alt="" />
                   </a>
                 </Download>
-              )}
+              )} */}
 
               <a
                 href="javascript:void(0);"
@@ -301,7 +302,8 @@ class DocsList extends Component {
                     <th>Last Updated</th>
                     <th>Type</th>
                     <th>Created by</th>
-                    <th>Action</th>
+                    <th>Audio length</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>{this.list()}</tbody>

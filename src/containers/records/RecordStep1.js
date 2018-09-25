@@ -35,7 +35,7 @@ export default class RecordStep1 extends Component {
 
   render() {
     return (
-      <div className="main-content">
+      <div className="main-content flex_main">
         <div className="row record-step1">
           <div className="step_section">
             <div className="card text-center single">

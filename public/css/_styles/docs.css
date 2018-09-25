@@ -152,9 +152,7 @@ content:'';
   display: inline-block; 
   border: 0px !important;
 }
-.card.text-center.single{
-  /* margin-top: 80px; */
-}
+ 
 .step_section{
   margin: 0 auto;
   width: 95%;
@@ -175,7 +173,7 @@ content:'';
   white-space: nowrap;
   overflow: hidden;
   max-width: 84%;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; 
 }
 .play_backward{
   background: url(../../images/pre.svg)no-repeat center;
@@ -361,11 +359,11 @@ content: none;
     margin: 0px !important;
 }
 .card-footer{
-  padding-bottom: 5px !important;
+  padding-bottom: 15px !important;
 }
 .card-block .btn-primary{
   font-size: 16px !important;
-  min-width: 260px !important;
+  min-width: 100% !important;
 }
 .lg_logo{
   display: none;
@@ -520,6 +518,40 @@ display: inline-block;
     position: absolute !important;
     left: 0;
 }
+.main-container{
+  padding-left: 100px;
+}
+.main-container .sidebar{
+  position: fixed !important;
+  left: 0;
+}
+.navbar-expand-md #navbarCollapse.navbar-collapse {
+  display: contents !important;
+}
+.docs-wrapper .dropdown{
+      position: absolute;
+      right: 20px;
+      top: 10px;
+}
+.main-container .sidebar ul li.help{
+      position: absolute;
+      bottom: 10px;
+}
+.flex_section{
+  display: flex;
+  justify-content:center; 
+}
+.flex_section .card{
+  max-width: 335px !important;
+  margin:0 70px;
+  margin-bottom: 25px !important;
+}
+.flex_main{  
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+}
 /*========= responsive css ===========*/
 
 @media screen and (max-width:1280px) {
@@ -529,6 +561,7 @@ display: inline-block;
   .card{
     max-width: 100% !important;
   }
+  .flex_section .card{margin: 0 30px;}
 }
 @media screen and (max-width:1200px) {
   .pad_rlt {
@@ -542,6 +575,10 @@ display: inline-block;
   }
 }
 @media screen and (max-width:991px) {
+  .flex_section .card{margin: 0 10px;}
+  .main-container{
+    padding-left: 0px;
+  }
   .profile_section{ 
     max-width: 100%;
   }
@@ -591,6 +628,11 @@ display: inline-block;
   padding-left: 30px !important;
 }
 }
+@media screen and (max-width:812px) {
+  .flex_main{  
+    display: block;
+  }
+}
 @media screen and (max-width:780px) {
   .card.text-center.single{
     margin-top: 40px;
@@ -624,17 +666,10 @@ display: inline-block;
     padding-top: 10px !important;
   }
   .collapse.navbar-collapse{
-    /*display: flex !important;
-    padding-left: 100px;*/
-  }
-  .navbar-brand{
-    /*position: absolute !important;
-    padding: 12px 15px !important;
-    background: #fff;*/
-  }
+    display: contents !important; 
+  } 
   .navbar .navbar-nav{
-    /*flex-direction: row;
-    margin-top: 0px !important;*/
+    flex-direction: inherit; 
   }
 .main-container .main-content .sharebox ul li{
     flex-direction: column;
@@ -645,7 +680,8 @@ display: inline-block;
 }
 }
 @media screen and (max-width:575px) {
-
+  .flex_section .card{max-width: 100% !important;}
+  .flex_section{flex-direction: column;}
   .tablet_view_content{font-size: 10px !important;    margin: 0px;}
   .custom_responsive_table td {font-size: 12px !important;}
   .table_icons img {

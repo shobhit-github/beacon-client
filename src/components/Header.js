@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { logOut } from "../actions/user";
 import logo from "../assets/images/logo.png";
 import sm_logo from "../assets/images/sm_logo.svg";
-import menu from "../assets/images/hamburgr.png";
+import menu from "../assets/images/hamburgr.svg";
 import "./_styles/header.css";
 import Sidebar from "./Sidebar";
 

@@ -9,31 +9,6 @@ import AlertMsg from "../components/AlertMsg";
 import FrontHeader from "../components/FrontHeader";
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      password_visibility: false,
-      validationErr: null,
-      open: false,
-      loggingIn: false,
-      remember: false
-    };
-    this.handleLogin = this.handleLogin.bind(this);
-  }
-
-  componentDidMount() {
-    const { remember } = this.props.user;
-    if (Object.keys(remember).length) {
-      this.setState({
-        remember: true,
-        email: remember.email,
-        password: remember.password
-      });
-    } else {
-      this.setState({ remember: false, email: "", password: "" });
-    }
-  }
-
   /*************** User Login *************/
   handleLogin = event => {
     event.preventDefault();
@@ -64,7 +39,6 @@ class Login extends Component {
       });
     }
   };
-
   changePasswordVisibility = () => {
     this.setState({
       password_visibility: !this.state.password_visibility
@@ -74,6 +48,31 @@ class Login extends Component {
       !this.state.password_visibility ? `text` : `password`
     );
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            password_visibility: false,
+            validationErr: null,
+            open: false,
+            loggingIn: false,
+            remember: false
+        };
+        this.handleLogin = this.handleLogin.bind(this);
+    }
+
+    componentDidMount() {
+        const {remember} = this.props.user;
+        if (Object.keys(remember).length) {
+            this.setState({
+                remember: true,
+                email: remember.email,
+                password: remember.password
+            });
+        } else {
+            this.setState({remember: false, email: "", password: ""});
+        }
+    }
 
   /************ Remember me function *********/
   remember() {
@@ -198,18 +197,18 @@ class Login extends Component {
 
                     <span className="float-right form-link-text">
                       <Link to="/forgot-password">
-                        Forgot<br />Password?
+                        Forgot
+                        <br/>
+                        Password?
                       </Link>
                     </span>
                   </div>
 
                   <div className="col-sm-12 bottom-bar">
                     <span className="form-link-text">
-                      <a href="">
-                        Don't have an <br />account?{" "}
-                      </a>
+                      Don't have an <br/>
+                      account?{" "}
                     </span>
-
                     <span>
                       <Link to="/register">Sign up</Link>
                     </span>

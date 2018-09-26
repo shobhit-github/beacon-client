@@ -38,6 +38,10 @@ const styles = theme => ({
 /**************** main Tabs class *************/
 
 class ProfileTabs extends Component {
+    handleChange = (event, value) => {
+        this.setState({value});
+    };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -54,10 +58,6 @@ class ProfileTabs extends Component {
       }
     });
   }
-
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
 
   render() {
     const { classes } = this.props;

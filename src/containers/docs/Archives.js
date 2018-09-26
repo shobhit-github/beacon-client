@@ -15,6 +15,40 @@ const ITEM_PER_PAGE = 10,
   PAGE_RANGE_SHOW = 10;
 
 class Archives extends Component {
+    sortRecords = fieldBy => {
+        if (this.state.orderBy) {
+            this.setState({
+                ...this.state,
+                ...{
+                    orderBy: !this.state.orderBy,
+                    records: this.state.records.sort(
+                        (a, b) => (a[fieldBy] > b[fieldBy] ? 1 : -1)
+                    )
+                }
+            });
+        } else {
+            this.setState({
+                ...this.state,
+                ...{
+                    orderBy: !this.state.orderBy,
+                    records: this.state.records.sort(
+                        (a, b) => (a[fieldBy] < b[fieldBy] ? 1 : -1)
+                    )
+                }
+            });
+        }
+    };
+    filterRecords = types => {
+        if (types.length === 0) {
+            this.setState({records: this.props.records});
+        } else {
+            let records = this.props.records.filter(value =>
+                types.includes(value.type)
+            );
+            this.setState({records});
+        }
+    };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -155,41 +189,6 @@ class Archives extends Component {
       ));
   }
 
-  sortRecords = fieldBy => {
-    if (this.state.orderBy) {
-      this.setState({
-        ...this.state,
-        ...{
-          orderBy: !this.state.orderBy,
-          records: this.state.records.sort(
-            (a, b) => (a[fieldBy] > b[fieldBy] ? 1 : -1)
-          )
-        }
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        ...{
-          orderBy: !this.state.orderBy,
-          records: this.state.records.sort(
-            (a, b) => (a[fieldBy] < b[fieldBy] ? 1 : -1)
-          )
-        }
-      });
-    }
-  };
-
-  filterRecords = types => {
-    if (types.length === 0) {
-      this.setState({ records: this.props.records });
-    } else {
-      let records = this.props.records.filter(value =>
-        types.includes(value.type)
-      );
-      this.setState({ records });
-    }
-  };
-
   render() {
     let { records } = this.state;
     records = records.filter(value => value.status === 2);
@@ -266,7 +265,7 @@ class Archives extends Component {
                     <th>Last Updated</th>
                     <th>Media length</th>
                     <th>Created by</th>
-                    <th> Action </th>
+                      <th> Action</th>
                   </tr>
                 </thead>
                 <tbody>{this.list()}</tbody>

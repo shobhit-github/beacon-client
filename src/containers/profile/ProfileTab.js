@@ -41,42 +41,14 @@ const styles = theme => ({
 });
 
 class ProfileTab extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      role: "",
-      company: "",
-      email: "",
-      password: "",
-      update: false,
-      showPassword: false
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
-  }
-  componentDidMount() {
-    const { user } = this.props;
-    this.setState({
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      company: user.company,
-      connect: window.localStorage.googleToken ? true : false,
-      user: user
-    });
-  }
-
   handleClickShowPassword = () => {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
-
   clearLocal = () => {
     window.localStorage.googleToken = "";
     this.state.connect = false;
     this.setState(this.state);
   };
-
   getOauthToken = token => {
     const { user } = this.props;
     if (token) {
@@ -113,7 +85,6 @@ class ProfileTab extends Component {
       localStorage.googleToken = JSON.stringify(obj);
     }
   };
-
   /*************** Profile update *************/
   handleSubmit = event => {
     event.preventDefault();
@@ -135,6 +106,33 @@ class ProfileTab extends Component {
       });
     }
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: "",
+            role: "",
+            company: "",
+            email: "",
+            password: "",
+            update: false,
+            showPassword: false
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
+    }
+
+    componentDidMount() {
+        const {user} = this.props;
+        this.setState({
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            company: user.company,
+            connect: window.localStorage.googleToken ? true : false,
+            user: user
+        });
+    }
 
   render() {
     const { classes, user } = this.props;
@@ -207,32 +205,33 @@ class ProfileTab extends Component {
                 margin="normal"
                 value={email}
               />
-              {/*} <div className="password_option">
-                <InputLabel htmlFor="adornment-password" className="label-class">Password</InputLabel>
-                  <Input
-                    id="pasword"
-                    className={classes.profile}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    type={this.state.showPassword ? 'text' : 'password'}
-                    value={this.state.password}
-                    placeholder="Password"
-                    fullWidth
-                    onChange={(e)=>this.setState({password: e.target.value})}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Toggle password visibility"
-                          onClick={this.handleClickShowPassword}
-                        >
-                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-            </div>
-          */}
+                {/*}
+                <div className="password_option">
+                    <InputLabel htmlFor="adornment-password" className="label-class">Password</InputLabel>
+                    <Input
+                        id="pasword"
+                        className={classes.profile}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        type={this.state.showPassword ? 'text' : 'password'}
+                        value={this.state.password}
+                        placeholder="Password"
+                        fullWidth
+                        onChange={(e) => this.setState({password: e.target.value})}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Toggle password visibility"
+                                    onClick={this.handleClickShowPassword}
+                                >
+                                    {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </div>
+                */}
 
               <button
                 disabled={update}
@@ -321,8 +320,8 @@ class ProfileTab extends Component {
 
               {!this.state.connect ? (
                 <p>
-                  Add a Google account to get the most from Beacon<br /> and
-                  synthesize your research across docs.
+                    Add a Google account to get the most from Beacon
+                    <br/> and synthesize your research across docs.
                 </p>
               ) : (
                 ""

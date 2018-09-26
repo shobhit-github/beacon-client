@@ -11,57 +11,19 @@ import { CircularProgress } from "@material-ui/core/es/index";
 import AlertMsg from "../../components/AlertMsg";
 
 class RecordStep4 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      recordTimer: `00:00`,
-      audioStr: null,
-      audioDuration: 0,
-      timeStamps: [],
-      audioUrl: null,
-      recording: false,
-      open: false,
-      markers: localStorage.chipData ? JSON.parse(localStorage.chipData) : [],
-      interviewSave: false
-    };
-    this.timerInstance = null;
-    this.recordingBufferEvent = this.recordingBufferEvent.bind(this);
-  }
-
-  componentDidMount() {
-    this.timerInstance = new Timer();
-    const $this = this;
-
-    this.timerInstance.addEventListener("secondsUpdated", e => {
-      let timeVal = e.detail.timer
-        .getTimeValues()
-        .toString()
-        .substring(3);
-      let totalDuration = e.detail.timer.getTotalTimeValues().seconds;
-
-      this.setState({
-        ...this.state,
-        ...{ recordTimer: timeVal, audioDuration: totalDuration }
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    localStorage.removeItem("chipData");
-  }
-
   onRecordingChange = () => {
-    this.timerInstance.start();
     this.setState({
       ...this.state,
       ...{ recording: !this.state.recording }
     });
+      this.timerInstance.start();
   };
 
   recordingBufferEvent = AudioRecorderChangeEvent => {
+      console.log(AudioRecorderChangeEvent);
+
     const fileReader = new FileReader();
     fileReader.readAsDataURL(AudioRecorderChangeEvent.blob);
-    console.log("fileReader", fileReader, AudioRecorderChangeEvent);
     fileReader.onload = () => {
       this.setState({
         ...this.state,
@@ -88,7 +50,6 @@ class RecordStep4 extends Component {
       this.refs.marker.value = null;
     }
   };
-
   onChipClick = value => () => {
     //For adding timestamp with the marker
     if (!this.state.recording) return;
@@ -105,12 +66,10 @@ class RecordStep4 extends Component {
       }
     });
   };
-
   deleteMarker = data => () => {
     this.state.markers.splice(this.state.markers.indexOf(data), 1);
     this.setState(this.state);
   };
-
   saveRecord = () => {
     const context = this;
     context.setState({ interviewSave: true });
@@ -137,6 +96,42 @@ class RecordStep4 extends Component {
       }
     );
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            recordTimer: `00:00`,
+            audioStr: null,
+            audioDuration: 0,
+            timeStamps: [],
+            audioUrl: null,
+            recording: false,
+            open: false,
+            markers: localStorage.chipData ? JSON.parse(localStorage.chipData) : [],
+            interviewSave: false
+        };
+        this.recordingBufferEvent = this.recordingBufferEvent.bind(this);
+    }
+
+    componentDidMount() {
+        this.timerInstance = new Timer();
+        let timeVal, totalDuration;
+        this.timerInstance.addEventListener("secondsUpdated", e => {
+            timeVal = e.detail.timer
+                .getTimeValues()
+                .toString()
+                .substring(3);
+            totalDuration = e.detail.timer.getTotalTimeValues().seconds;
+            this.setState({
+                ...this.state,
+                ...{recordTimer: timeVal, audioDuration: totalDuration}
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        localStorage.removeItem("chipData");
+    }
 
   render() {
     const context = this;
@@ -179,9 +174,9 @@ class RecordStep4 extends Component {
                     />
                     {!audioUrl && (
                       <button
-                        className={recording ? "on-rec" : "off-rec"}
-                        onClick={() => this.onRecordingChange()}
-                        type="button"
+                          className={recording ? "on-rec" : "off-rec"}
+                          onClick={this.onRecordingChange}
+                          type="button"
                       >
                         {!recording && (
                           <span>

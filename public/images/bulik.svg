@@ -1,5 +1,5 @@
-
-<svg width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="23px" viewBox="0 0 24 23" version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
     <desc>Created with Sketch.</desc>
     <defs>
@@ -15,7 +15,8 @@
                     </mask>
                     <g id="Mask"></g>
                     <g mask="url(#mask-2)">
-                        <image x="-1" y="-1" width="12" height="9" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAAXNSR0IArs4c6QAAAFtJREFUGBljZiAeKACV/mQmUr0TUN1RIL5NjHqQ4m9APB2IGQlpwKrYEKirGoturIpBNpgCMbqVOBWDNIAAsgJnIB/dALAidAKm6R9QgigPggywA2Js/gHJgQEAnsUT2jlHyDgAAAAASUVORK5CYII="></image>
+                        <image x="-1" y="-1" width="12" height="9"
+                               xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAAXNSR0IArs4c6QAAAFtJREFUGBljZiAeKACV/mQmUr0TUN1RIL5NjHqQ4m9APB2IGQlpwKrYEKirGoturIpBNpgCMbqVOBWDNIAAsgJnIB/dALAidAKm6R9QgigPggywA2Js/gHJgQEAnsUT2jlHyDgAAAAASUVORK5CYII="></image>
                         <use fill="#414965" fill-rule="evenodd" xlink:href="#rect-3"></use>
                     </g>
                 </g>

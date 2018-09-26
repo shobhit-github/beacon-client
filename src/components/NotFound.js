@@ -13,6 +13,7 @@
 */
 
 import React from "react";
+
 const HEIGHT = window.innerHeight;
 
 export default () => {

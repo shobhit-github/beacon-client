@@ -10,6 +10,13 @@ import "../_styles/synthesisDoc.css";
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
 class SynthesisDoc extends Component {
+    createMarkup = value => {
+        return {__html: value.replace(/\n/g, "<br />")};
+    };
+    toggleClass = () => {
+        this.setState({...this.state, ...{active: !this.state.active}});
+    };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,14 +44,6 @@ class SynthesisDoc extends Component {
       }
     );
   }
-
-  createMarkup = value => {
-    return { __html: value.replace(/\n/g, "<br />") };
-  };
-
-  toggleClass = () => {
-    this.setState({ ...this.state, ...{ active: !this.state.active } });
-  };
 
   render() {
     const fontSizeMapper = word => word.value * 15,

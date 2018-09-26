@@ -42,7 +42,8 @@ class RegisterSuccess extends Component {
                   <div className="col-sm-12 form-group">
                     <h6>
                       {" "}
-                      Change my email from <br />email@companyname.com{" "}
+                        Change my email from <br/>
+                        email@companyname.com{" "}
                     </h6>
                   </div>
                 </form>

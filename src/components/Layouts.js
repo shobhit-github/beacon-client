@@ -11,6 +11,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 /*************** Front Layout ***************/
 export const frontLayout = props => (
   <section className="main-content frontend" id="home">

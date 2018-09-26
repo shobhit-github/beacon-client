@@ -13,32 +13,6 @@ import sale from "../assets/images/sale-banner.png";
 import FrontHeader from "../components/FrontHeader";
 
 class RegisterPayment extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      registerError: null,
-      userInfo: {},
-      validateErr: null,
-      coupon: false,
-      couponErr: false,
-      open: false,
-      plan_type: "",
-      isPayment: false
-    };
-    this.makePayment = this.makePayment.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({
-      ...this.state,
-      ...{
-        userInfo: this.props.location.state,
-        plan_type: this.props.location.state.plan_type
-      }
-    });
-  }
-
   makePayment = event => {
     event.preventDefault();
     if (!this.validateInput()) {
@@ -73,7 +47,6 @@ class RegisterPayment extends Component {
       );
     }
   };
-
   validateInput = () => {
     this.state.userInfo = {
       ...this.state.userInfo,
@@ -95,13 +68,38 @@ class RegisterPayment extends Component {
         parseInt(new Date().getFullYear(), 0)
     );
   };
-
   changeBillingPlan = evt => {
     this.setState({
       ...this.state,
       ...{ plan_type: !evt.target.checked ? `startup-plan-yr` : `startup-plan` }
     });
   };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            registerError: null,
+            userInfo: {},
+            validateErr: null,
+            coupon: false,
+            couponErr: false,
+            open: false,
+            plan_type: "",
+            isPayment: false
+        };
+        this.makePayment = this.makePayment.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({
+            ...this.state,
+            ...{
+                userInfo: this.props.location.state,
+                plan_type: this.props.location.state.plan_type
+            }
+        });
+    }
 
   render() {
     const {
@@ -135,7 +133,8 @@ class RegisterPayment extends Component {
                   <div className="d-flex plan-action">
                     <span className="plan-name">
                       {" "}
-                      <img src={sale} className="sale-img" />Yearly
+                        <img src={sale} className="sale-img"/>
+                      Yearly
                     </span>
 
                     <span>

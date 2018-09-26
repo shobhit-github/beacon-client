@@ -85,7 +85,9 @@ class GdriveSteps extends Component {
                   <div className="card-block" key="third">
                     <h3>
                       {" "}
-                      You're all<br />set!
+                        You're all
+                        <br/>
+                        set!
                     </h3>
 
                     <p className="pad_zero">

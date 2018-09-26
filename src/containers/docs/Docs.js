@@ -40,9 +40,243 @@ import {
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
+
 const html = "<div>Example HTML string</div>";
 
 class Docs extends Component {
+    editiorContent = val => {
+        const contentBlock = htmlToDraft(val);
+        let editorState;
+        if (contentBlock) {
+            const contentState = ContentState.createFromBlockArray(
+                contentBlock.contentBlocks
+            );
+            editorState = EditorState.createWithContent(contentState);
+            this.setState({editorState: editorState});
+        }
+    };
+    handleError = error => {
+        throw error.message;
+    };
+    playPauseSong = () => {
+        if (this.state.playing) {
+            document.getElementById("audio").pause();
+            clearInterval(this.state.interval);
+            this.state.interval = 0;
+            this.state.isPaused = 1;
+            this.setState({...this.state});
+        } else {
+            this.state.isPaused = 0;
+            if (this.state.percent >= 100) {
+                this.state.percent = 0;
+                this.state.sec = 0;
+                this.state.isPaused = 0;
+                this.setState({...this.state});
+            }
+            document.getElementById("audio").play();
+            this.progressUpdate();
+        }
+        this.state.playing = !this.state.playing;
+        this.setState({...this.state});
+    };
+    endProgress = () => {
+        clearInterval(this.state.interval);
+        this.state.sec = 0;
+        this.state.interval = 0;
+        this.state.percent = 100;
+        this.state.playing = 0;
+        this.state.isPaused = 1;
+        this.setState({...this.state});
+    };
+    progressUpdate = () => {
+        let length = this.state.record.media_length;
+        this.state.interval = setInterval(this.updateProgress, 1000);
+        this.setState({...this.state});
+    };
+    updateProgress = () => {
+        if (!this.state.isPaused) {
+            this.state.sec += 1;
+            this.state.percent =
+                (this.state.sec / this.state.record.media_length) * 100;
+            this.setState({...this.state});
+            if (this.state.percent === 100) {
+                this.endProgress();
+            }
+        }
+    };
+    pointPlayBubble = seconds => {
+        let timeArr = seconds.split(":");
+        let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
+        this.skipPlay(secs);
+    };
+    skipPlay = data => {
+        if (data === "forward") {
+            data =
+                this.state.sec + 10 >= this.state.record.media_length
+                    ? this.state.record.media_length
+                    : this.state.sec + 10;
+        } else if (data === "back") {
+            data = this.state.sec - 10 <= 0 ? 0 : this.state.sec - 10;
+        }
+        this.state.sec = data - 1;
+        this.state.percent =
+            (this.state.sec / this.state.record.media_length) * 100;
+        document.getElementById("audio").currentTime = data;
+        document.getElementById("audio").play();
+        this.setState({...this.state});
+
+        if (this.state.isPaused) {
+            this.state.sec = data;
+            this.state.isPaused = 0;
+            this.setState({...this.state});
+            this.progressUpdate();
+        }
+    };
+    /************ Edit records title ***********/
+    editTitle = markers => {
+        this.setState({loaderStatus: true});
+        const title = document.getElementById("title").innerHTML,
+            {records, match, updateRecord, user} = this.props,
+            recordObj =
+                markers || _.findWhere(records, {_id: match.params._id}).markers,
+            record = {
+                _id: match.params._id,
+                token: user.token,
+                title,
+                timeStamps: recordObj
+            };
+        updateRecord(record, res => {
+            if (res || !res) {
+                this.setState({loaderStatus: false});
+                this.setState({titleEdit: false});
+                this.setState({title: title});
+            }
+        });
+    };
+    /********** Edit tag values *********/
+    editTag = index => {
+        this.setState({loaderStatus: true});
+        const tagValue = document.getElementById(index).innerHTML,
+            {records, match, updateRecord, user} = this.props,
+            recordObj = _.findWhere(records, {_id: match.params._id});
+        recordObj.markers[index].label = tagValue;
+        const record = {
+            _id: match.params._id,
+            token: user.token,
+            title: recordObj.title,
+            timeStamps: recordObj.markers
+        };
+        updateRecord(record, res => {
+            if (res || !res) {
+                this.setState({loaderStatus: false});
+                this.setState({tagEdit: null});
+            }
+        });
+    };
+    tagEdit = (index, value) => {
+        this.setState({tagEdit: index, tagValue: value});
+    };
+    audioLoaded = () => {
+        this.setState({audioLoaded: true});
+    };
+    createMarkup = value => {
+        return {__html: value.replace(/\n/g, "")};
+    };
+    /********* Handle delete and archive actions **********/
+    handleAction = status => {
+        const {updateRecordStatus, match, user, history} = this.props,
+            obj = {
+                _id: match.params._id,
+                token: user.token,
+                status
+            };
+        updateRecordStatus(obj, res => {
+            if (res) {
+                let path = status === 0 ? "/docs" : "/archives";
+                history.push(path);
+            }
+        });
+    };
+    onClick = data => {
+        if (data === "white") {
+            this.state.showWhite = !this.state.showWhite;
+        } else {
+            this.state.showGreen = !this.state.showGreen;
+        }
+        if (!this.state.showWhite && !this.state.showGreen) {
+            this.state.toggleQuickTip = false;
+        }
+        this.setState({...this.state});
+    };
+    onEditorStateChange = editorState => {
+        this.state.editorContent = [];
+
+        const editorSourceHTML = draftToHtml(
+            convertToRaw(editorState.getCurrentContent())
+        );
+        this.setState({editorState, ...{dynamicHtml: editorSourceHTML}});
+
+        setTimeout(() => {
+            let text = [];
+            let content = [];
+            this.state.contentState.blocks.forEach(re => {
+                if (re.text.trim() !== "") {
+                    if (!this.validateTimeStamp(re.text)) {
+                        text[text.length - 1] += `\n${re.text}`;
+                    } else {
+                        text.push(re.text);
+                    }
+                }
+            });
+
+            text.map((v, i) => {
+                content.push({
+                    timeConstraint: this.state.contentState.entityMap[i].data.title,
+                    label: v
+                        .replace(this.state.contentState.entityMap[i].data.title, "")
+                        .trim()
+                });
+                return content;
+            });
+            this.state.editorContent = content;
+        }, 100);
+    };
+    onContentStateChange = contentState => {
+        const getContentState = convertFromRaw(contentState);
+        const newContentState = stateToHTML(getContentState);
+        this.setState({
+            contentState
+        });
+    };
+    toggleQuickTip = () =>
+        this.setState(prev => {
+            return {
+                toggleQuickTip: !prev.toggleQuickTip,
+                showGreen:
+                    !prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite)
+                        ? true
+                        : false,
+                showWhite:
+                    !prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite)
+                        ? true
+                        : false
+            };
+        });
+    validateTimeStamp = txt =>
+        !(
+            new RegExp(
+                ".*?" +
+                "((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-9])?(?:\\s?(?:am|AM|pm|PM))?)",
+                ["i"]
+            ).exec(txt) === null
+        );
+    handleOpen = () => {
+        this.setState({open: true});
+    };
+    handleClose = () => {
+        this.setState({open: false});
+    };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -212,172 +446,6 @@ class Docs extends Component {
     });
   }
 
-  editiorContent = val => {
-    const contentBlock = htmlToDraft(val);
-    let editorState;
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(
-        contentBlock.contentBlocks
-      );
-      editorState = EditorState.createWithContent(contentState);
-      this.setState({ editorState: editorState });
-    }
-  };
-
-  handleError = error => {
-    throw error.message;
-  };
-
-  playPauseSong = () => {
-    if (this.state.playing) {
-      document.getElementById("audio").pause();
-      clearInterval(this.state.interval);
-      this.state.interval = 0;
-      this.state.isPaused = 1;
-      this.setState({ ...this.state });
-    } else {
-      this.state.isPaused = 0;
-      if (this.state.percent >= 100) {
-        this.state.percent = 0;
-        this.state.sec = 0;
-        this.state.isPaused = 0;
-        this.setState({ ...this.state });
-      }
-      document.getElementById("audio").play();
-      this.progressUpdate();
-    }
-    this.state.playing = !this.state.playing;
-    this.setState({ ...this.state });
-  };
-
-  endProgress = () => {
-    clearInterval(this.state.interval);
-    this.state.sec = 0;
-    this.state.interval = 0;
-    this.state.percent = 100;
-    this.state.playing = 0;
-    this.state.isPaused = 1;
-    this.setState({ ...this.state });
-  };
-
-  progressUpdate = () => {
-    let length = this.state.record.media_length;
-    this.state.interval = setInterval(this.updateProgress, 1000);
-    this.setState({ ...this.state });
-  };
-
-  updateProgress = () => {
-    if (!this.state.isPaused) {
-      this.state.sec += 1;
-      this.state.percent =
-        (this.state.sec / this.state.record.media_length) * 100;
-      this.setState({ ...this.state });
-      if (this.state.percent === 100) {
-        this.endProgress();
-      }
-    }
-  };
-
-  pointPlayBubble = seconds => {
-    let timeArr = seconds.split(":");
-    let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
-    this.skipPlay(secs);
-  };
-
-  skipPlay = data => {
-    if (data === "forward") {
-      data =
-        this.state.sec + 10 >= this.state.record.media_length
-          ? this.state.record.media_length
-          : this.state.sec + 10;
-    } else if (data === "back") {
-      data = this.state.sec - 10 <= 0 ? 0 : this.state.sec - 10;
-    }
-    this.state.sec = data - 1;
-    this.state.percent =
-      (this.state.sec / this.state.record.media_length) * 100;
-    document.getElementById("audio").currentTime = data;
-    document.getElementById("audio").play();
-    this.setState({ ...this.state });
-
-    if (this.state.isPaused) {
-      this.state.sec = data;
-      this.state.isPaused = 0;
-      this.setState({ ...this.state });
-      this.progressUpdate();
-    }
-  };
-
-  /************ Edit records title ***********/
-  editTitle = markers => {
-    this.setState({ loaderStatus: true });
-    const title = document.getElementById("title").innerHTML,
-      { records, match, updateRecord, user } = this.props,
-      recordObj =
-        markers || _.findWhere(records, { _id: match.params._id }).markers,
-      record = {
-        _id: match.params._id,
-        token: user.token,
-        title,
-        timeStamps: recordObj
-      };
-    updateRecord(record, res => {
-      if (res || !res) {
-        this.setState({ loaderStatus: false });
-        this.setState({ titleEdit: false });
-        this.setState({ title: title });
-      }
-    });
-  };
-  /********** Edit tag values *********/
-  editTag = index => {
-    this.setState({ loaderStatus: true });
-    const tagValue = document.getElementById(index).innerHTML,
-      { records, match, updateRecord, user } = this.props,
-      recordObj = _.findWhere(records, { _id: match.params._id });
-    recordObj.markers[index].label = tagValue;
-    const record = {
-      _id: match.params._id,
-      token: user.token,
-      title: recordObj.title,
-      timeStamps: recordObj.markers
-    };
-    updateRecord(record, res => {
-      if (res || !res) {
-        this.setState({ loaderStatus: false });
-        this.setState({ tagEdit: null });
-      }
-    });
-  };
-
-  tagEdit = (index, value) => {
-    this.setState({ tagEdit: index, tagValue: value });
-  };
-
-  audioLoaded = () => {
-    this.setState({ audioLoaded: true });
-  };
-
-  createMarkup = value => {
-    return { __html: value.replace(/\n/g, "") };
-  };
-
-  /********* Handle delete and archive actions **********/
-  handleAction = status => {
-    const { updateRecordStatus, match, user, history } = this.props,
-      obj = {
-        _id: match.params._id,
-        token: user.token,
-        status
-      };
-    updateRecordStatus(obj, res => {
-      if (res) {
-        let path = status === 0 ? "/docs" : "/archives";
-        history.push(path);
-      }
-    });
-  };
-
   getOauthToken(token) {
     const { user, saveUserDriveDetails } = this.props;
     if (token) {
@@ -410,18 +478,6 @@ class Docs extends Component {
       saveUserDriveDetails(obj, res => {});
     }
   }
-
-  onClick = data => {
-    if (data === "white") {
-      this.state.showWhite = !this.state.showWhite;
-    } else {
-      this.state.showGreen = !this.state.showGreen;
-    }
-    if (!this.state.showWhite && !this.state.showGreen) {
-      this.state.toggleQuickTip = false;
-    }
-    this.setState({ ...this.state });
-  };
 
   runProgress(e) {
     this.skipPlay(
@@ -460,80 +516,6 @@ class Docs extends Component {
       });
     }
   }
-
-  onEditorStateChange = editorState => {
-    this.state.editorContent = [];
-
-    const editorSourceHTML = draftToHtml(
-      convertToRaw(editorState.getCurrentContent())
-    );
-    this.setState({ editorState, ...{ dynamicHtml: editorSourceHTML } });
-
-    setTimeout(() => {
-      let text = [];
-      let content = [];
-      this.state.contentState.blocks.forEach(re => {
-        if (re.text.trim() !== "") {
-          if (!this.validateTimeStamp(re.text)) {
-            text[text.length - 1] += `\n${re.text}`;
-          } else {
-            text.push(re.text);
-          }
-        }
-      });
-
-      text.map((v, i) => {
-        content.push({
-          timeConstraint: this.state.contentState.entityMap[i].data.title,
-          label: v
-            .replace(this.state.contentState.entityMap[i].data.title, "")
-            .trim()
-        });
-        return content;
-      });
-      this.state.editorContent = content;
-    }, 100);
-  };
-
-  onContentStateChange = contentState => {
-    const getContentState = convertFromRaw(contentState);
-    const newContentState = stateToHTML(getContentState);
-    this.setState({
-      contentState
-    });
-  };
-
-  toggleQuickTip = () =>
-    this.setState(prev => {
-      return {
-        toggleQuickTip: !prev.toggleQuickTip,
-        showGreen:
-          !prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite)
-            ? true
-            : false,
-        showWhite:
-          !prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite)
-            ? true
-            : false
-      };
-    });
-
-  validateTimeStamp = txt =>
-    !(
-      new RegExp(
-        ".*?" +
-          "((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-9])?(?:\\s?(?:am|AM|pm|PM))?)",
-        ["i"]
-      ).exec(txt) === null
-    );
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
 
   render() {
     const {
@@ -713,7 +695,7 @@ class Docs extends Component {
                     }}
                     dangerouslySetInnerHTML={this.createMarkup(title)}
                     style={{ cursor: "pointer", display: "inline" }}
-                  /> 
+                  />
                   <span style={{ marginLeft: 15 }}>{TITLE_ICONS}</span>
                 </React.Fragment>
               ) : (

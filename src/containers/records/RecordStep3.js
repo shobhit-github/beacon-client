@@ -5,13 +5,6 @@ import { Link } from "react-router-dom";
 import Checkbox from "@material-ui/core/Checkbox";
 
 export default class Step2 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      permissions: { checkOne: true, checkTwo: false }
-    };
-  }
-
   changePermission = name => event => {
     if (name === "checkThree") {
       localStorage.setItem("checkThree", event.target.checked);
@@ -19,6 +12,13 @@ export default class Step2 extends Component {
     this.state.permissions[name] = event.target.checked;
     this.setState(this.state);
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            permissions: {checkOne: true, checkTwo: false}
+        };
+    }
 
   render() {
     return (

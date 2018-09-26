@@ -8,14 +8,6 @@ import { CircularProgress, Icon } from "@material-ui/core/es/index";
 import FrontHeader from "../components/FrontHeader";
 
 class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      registerError: null,
-      agreed: false
-    };
-  }
-
   changePasswordVisibility = () => {
     this.setState({
       password_visibility: !this.state.password_visibility
@@ -25,7 +17,6 @@ class Register extends Component {
       !this.state.password_visibility ? `text` : `password`
     );
   };
-
   passDataToPaymentSection = evt => {
     evt.preventDefault();
 
@@ -57,8 +48,18 @@ class Register extends Component {
       ...{ plan_type: !evt.target.checked ? `startup-plan-yr` : `startup-plan` }
     });
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            registerError: null,
+            agreed: false
+        };
+    }
+
   render() {
     const { registerError, registerIn, agreed } = this.state;
+
     return (
       <div className="container-fluid">
         <div className="row">
@@ -74,7 +75,8 @@ class Register extends Component {
                   <div className="d-flex plan-action">
                     <span className="plan-name">
                       {" "}
-                      <img src={sale} className="sale-img" />Yearly
+                        <img src={sale} className="sale-img"/>
+                      Yearly
                     </span>
 
                     <span>
@@ -206,8 +208,8 @@ class Register extends Component {
                     onClick={() => this.setState({ agreed: !agreed })}
                   >
                     {" "}
-                    <input type="checkbox" />
-                    I agree to the Terms of Service and Privacy Policy
+                      <input type="checkbox"/>I agree to the Terms of Service and
+                      Privacy Policy
                   </label>
 
                   <div className="col-sm-12 form-group">

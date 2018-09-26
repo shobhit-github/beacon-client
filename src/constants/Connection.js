@@ -17,10 +17,12 @@ class Connection {
   static getResturl(url) {
     return `${httpUrl}/${url}`;
   }
-  static getBaseUrl() {
+
+    static getBaseUrl() {
     return httpUrl;
   }
-  static getThirdPartyApiUrl(url) {
+
+    static getThirdPartyApiUrl(url) {
     return `${PATH.THIRD_PARTY_API_URL}/${url}`;
   }
 }

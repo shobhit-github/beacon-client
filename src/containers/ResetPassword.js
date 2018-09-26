@@ -33,7 +33,8 @@ class ResetPassword extends Component {
       });
     }
   }
-  /************ Show/hide passowrd *********/
+
+    /************ Show/hide passowrd *********/
   changePasswordVisibility() {
     this.setState({
       password: !this.state.password
@@ -53,7 +54,8 @@ class ResetPassword extends Component {
       !this.state.confirm_password ? `text` : `password`
     );
   }
-  /************ Submit change password *********/
+
+    /************ Submit change password *********/
   handleChangePassword(event) {
     event.preventDefault();
     const { match, setPassword } = this.props,

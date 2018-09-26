@@ -1,5 +1,5 @@
-
-<svg width="41px" height="40px" viewBox="0 0 41 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41px" height="40px" viewBox="0 0 41 40" version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
     <desc>Created with Sketch.</desc>
     <defs>
@@ -8,9 +8,11 @@
     <g id="MVP-v2-master-GRID" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Tablet---Live-recording" transform="translate(-709.000000, -223.000000)">
             <g id="Group-4" transform="translate(710.000000, 223.000000)">
-                <path d="M19.937224,-0.000844 C30.996652,-0.000844 39.935836,8.939071 39.935836,19.999273 C39.935836,31.059432 30.996652,39.999218 19.937224,39.999218 C8.878785,39.999218 -0.061603,31.059432 -0.061603,19.999273 C-0.061603,8.939071 8.878785,-0.000844 19.937224,-0.000844 Z" id="Rectangle-26-Copy" fill="#C0C5D8"></path>
+                <path d="M19.937224,-0.000844 C30.996652,-0.000844 39.935836,8.939071 39.935836,19.999273 C39.935836,31.059432 30.996652,39.999218 19.937224,39.999218 C8.878785,39.999218 -0.061603,31.059432 -0.061603,19.999273 C-0.061603,8.939071 8.878785,-0.000844 19.937224,-0.000844 Z"
+                      id="Rectangle-26-Copy" fill="#C0C5D8"></path>
                 <g id="activity">
-                    <image x="11" y="12" width="19" height="17" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAARCAYAAAA/mJfHAAAAAXNSR0IArs4c6QAAAQNJREFUOBGllD0KwkAQhaMIgp1eIa3kCDYi2Fja2XkJCy8juYQoIth7CistFC0EsdDvYUZWXH+SffC5m53JOG93SRR9VpNQ93M4X2RN+hUa+V57z45ZumUM38P+lbJ/Oeo76+7cWf5/KotHWEKQVbOYUkgWZfdvq+S+aMSTCvRAm6/OpvBTFTJK0IFalj1gPMEMLrCANqjwHqQ6tEDvSmeYa5KAnZyNEwUy+awqbrk2Jqos3M4UXMEBJHW0BXWoS1yFHWxgDNKzs8fj91/tmZ2q9lJ/qL0tJNdqSgUViwtV4iU71SVz3T/dwyDJqjoKsmgdmNUgi1bMrAZbtIK6GvrOeXUHn/Q+bMBBKhwAAAAASUVORK5CYII="></image>
+                    <image x="11" y="12" width="19" height="17"
+                           xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAARCAYAAAA/mJfHAAAAAXNSR0IArs4c6QAAAQNJREFUOBGllD0KwkAQhaMIgp1eIa3kCDYi2Fja2XkJCy8juYQoIth7CistFC0EsdDvYUZWXH+SffC5m53JOG93SRR9VpNQ93M4X2RN+hUa+V57z45ZumUM38P+lbJ/Oeo76+7cWf5/KotHWEKQVbOYUkgWZfdvq+S+aMSTCvRAm6/OpvBTFTJK0IFalj1gPMEMLrCANqjwHqQ6tEDvSmeYa5KAnZyNEwUy+awqbrk2Jqos3M4UXMEBJHW0BXWoS1yFHWxgDNKzs8fj91/tmZ2q9lJ/qL0tJNdqSgUViwtV4iU71SVz3T/dwyDJqjoKsmgdmNUgi1bMrAZbtIK6GvrOeXUHn/Q+bMBBKhwAAAAASUVORK5CYII="></image>
                     <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#rect-1"></use>
                 </g>
             </g>

@@ -16,6 +16,40 @@ const ITEM_PER_PAGE = 10,
   PAGE_RANGE_SHOW = 10;
 
 class DocsList extends Component {
+    sortRecords = fieldBy => {
+        if (this.state.orderBy) {
+            this.setState({
+                ...this.state,
+                ...{
+                    orderBy: !this.state.orderBy,
+                    records: this.state.records.sort(
+                        (a, b) => (a[fieldBy] > b[fieldBy] ? 1 : -1)
+                    )
+                }
+            });
+        } else {
+            this.setState({
+                ...this.state,
+                ...{
+                    orderBy: !this.state.orderBy,
+                    records: this.state.records.sort(
+                        (a, b) => (a[fieldBy] < b[fieldBy] ? 1 : -1)
+                    )
+                }
+            });
+        }
+    };
+    filterRecords = types => {
+        if (types.length === 0) {
+            this.setState({records: this.props.records});
+        } else {
+            let records = this.props.records.filter(value =>
+                types.includes(value.type)
+            );
+            this.setState({records});
+        }
+    };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -149,7 +183,7 @@ class DocsList extends Component {
           >
             {user && user.name ? user.name.capitalizeEachLetter() : ""}
           </td>
-          <td></td>
+            <td/>
           <td>
             <span className="table_icons">
               {/* {(row.type === 2 || row.type === 1) && (
@@ -187,41 +221,6 @@ class DocsList extends Component {
         </tr>
       ));
   }
-
-  sortRecords = fieldBy => {
-    if (this.state.orderBy) {
-      this.setState({
-        ...this.state,
-        ...{
-          orderBy: !this.state.orderBy,
-          records: this.state.records.sort(
-            (a, b) => (a[fieldBy] > b[fieldBy] ? 1 : -1)
-          )
-        }
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        ...{
-          orderBy: !this.state.orderBy,
-          records: this.state.records.sort(
-            (a, b) => (a[fieldBy] < b[fieldBy] ? 1 : -1)
-          )
-        }
-      });
-    }
-  };
-
-  filterRecords = types => {
-    if (types.length === 0) {
-      this.setState({ records: this.props.records });
-    } else {
-      let records = this.props.records.filter(value =>
-        types.includes(value.type)
-      );
-      this.setState({ records });
-    }
-  };
 
   render() {
     let { records } = this.state;
@@ -303,7 +302,7 @@ class DocsList extends Component {
                     <th>Type</th>
                     <th>Created by</th>
                     <th>Audio length</th>
-                    <th></th>
+                      <th/>
                   </tr>
                 </thead>
                 <tbody>{this.list()}</tbody>
@@ -311,8 +310,11 @@ class DocsList extends Component {
             </div>
           ) : (
             <h4 className="text-center">
-              You have't created any file yet.<br />Add new interview and
-              synthesized<br />research files here.
+                You have't created any file yet.
+                <br/>
+                Add new interview and synthesized
+                <br/>
+                research files here.
             </h4>
           )}
         </div>

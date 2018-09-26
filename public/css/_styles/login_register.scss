@@ -109,10 +109,10 @@ body {
   form input, form select {
     border: 1px solid #eff0f3;
   }
-  form select>option{
+  form select > option {
     font-size: 14px;
   }
-  select>option[selected="selected"]{
+  select > option[selected="selected"] {
     font-size: 14px;
   }
   .input-group > input {
@@ -141,16 +141,16 @@ body {
   .error-msg {
     color: tomato;
   }
-  .welcome-bottom-bar{
+  .welcome-bottom-bar {
     display: flex;
     justify-content: center;
     align-items: center;
-    div.skip{
+    div.skip {
       margin-top: 27px;
       margin-right: 11px;
       color: #b1b5bb;
-      }
-        
+    }
+
   }
 }
 
@@ -468,16 +468,17 @@ input:checked + .slider:before {
 .register-success {
   color: #a1a8c2 !important
 }
-.discount_btn{
-    background: #848daf;
-    color: white;
-    width: 122px;
-    margin-left: 10px;
+
+.discount_btn {
+  background: #848daf;
+  color: white;
+  width: 122px;
+  margin-left: 10px;
 }
 
-.reset-module{
+.reset-module {
   color: #414965;
-  .center-form label{
+  .center-form label {
     font-size: 26px;
     margin-top: 15px;
   }

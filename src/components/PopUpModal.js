@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import moment from "moment";
+
 const styles = theme => ({
   paper: {
     position: "absolute",

@@ -9,6 +9,24 @@ import { Link } from "react-router-dom";
 import { CircularProgress, Icon } from "@material-ui/core/es/index";
 
 class Login extends Component {
+    handleLogin = event => {
+        event.preventDefault();
+        this.props.dispatch(
+            login(this.refs.username.value, this.refs.password.value)
+        );
+        this.refs.username.value = this.refs.password.value = ``;
+    };
+    changePasswordVisibility = () => {
+        this.setState({
+            password_visibility: !this.state.password_visibility
+        });
+        this.refs.password.setAttribute(
+            "type",
+            !this.state.password_visibility ? `text` : `password`
+        );
+    };
+    handleLogout = event => localStorage.removeItem("id_token");
+
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
@@ -134,26 +152,6 @@ class Login extends Component {
       </div>
     );
   }
-
-  handleLogin = event => {
-    event.preventDefault();
-    this.props.dispatch(
-      login(this.refs.username.value, this.refs.password.value)
-    );
-    this.refs.username.value = this.refs.password.value = ``;
-  };
-
-  changePasswordVisibility = () => {
-    this.setState({
-      password_visibility: !this.state.password_visibility
-    });
-    this.refs.password.setAttribute(
-      "type",
-      !this.state.password_visibility ? `text` : `password`
-    );
-  };
-
-  handleLogout = event => localStorage.removeItem("id_token");
 }
 
 Login.contextTypes = {

@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { saveUserDriveDetails } from "../../actions/google-drive";
 import GoogleDriveGenricFunc from "../../components/GoogleDriveGenricFunc";
 import { google_keys as KEY } from "../../constants/app-config";
+
 //import "../_styles/docs.css";
 
 class GoogleDrive extends Component {
@@ -76,7 +77,8 @@ class GoogleDrive extends Component {
       });
     }
   }
-  /************** get docs detail from google *********/
+
+    /************** get docs detail from google *********/
   getDocDetail(folder_id, folder_name) {
     const { user, history } = this.props;
     history.push("/google-sync", { folder_id, user_id: user._id, folder_name });

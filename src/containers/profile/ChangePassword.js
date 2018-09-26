@@ -40,6 +40,37 @@ const styles = theme => ({
 });
 
 class ChangePassword extends Component {
+    handleClickShowPassword = () => {
+        this.setState(state => ({showPassword: !state.showPassword}));
+    };
+    clearLocal = () => {
+        window.localStorage.googleToken = "";
+        this.state.connect = false;
+        this.setState(this.state);
+    };
+    /*************** User Login *************/
+    handleSubmit = event => {
+        event.preventDefault();
+        const {user, setPassword} = this.props;
+        if (this.state.name) {
+            this.setState({update: true});
+            if (!this.state.password) {
+                delete this.state.password;
+            }
+            const obj = {
+                password: this.state.password,
+                _id: user._id,
+                token: user.token
+            };
+
+            setPassword(obj, user._id, res => {
+                if (res || !res) {
+                    this.setState({update: false});
+                }
+            });
+        }
+    };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +85,8 @@ class ChangePassword extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
   }
-  componentDidMount() {
+
+    componentDidMount() {
     const { user } = this.props;
     this.setState({
       name: user.name,
@@ -64,16 +96,6 @@ class ChangePassword extends Component {
       connect: window.localStorage.googleToken ? true : false
     });
   }
-
-  handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
-  };
-
-  clearLocal = () => {
-    window.localStorage.googleToken = "";
-    this.state.connect = false;
-    this.setState(this.state);
-  };
 
   getOauthToken(token) {
     const { user } = this.props;
@@ -111,29 +133,6 @@ class ChangePassword extends Component {
       localStorage.googleToken = JSON.stringify(obj);
     }
   }
-
-  /*************** User Login *************/
-  handleSubmit = event => {
-    event.preventDefault();
-    const { user, setPassword } = this.props;
-    if (this.state.name) {
-      this.setState({ update: true });
-      if (!this.state.password) {
-        delete this.state.password;
-      }
-      const obj = {
-        password: this.state.password,
-        _id: user._id,
-        token: user.token
-      };
-
-      setPassword(obj, user._id, res => {
-        if (res || !res) {
-          this.setState({ update: false });
-        }
-      });
-    }
-  };
 
   render() {
     const { classes, user } = this.props;

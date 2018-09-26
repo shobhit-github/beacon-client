@@ -9,15 +9,6 @@ import FrontHeader from "../components/FrontHeader";
 import AlertMsg from "../components/AlertMsg";
 
 class ForgotPassword extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      processing: false,
-      validationErr: null
-    };
-    this.handleOnClick = this.handleOnClick.bind(this);
-  }
-
   /*************** User Login *************/
   handleOnClick = event => {
     event.preventDefault();
@@ -49,6 +40,15 @@ class ForgotPassword extends Component {
       });
     }
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            processing: false,
+            validationErr: null
+        };
+        this.handleOnClick = this.handleOnClick.bind(this);
+    }
 
   render() {
     let context = this,

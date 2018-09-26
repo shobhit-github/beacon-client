@@ -19,6 +19,7 @@ import sm_logo from "../assets/images/sm_logo.svg";
 import menu from "../assets/images/hamburgr.svg";
 import "./_styles/header.css";
 import Sidebar from "./Sidebar";
+import Loader from "./ProcessingLoader";
 
 const styles = theme => ({
   root: {
@@ -30,32 +31,35 @@ const styles = theme => ({
 });
 
 class Header extends Component {
+    onLogoutClick = () => {
+        const {user, logOut} = this.props;
+        this.setState({...this.state, ...{loaderStatus: true}});
+        logOut({token: user.token}, res => {
+            this.setState({...this.state, ...{loaderStatus: !res}});
+        });
+    };
+    profileLink = () => {
+        this.props.history.replace("/profile");
+    };
+
+    // navToggle() {
+    //   this.props._navToggle(!this.state.navToggle);
+    //   console.log(!this.state.navToggle);
+    //   this.setState({ navToggle: !this.state.navToggle });
+    // }
+
   constructor(props) {
     super(props);
     this.state = {
       navClass: false,
       open: false,
-      toggleLogo: false
+        toggleLogo: false,
+        loaderStatus: false
     };
     // this.navToggle = this.navToggle.bind(this);
     this.onLogoutClick = this.onLogoutClick.bind(this);
     this.profileLink = this.profileLink.bind(this);
   }
-
-  onLogoutClick = () => {
-    const { user, history, logOut } = this.props;
-    logOut({ token: user.token }, res => {});
-  };
-
-  // navToggle() {
-  //   this.props._navToggle(!this.state.navToggle);
-  //   console.log(!this.state.navToggle);
-  //   this.setState({ navToggle: !this.state.navToggle });
-  // }
-
-  profileLink = () => {
-    this.props.history.replace("/profile");
-  };
 
   render() {
     const { user, history } = this.props;
@@ -71,6 +75,7 @@ class Header extends Component {
       !isRegisterPage &&
       !isForgotPasswordPage && (
         <div>
+            <Loader isShowingLoader={this.state.loaderStatus}/>
           <nav
             className={
               toggleLogo
@@ -99,15 +104,6 @@ class Header extends Component {
             </div>
 
             <div id="navbarCollapse" className="collapse navbar-collapse">
-              {/*<form className="form-inline my-2 my-lg-0">
-              <input
-                className="form-control mr-sm-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </form>*/}
-
               <ul
                 style={{ cursor: "pointer" }}
                 onClick={() => this.setState({ open: !this.state.open })}

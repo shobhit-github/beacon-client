@@ -42,38 +42,15 @@ const styles = theme => ({
 });
 
 class WordCloud extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      Keyword: "",
-      update: false,
-      checked: false,
-      keywords: []
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({ keywords: this.props.user.keywords });
-  }
-
   handleKeyword = () => {
     if (this.state.Keyword) {
       this.setState({ keywords: [...this.state.keywords, this.state.Keyword] });
     }
     this.setState({ Keyword: "" });
   };
-
   handleChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
-
-  deleteTag(index) {
-    this.state.keywords.splice(index, 1);
-    this.setState({ ...this.state });
-  }
-
   handleSubmit = () => {
     this.setState({ update: true });
     const { user, updateProfile } = this.props;
@@ -88,6 +65,27 @@ class WordCloud extends Component {
       }
     });
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            Keyword: "",
+            update: false,
+            checked: false,
+            keywords: []
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({keywords: this.props.user.keywords});
+    }
+
+    deleteTag(index) {
+        this.state.keywords.splice(index, 1);
+        this.setState({...this.state});
+    }
 
   render() {
     const { classes } = this.props;

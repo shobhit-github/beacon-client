@@ -41,20 +41,6 @@ const languages = [
 ];
 
 class Language extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      language: "english",
-      update: false
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({ language: this.props.user.language });
-  }
-
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value });
   };
@@ -73,6 +59,21 @@ class Language extends Component {
       }
     });
   };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            language: "english",
+            update: false
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({language: this.props.user.language});
+    }
+
   render() {
     const { classes } = this.props;
     const { update } = this.state;

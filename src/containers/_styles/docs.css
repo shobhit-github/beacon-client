@@ -85,4 +85,19 @@ tbody > tr > td.check {
     color: #fff !important;
 }
 
+.rdw-link-decorator-wrapper .del-timeStamp {
+    position: absolute;
+    background: #999;
+    color: white;
+    border-radius: 17px;
+    font-size: 10px;
+    width: 16px;
+    cursor: pointer;
+    text-align: center;
+    height: 16px;
+    right: -19px;
+    top: 5px;
+    display: none;
+}
+
 

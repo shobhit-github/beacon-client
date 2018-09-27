@@ -6,5 +6,5 @@
  * */
 
 export const auth = store => {
-  return store.getState().user.loggedIn;
+    return store.getState().user.loggedIn;
 };

@@ -679,6 +679,61 @@ h3 {
     align-items: center;
 }
 
+.page_title {
+    color: #4E546C;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 1px;
+    margin: 0px 0 5px 0;
+}
+
+.profile-form form > div {
+    margin: 0 0 5px 0;
+}
+
+.m_top30 {
+    margin-top: 22px;
+}
+
+.btn-default {
+    background: #848DAF;
+    color: #fff;
+    border-radius: 2px !important;
+}
+
+.filter_dropdown img {
+    margin-left: 8px;
+}
+
+.dropdown-menu label {
+    margin: 0px;
+}
+
+.dropdown-menu .checkmark {
+    height: 14px;
+    width: 14px;
+    top: 9px;
+    border: 1px solid #B3C0CF;
+    background-color: #F6F8FB;
+    border-radius: 2px;
+}
+
+.dropdown-menu .checkbox-wrap input:checked ~ .checkmark {
+    background-color: #4E84FD;
+    border: 1px solid #4E84FD;
+}
+
+.dropdown-menu .checkbox-wrap .checkmark::after {
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border-width: 0 1px 1px 0;
+}
+
+.mob_text_info {
+    display: none;
+}
 /*========= responsive css ===========*/
 
 @media screen and (max-width: 1280px) {

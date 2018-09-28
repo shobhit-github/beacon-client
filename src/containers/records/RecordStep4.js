@@ -69,33 +69,29 @@ class RecordStep4 extends Component {
         this.setState(this.state);
     };
     saveRecord = () => {
-
         const params = new FormData();
 
-        params.append('_id', this.props.user._id);
-        params.append('token', this.props.user.token);
-        params.append('timeStamps', JSON.stringify(this.state.timeStamps));
-        params.append('audioBlob', this.state.audioBlob);
-        params.append('length', this.state.audioDuration);
+        params.append("_id", this.props.user._id);
+        params.append("token", this.props.user.token);
+        params.append("timeStamps", JSON.stringify(this.state.timeStamps));
+        params.append("audioBlob", this.state.audioBlob);
+        params.append("length", this.state.audioDuration);
 
         const context = this;
         context.setState({interviewSave: true});
-        this.props.saveRecord(
-            params,
-            res => {
-                if (res.status) {
-                    this.props.history.push(`/docs/${res._id}`);
-                } else {
-                    context.setState({
-                        open: true,
-                        msg: res.message,
-                        msgType: res.type,
-                        msgStatus: res.status,
-                        interviewSave: false
-                    });
-                }
+        this.props.saveRecord(params, res => {
+            if (res.status) {
+                this.props.history.push(`/docs/${res._id}`);
+            } else {
+                context.setState({
+                    open: true,
+                    msg: res.message,
+                    msgType: res.type,
+                    msgStatus: res.status,
+                    interviewSave: false
+                });
             }
-        );
+        });
     };
 
     constructor(props) {
@@ -182,7 +178,7 @@ class RecordStep4 extends Component {
                                             />
                                             {!audioUrl && (
                                                 <button
-                                                    className={recording ? "on-rec" : "off-rec"}
+                                                    className={recording ? "off-rec" : "on-rec"}
                                                     onClick={() => this.onRecordingChange()}
                                                     type="button"
                                                 >

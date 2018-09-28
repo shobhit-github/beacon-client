@@ -10,23 +10,23 @@ import * as TYPE from "../../constants/action-types";
 /******** Reducers ********/
 
 const initialState = {
-    loggedIn: false,
-    remember: {}
+  loggedIn: false,
+  remember: {}
 };
 
 export default function reducer(state = initialState, action) {
-    switch (action.type) {
-        case TYPE.LOGIN_SUCCESS:
-            return {...state, ...{loggedIn: true}, ...action.data};
+  switch (action.type) {
+    case TYPE.LOGIN_SUCCESS:
+      return { ...state, ...{ loggedIn: true }, ...action.data };
 
-        case TYPE.UPDATE_PROFILE:
-            return {...state, ...action.data};
+    case TYPE.UPDATE_PROFILE:
+      return { ...state, ...action.data };
 
-        case TYPE.LOG_OUT:
-            let _remember = state.remember;
-            return {...initialState, ...{remember: _remember}};
+    case TYPE.LOG_OUT:
+      let _remember = state.remember;
+      return { ...initialState, ...{ remember: _remember } };
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 }

@@ -1,18 +1,16 @@
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="21px" viewBox="0 0 24 21" version="1.1"
-     xmlns="http://www.w3.org/2000/svg">
+
+
+<svg width="24px" height="21px" viewBox="0 0 24 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="MVP-v2-master" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Play---Page-with-Otranscribe-functionality" transform="translate(-1348.000000, -249.000000)"
-           fill-rule="nonzero">
+        <g id="Play---Page-with-Otranscribe-functionality" transform="translate(-1348.000000, -249.000000)" fill-rule="nonzero">
             <g id="Google-Drive" transform="translate(1348.000000, 249.000000)">
                 <g id="surface1">
                     <polygon id="Shape" fill="#FFC107" points="8 0 16 0 24 13.7142857 16 13.7142857"></polygon>
-                    <polygon id="Shape" fill="#1976D2"
-                             points="3.92857143 20.5714286 7.96457143 13.7142857 24 13.7142857 20 20.5714286"></polygon>
-                    <polygon id="Shape" fill="#4CAF50"
-                             points="0 13.7857143 3.92857143 20.5714286 12 6.85714286 8 0"></polygon>
+                    <polygon id="Shape" fill="#1976D2" points="3.92857143 20.5714286 7.96457143 13.7142857 24 13.7142857 20 20.5714286"></polygon>
+                    <polygon id="Shape" fill="#4CAF50" points="0 13.7857143 3.92857143 20.5714286 12 6.85714286 8 0"></polygon>
                 </g>
             </g>
         </g>

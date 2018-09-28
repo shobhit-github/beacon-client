@@ -5,26 +5,24 @@
  * @author: Jasdeep Singh
  * */
 
-import {environment as PATH} from "./app-config";
+import { environment as PATH } from "./app-config";
 
 const httpUrl = `${window.location.protocol}//${
-    window.location.protocol === "http:"
-        ? PATH.LOCAL_API_URL
-        : PATH.LOCAL_API_URL
-    }`;
+  window.location.protocol === "http:"
+    ? PATH.LOCAL_API_URL
+    : PATH.STAGING_API_URL
+}`;
 
 class Connection {
-    static getResturl(url) {
-        return `${httpUrl}/${url}`;
-    }
-
-    static getBaseUrl() {
-        return httpUrl;
-    }
-
-    static getThirdPartyApiUrl(url) {
-        return `${PATH.THIRD_PARTY_API_URL}/${url}`;
-    }
+  static getResturl(url) {
+    return `${httpUrl}/${url}`;
+  }
+  static getBaseUrl() {
+    return httpUrl;
+  }
+  static getThirdPartyApiUrl(url) {
+    return `${PATH.THIRD_PARTY_API_URL}/${url}`;
+  }
 }
 
 export default Connection;

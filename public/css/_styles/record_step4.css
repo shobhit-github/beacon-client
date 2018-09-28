@@ -1,113 +1,150 @@
 .record-step4 .home-humility {
-    text-align: center;
-}
+  text-align: center; }
 
 .record-step4 .home-fa-twitter {
-    margin-left: 2em;
-}
+  margin-left: 2em; }
 
 .record-step4 .record-sec canvas {
-    display: none;
-}
+  display: none; }
 
 .record-step4 .record-sec button.on-rec {
-    font-size: 17px;
-    color: #e84748;
-    background-color: white;
-    border: 1px solid #e84748;
-    padding: 7px 14px;
-    border-radius: 4px;
-    outline: none;
-}
+  font-size: 17px;
+  color: #e84748;
+  border: 1px solid rgba(0,0,0,0.11);
+  background-color: #e84748;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  width:36px;
+  height: 36px;
+  border-radius: 100%; 
+  outline: none;
+  line-height: 44px;
+  padding: 0px;
+  padding-left: 4px;
+ }
 
 .record-step4 .record-sec button.off-rec {
-    outline: none;
-    font-size: 17px;
-    color: white;
-    background-color: #e84748;
-    border-radius: 4px;
-    border: none;
-    padding: 7px 14px;
+  outline: none;
+  font-size: 17px;
+  color: white;
+  background-color: #B9C2C9;
+  border: 1px solid rgba(0,0,0,0.11);
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+  padding: 0px; 
+  text-align: center;
+  line-height: 46px; 
+}
+.on-rec span.material-icons{
+  background: url(../../images/record_mac.svg) no-repeat center;
+} 
+.off-rec span.material-icons{
+  background: url(../../images/pause.svg) no-repeat center;
 }
 
 .record-step4 .record-sec button.hasAudio,
 .record-step4 .record-sec button.AudioRecorder-remove,
 .record-step4 .record-sec button.AudioRecorder-download {
-    display: none;
-}
+  display: none; }
 
 .record-step4 .timer {
-    font-size: 20px;
-    margin-left: 13px;
-    margin-top: 4px;
-}
+  font-size: 20px;
+  margin-left: 13px;
+  margin-top: 4px; }
 
 .record-step4 .card-header h2 {
-    font-weight: normal;
-    font-size: 24px;
-}
+  font-weight: normal;
+  font-size: 24px;}
 
 .record-step4 .card-block p {
-    color: #414965;
-    font-weight: bolder;
-    font-size: small;
-    width: 80%;
-    margin: 1em auto 3em;
-}
+  color: #414965;
+  font-weight: bolder;
+  font-size: small;
+  width: 80%;
+  margin: 1em auto 3em; }
 
 .record-step4 .input-group {
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
-    height: 52px;
-}
-
-.record-step4 .input-group input {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  height: 40px; }
+  .record-step4 .input-group input {
     font-size: medium;
-    padding-top: 25px;
-    min-height: 50px;
-    padding-right: 50px;
-}
-
-.record-step4 .input-group label {
+    padding-top:5px; min-height:40px; padding-right: 50px;}
+  .record-step4 .input-group label {
     position: absolute;
     top: 3px;
     left: 13px;
     z-index: 9;
     color: #ced4db;
     font-size: smaller;
-    padding-top: 3px;
-}
-
-.record-step4 .input-group span {
+    padding-top: 3px; }
+  .record-step4 .input-group span {
     position: absolute;
     right: 13px;
-    top: 15px;
-    z-index: 9;
-}
-
-.record-step4 .input-group span i {
-    border: 1px solid gray;
-    border-radius: 50%;
-    font-size: 20px;
-}
+    top: 9px;
+    z-index: 9; }
+    .record-step4 .input-group span i {
+      border: 1px solid gray;
+      border-radius: 50%;
+      font-size: 20px; }
 
 .record-step4 .chip-sec {
-    width: 75%;
-    margin: 0 auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  width: 75%;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-
-.record-step4 .chip-sec .chip {
+  .record-step4 .chip-sec .chip {
     margin: 3px;
-    height: auto;
+    height: auto; }
+    .record-step4 .chip-sec .chip span {
+      font-size: smaller; }
+    .record-step4 .chip-sec .chip svg {
+      font-size: large; }
+.notes_section{
+  display: block;
+  margin: 20px 0 0 0;
 }
-
-.record-step4 .chip-sec .chip span {
-    font-size: smaller;
+.notes_section label{
+  font-size: 14px;
+  text-align: left;
+  color: #4E546C;
+  display: block;
 }
-
-.record-step4 .chip-sec .chip svg {
-    font-size: large;
+.notes_section textarea{
+  height: 133px;
+}
+.recording_options {
+  display: flex;
+  justify-content: space-around;
+}
+.recording_options button{margin: 0 3px; cursor: pointer;}
+.recording_options .save_btn{
+  outline: none;
+  font-size: 17px;
+  color: white;
+  background: #B9C2C9 url(../../images/check.svg)no-repeat center;
+  border: 1px solid rgba(0,0,0,0.11);
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+  padding: 0px; 
+  text-align: center;
+  line-height: 46px; 
+}
+.recording_options .save_btn:hover{ 
+  background: #2DD1AC url(../../images/check.svg)no-repeat center;
+}
+.recording_options .cancel_btn{
+  outline: none;
+  font-size: 17px;
+  color: white;
+  background: #B9C2C9 url(../../images/cancel.svg)no-repeat center;
+  border: 1px solid rgba(0,0,0,0.11);
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+  padding: 0px; 
+  text-align: center;
+  line-height: 46px; 
 }

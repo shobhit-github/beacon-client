@@ -1,75 +1,99 @@
 /********** Docs css **********/
 table {
-  color: #414965;
-  font-size: 14px; }
+    color: #414965;
+    font-size: 14px;
+}
 
 .table thead th {
-  border: none; 
-  color: #414965;
-  font-size: 20px;
+    border: none;
+    color: #414965;
+    font-size: 20px;
 }
 
 .table td, .table th {
-  border: none;
-  padding: 20px;
-  color: #414965;
-  font-size: 16px;
-  font-weight: normal;
-  border-bottom: 13px solid #f6f8fb; 
+    border: none;
+    padding: 20px;
+    color: #414965;
+    font-size: 16px;
+    font-weight: normal;
+    border-bottom: 13px solid #f6f8fb;
 }
 
 .table td:nth-child(1), .table th:nth-child(1) {
-  padding-left:60px; }
-
+    padding-left: 60px;
+}
 
 tbody > tr > td {
-  background-color: #fff; }
- 
+    background-color: #fff;
+}
+
 tbody > tr > td.check {
-  background-color: #fff; }
+    background-color: #fff;
+}
 
 .table td.active {
-  color: #67bdf8; }
+    color: #67bdf8;
+}
 
 .pagination {
-  margin-left: 19px; }
+    margin-left: 19px;
+}
 
 .pagination li {
-  padding: 10px; }
+    padding: 10px;
+}
 
 .rdw-link-decorator-wrapper a {
-  cursor: pointer !important;
-  color: #8E96B5;
-}
-.rdw-link-decorator-icon {
-  display: none !important;
-  visibility: hidden !important;
+    cursor: pointer !important;
+    color: #8E96B5;
 }
 
- /* .picker-dialog-bg {
+.rdw-link-decorator-icon {
     display: none !important;
-  }*/
+    visibility: hidden !important;
+}
+
+/* .picker-dialog-bg {
+   display: none !important;
+ }*/
 
 .history-listing {
-  list-style: none inside none;
-  padding: 0;
-  margin: 15px 0;
-  height: 240px; 
-  overflow: auto;
+    list-style: none inside none;
+    padding: 0;
+    margin: 15px 0;
+    height: 240px;
+    overflow: auto;
 }
 
 .PopUpModal-paper-3 {
-  padding: 20px!important;
+    padding: 20px !important;
 }
+
 .history-listing li {
-  font-size: 15px;
-  line-height: 1.85;
+    font-size: 15px;
+    line-height: 1.85;
 }
+
 .history-title {
-    background-color: #4e84fd!important;
-    padding: 8px!important;
-    border-radius: 5px!important;
-    color: #fff!important;
+    background-color: #4e84fd !important;
+    padding: 8px !important;
+    border-radius: 5px !important;
+    color: #fff !important;
+}
+
+.rdw-link-decorator-wrapper .del-timeStamp {
+    position: absolute;
+    background: #C00;
+    color: white;
+    border-radius: 17px;
+    font-size: 10px;
+    width: 16px;
+    cursor: pointer;
+    text-align: center;
+    height: 16px;
+    left: 0px;
+    top: 5px;
+    display: none;
 }
 
 

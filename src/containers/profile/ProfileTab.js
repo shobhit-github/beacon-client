@@ -1,324 +1,323 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { withStyles } from "@material-ui/core/styles";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {withStyles} from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
-import { CircularProgress } from "@material-ui/core/es/index";
+import {CircularProgress} from "@material-ui/core/es/index";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import { updateProfile } from "../../actions/user";
-import { google_keys as KEY } from "../../constants/app-config";
+import {updateProfile} from "../../actions/user";
+import {google_keys as KEY} from "../../constants/app-config";
 import GooglePicker from "react-google-picker";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import {GoogleLogin, GoogleLogout} from "react-google-login";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  margin: {
-    margin: theme.spacing.unit
-  },
-  withoutLabel: {
-    marginTop: theme.spacing.unit * 3
-  },
-  textField: {
-    flexBasis: 200
-  },
-  profile: {}
+    root: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.paper
+    },
+    container: {
+        display: "flex",
+        flexWrap: "wrap"
+    },
+    margin: {
+        margin: theme.spacing.unit
+    },
+    withoutLabel: {
+        marginTop: theme.spacing.unit * 3
+    },
+    textField: {
+        flexBasis: 200
+    },
+    profile: {}
 });
 
 class ProfileTab extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      role: "",
-      company: "",
-      email: "",
-      password: "",
-      update: false,
-      showPassword: false
+    handleClickShowPassword = () => {
+        this.setState(state => ({showPassword: !state.showPassword}));
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
-  }
-  componentDidMount() {
-    const { user } = this.props;
-    this.setState({
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      company: user.company,
-      connect: window.localStorage.googleToken ? true : false,
-      user: user
-    });
-  }
+    clearLocal = () => {
+        window.localStorage.googleToken = "";
+        this.state.connect = false;
+        this.setState(this.state);
+    };
+    getOauthToken = token => {
+        const {user} = this.props;
+        if (token) {
+            const obj = {
+                details: {
+                    access_token: token.accessToken,
+                    client_id: KEY.CLIENT_ID,
+                    client_secret: KEY.CLIENT_SECRET,
+                    refresh_token: token.accessToken,
+                    token_expiry: "",
+                    token_uri: "https://accounts.google.com/o/oauth2/token",
+                    user_agent: "GDrive",
+                    revoke_uri: "https://accounts.google.com/o/oauth2/revoke",
+                    id_token: null,
+                    id_token_jwt: null,
+                    token_response: {
+                        access_token: token.accessToken,
+                        expires_in: 3600,
+                        refresh_token: token.accessToken,
+                        token_type: "Bearer"
+                    },
+                    scopes: ["https://www.googleapis.com/auth/drive"],
+                    token_info_uri: "https://www.googleapis.com/oauth2/v3/tokeninfo",
+                    invalid: false,
+                    _class: "OAuth2Credentials",
+                    _module: "oauth2client.client"
+                },
+                user_id: user._id
+            };
 
-  handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
-  };
+            this.state.connect = true;
+            this.setState(this.state);
 
-  clearLocal = () => {
-    window.localStorage.googleToken = "";
-    this.state.connect = false;
-    this.setState(this.state);
-  };
-
-  getOauthToken = token => {
-    const { user } = this.props;
-    if (token) {
-      const obj = {
-        details: {
-          access_token: token.accessToken,
-          client_id: KEY.CLIENT_ID,
-          client_secret: KEY.CLIENT_SECRET,
-          refresh_token: token.accessToken,
-          token_expiry: "",
-          token_uri: "https://accounts.google.com/o/oauth2/token",
-          user_agent: "GDrive",
-          revoke_uri: "https://accounts.google.com/o/oauth2/revoke",
-          id_token: null,
-          id_token_jwt: null,
-          token_response: {
-            access_token: token.accessToken,
-            expires_in: 3600,
-            refresh_token: token.accessToken,
-            token_type: "Bearer"
-          },
-          scopes: ["https://www.googleapis.com/auth/drive"],
-          token_info_uri: "https://www.googleapis.com/oauth2/v3/tokeninfo",
-          invalid: false,
-          _class: "OAuth2Credentials",
-          _module: "oauth2client.client"
-        },
-        user_id: user._id
-      };
-
-      this.state.connect = true;
-      this.setState(this.state);
-
-      localStorage.googleToken = JSON.stringify(obj);
-    }
-  };
-
-  /*************** Profile update *************/
-  handleSubmit = event => {
-    event.preventDefault();
-    const { user, updateProfile } = this.props;
-    if (this.state.name) {
-      this.setState({ update: true });
-      if (!this.state.password) {
-        delete this.state.password;
-      }
-      const obj = {
-        ...this.state,
-        _id: user._id,
-        token: user.token
-      };
-      updateProfile(obj, res => {
-        if (res || !res) {
-          this.setState({ update: false });
+            localStorage.googleToken = JSON.stringify(obj);
         }
-      });
+    };
+    /*************** Profile update *************/
+    handleSubmit = event => {
+        event.preventDefault();
+        const {user, updateProfile} = this.props;
+        if (this.state.name) {
+            this.setState({update: true});
+            if (!this.state.password) {
+                delete this.state.password;
+            }
+            const obj = {
+                ...this.state,
+                _id: user._id,
+                token: user.token
+            };
+            updateProfile(obj, res => {
+                if (res || !res) {
+                    this.setState({update: false});
+                }
+            });
+        }
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: "",
+            role: "",
+            company: "",
+            email: "",
+            password: "",
+            update: false,
+            showPassword: false
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
     }
-  };
 
-  render() {
-    const { classes, user } = this.props;
-    const { name, email, update, role, company } = this.state;
-    return (
-      <div className="tab_content">
-        <div className="row">
-          <div className="col-sm-12 col-md-6 profile-form">
-            <h1 className="page_title">Personal Information</h1>
-            <form
-              className={classes.container}
-              noValidate
-              autoComplete="off"
-              onSubmit={this.handleSubmit}
-            >
-              <TextField
-                id="name"
-                label="Name"
-                required
-                error={!name}
-                className={classes.profile}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                placeholder="Full Name"
-                fullWidth
-                margin="normal"
-                value={name}
-                onChange={e => this.setState({ name: e.target.value })}
-              />
+    componentDidMount() {
+        const {user} = this.props;
+        this.setState({
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            company: user.company,
+            connect: window.localStorage.googleToken ? true : false,
+            user: user
+        });
+    }
 
-              <TextField
-                id="role"
-                label="Role"
-                className={classes.profile}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                placeholder="eg. User Researcher"
-                fullWidth
-                margin="normal"
-                onChange={e => this.setState({ role: e.target.value })}
-                value={role}
-              />
-
-              <TextField
-                id="company"
-                label="Company"
-                className={classes.profile}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                placeholder="Company Name"
-                fullWidth
-                margin="normal"
-                onChange={e => this.setState({ company: e.target.value })}
-                value={company}
-              />
-
-              <TextField
-                id="email"
-                label="Email"
-                type="email"
-                disabled
-                className={classes.profile}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                placeholder="example@example.com"
-                fullWidth
-                margin="normal"
-                value={email}
-              />
-              {/*} <div className="password_option">
-                <InputLabel htmlFor="adornment-password" className="label-class">Password</InputLabel>
-                  <Input
-                    id="pasword"
-                    className={classes.profile}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    type={this.state.showPassword ? 'text' : 'password'}
-                    value={this.state.password}
-                    placeholder="Password"
-                    fullWidth
-                    onChange={(e)=>this.setState({password: e.target.value})}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Toggle password visibility"
-                          onClick={this.handleClickShowPassword}
+    render() {
+        const {classes, user} = this.props;
+        const {name, email, update, role, company} = this.state;
+        return (
+            <div className="tab_content">
+                <div className="row">
+                    <div className="col-sm-12 col-md-6 profile-form">
+                        <h1 className="page_title">Personal Information</h1>
+                        <form
+                            className={classes.container}
+                            noValidate
+                            autoComplete="off"
+                            onSubmit={this.handleSubmit}
                         >
-                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-            </div>
-          */}
+                            <TextField
+                                id="name"
+                                label="Name"
+                                required
+                                error={!name}
+                                className={classes.profile}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                placeholder="Full Name"
+                                fullWidth
+                                margin="normal"
+                                value={name}
+                                onChange={e => this.setState({name: e.target.value})}
+                            />
 
-              <h1 className="page_title m_top30">Language</h1>
+                            <TextField
+                                id="role"
+                                label="Role"
+                                className={classes.profile}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                placeholder="eg. User Researcher"
+                                fullWidth
+                                margin="normal"
+                                onChange={e => this.setState({role: e.target.value})}
+                                value={role}
+                            />
 
-              <TextField
-                id="email"
-                label="Email"
-                type="email"
-                disabled
-                className={classes.profile}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                placeholder="example@example.com"
-                fullWidth
-                margin="normal"
-                value={email}
-              />
+                            <TextField
+                                id="company"
+                                label="Company"
+                                className={classes.profile}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                placeholder="Company Name"
+                                fullWidth
+                                margin="normal"
+                                onChange={e => this.setState({company: e.target.value})}
+                                value={company}
+                            />
 
-              <h1 className="page_title m_top30">Password</h1>
+                            <TextField
+                                id="email"
+                                label="Email"
+                                type="email"
+                                disabled
+                                className={classes.profile}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                placeholder="example@example.com"
+                                fullWidth
+                                margin="normal"
+                                value={email}
+                            />
+                            {/*}
+                            <div className="password_option">
+                                <InputLabel htmlFor="adornment-password" className="label-class">Password</InputLabel>
+                                <Input
+                                    id="pasword"
+                                    className={classes.profile}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    type={this.state.showPassword ? 'text' : 'password'}
+                                    value={this.state.password}
+                                    placeholder="Password"
+                                    fullWidth
+                                    onChange={(e) => this.setState({password: e.target.value})}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="Toggle password visibility"
+                                                onClick={this.handleClickShowPassword}
+                                            >
+                                                {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </div>
+                            */}
 
-              <TextField
-                id="email"
-                label="Password"
-                type="Password"
-                disabled
-                className={classes.profile}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                placeholder="example@example.com"
-                fullWidth
-                margin="normal"
-                value={email}
-              />
+                            <h1 className="page_title m_top30">Language</h1>
 
-              <button
-                disabled={update}
-                type="submit"
-                className="btn btn-default m_top30 save_changes_btn"
-              >
-                {update ? (
-                  <CircularProgress size={15} color={"inherit"} />
-                ) : (
-                  `Save Changes`
-                )}
-              </button>
-            </form>
-          </div>
+                            <TextField
+                                id="email"
+                                label="Email"
+                                type="email"
+                                disabled
+                                className={classes.profile}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                placeholder="example@example.com"
+                                fullWidth
+                                margin="normal"
+                                value={email}
+                            />
 
-          <div className="col-sm-12 col-md-5">
-            <div className="profile-pic">
-              <span>{name.charAt(0).capitalizeFirstLetter()}</span>
-            </div>
+                            <h1 className="page_title m_top30">Password</h1>
 
-            <p className="connected_text">
-              Your Google account is connected as:{" "}
-            </p>
-            <div className="profile_text">
-              <div className="user_name_id">
-                <p>Adam Rutger</p>
-                <small>adam@gmail.com</small>
-              </div>
+                            <TextField
+                                id="email"
+                                label="Password"
+                                type="Password"
+                                disabled
+                                className={classes.profile}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                placeholder="example@example.com"
+                                fullWidth
+                                margin="normal"
+                                value={email}
+                            />
 
-              {!this.state.connect ? (
-                <GoogleLogin
-                  clientId={KEY.CLIENT_ID}
-                  onSuccess={this.getOauthToken}
-                  onFailure={this.getOauthToken}
-                >
-                  <a style={{ color: "white" }} className="btn btn-primary">
-                    <img src="../../images/google.svg" /> Connect a Google
-                    account
-                  </a>
-                </GoogleLogin>
-              ) : (
-                <GoogleLogout onLogoutSuccess={this.clearLocal}>
-                  {" "}
-                  <a style={{ color: "white" }} className="btn btn-primary">
-                    {" "}
-                    Change account
-                  </a>
-                </GoogleLogout>
-              )}
+                            <button
+                                disabled={update}
+                                type="submit"
+                                className="btn btn-default m_top30 save_changes_btn"
+                            >
+                                {update ? (
+                                    <CircularProgress size={15} color={"inherit"}/>
+                                ) : (
+                                    `Save Changes`
+                                )}
+                            </button>
+                        </form>
+                    </div>
 
-              {/* !this.state.connect?
+                    <div className="col-sm-12 col-md-5">
+                        <div className="profile-pic">
+                            <span>{name.charAt(0).capitalizeFirstLetter()}</span>
+                        </div>
+
+                        <p className="connected_text">
+                            Your Google account is connected as:{" "}
+                        </p>
+                        <div className="profile_text">
+                            <div className="user_name_id">
+                                <p>Adam Rutger</p>
+                                <small>adam@gmail.com</small>
+                            </div>
+
+                            {!this.state.connect ? (
+                                <GoogleLogin
+                                    clientId={KEY.CLIENT_ID}
+                                    onSuccess={this.getOauthToken}
+                                    onFailure={this.getOauthToken}
+                                >
+                                    <a style={{color: "white"}} className="btn btn-primary">
+                                        <img src="../../images/google.svg"/> Connect a Google
+                                        account
+                                    </a>
+                                </GoogleLogin>
+                            ) : (
+                                <GoogleLogout onLogoutSuccess={this.clearLocal}>
+                                    {" "}
+                                    <a style={{color: "white"}} className="btn btn-primary">
+                                        {" "}
+                                        Change account
+                                    </a>
+                                </GoogleLogout>
+                            )}
+
+                            {/* !this.state.connect?
                
               <GooglePicker
                 clientId={KEY.CLIENT_ID}
@@ -364,37 +363,37 @@ class ProfileTab extends Component {
               </GooglePicker> : <a style={{color:'white'}} onClick={this.clearLocal} className="btn btn-primary"><img src="../../images/google.svg"/> Disconnect from Google</a>
               */}
 
-              {!this.state.connect ? (
-                <p>
-                  Add a Google account to get the most from Beacon
-                  <br /> and synthesize your research across docs.
-                </p>
-              ) : (
-                ""
-              )}
+                            {!this.state.connect ? (
+                                <p>
+                                    Add a Google account to get the most from Beacon
+                                    <br/> and synthesize your research across docs.
+                                </p>
+                            ) : (
+                                ""
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        );
+    }
 }
 
 ProfileTab.propTypes = {
-  user: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  updateProfile: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    updateProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+    user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateProfile: bindActionCreators(updateProfile, dispatch)
+    updateProfile: bindActionCreators(updateProfile, dispatch)
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(withStyles(styles)(ProfileTab));

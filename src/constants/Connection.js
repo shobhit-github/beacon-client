@@ -10,7 +10,7 @@ import {environment as PATH} from "./app-config";
 const httpUrl = `${window.location.protocol}//${
     window.location.protocol === "http:"
         ? PATH.LOCAL_API_URL
-        : PATH.STAGING_API_URL
+        : PATH.LOCAL_API_URL
     }`;
 
 class Connection {

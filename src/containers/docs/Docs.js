@@ -10,7 +10,6 @@ import draftToHtml from "draftjs-to-html";
 import {stateToHTML} from "draft-js-export-html";
 import Download from "@axetroy/react-download";
 
-
 import Loader from "../../components/ProcessingLoader";
 import {environment as env} from "../../constants/app-config";
 import {
@@ -30,15 +29,13 @@ import {
     EditorState,
     convertToRaw,
     ContentState,
-    convertFromRaw,
+    convertFromRaw
 } from "draft-js";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
 
-
 class Docs extends Component {
-
     editiorContent = val => {
         const contentBlock = htmlToDraft(val);
         let editorState;
@@ -114,7 +111,8 @@ class Docs extends Component {
             data = this.state.sec - 10 <= 0 ? 0 : this.state.sec - 10;
         }
         this.state.sec = data - 1;
-        this.state.percent = (this.state.sec / this.state.record.media_length) * 100;
+        this.state.percent =
+            (this.state.sec / this.state.record.media_length) * 100;
         document.getElementById("audio").currentTime = data;
         document.getElementById("audio").play();
         this.setState({...this.state});
@@ -183,7 +181,6 @@ class Docs extends Component {
 
     /********* Handle delete and archive actions **********/
     handleAction = status => {
-
         const {updateRecordStatus, match, user, history} = this.props,
             obj = {
                 _id: match.params._id,
@@ -210,7 +207,6 @@ class Docs extends Component {
         this.setState({...this.state});
     };
     onEditorStateChange = editorState => {
-
         this.state.editorContent = [];
 
         const editorSourceHTML = draftToHtml(
@@ -219,7 +215,6 @@ class Docs extends Component {
         this.setState({editorState, ...{dynamicHtml: editorSourceHTML}});
 
         setTimeout(() => {
-
             let text = [];
             let content = [];
 
@@ -246,10 +241,9 @@ class Docs extends Component {
         }, 100);
     };
     onContentStateChange = contentState => {
-
-        $('span.del-timeStamp').remove();
+        $("span.del-timeStamp").remove();
         $(".public-DraftStyleDefault-block")
-            .find('span.rdw-link-decorator-wrapper')
+            .find("span.rdw-link-decorator-wrapper")
             .append(`<span class="del-timeStamp">&times;</span>`);
 
         const getContentState = convertFromRaw(contentState);
@@ -260,8 +254,8 @@ class Docs extends Component {
         this.setState(prev => {
             return {
                 toggleQuickTip: !prev.toggleQuickTip,
-                showGreen: (!prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite)),
-                showWhite: (!prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite))
+                showGreen: !prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite),
+                showWhite: !prev.toggleQuickTip || (!prev.showGreen && !prev.showWhite)
             };
         });
     validateTimeStamp = txt =>
@@ -394,7 +388,8 @@ class Docs extends Component {
             const compDurationMin = Math.trunc(sec / 60);
             const compDurationSec = sec % 60;
             const completedAudioDuration = `${
-                compDurationMin < 9 ? '0' + compDurationMin : compDurationMin}:${compDurationSec < 9 ? '0' + compDurationSec : compDurationSec}`;
+                compDurationMin < 9 ? "0" + compDurationMin : compDurationMin
+                }:${compDurationSec < 9 ? "0" + compDurationSec : compDurationSec}`;
 
             //e.ctrlKey && (e.which === 106 || e.which === 74)
             if (e.ctrlKey && (e.which === 106 || e.which === 74)) {
@@ -474,34 +469,49 @@ class Docs extends Component {
     }
 
     jQueryUses($this) {
-
-        const draftBlock = 'div.public-DraftStyleDefault-block';
-        const timeBlock = 'span.rdw-link-decorator-wrapper';
+        const draftBlock = "div.public-DraftStyleDefault-block";
+        const timeBlock = "span.rdw-link-decorator-wrapper";
 
         let timeValue;
 
         setTimeout(() => {
-
-            $(draftBlock).find(timeBlock)
+            $(draftBlock)
+                .find(timeBlock)
                 .append(`<span class="del-timeStamp">&times;</span>`);
 
-            $(document).on("click", timeBlock + ' a', function () {
+            $(document).on("click", timeBlock + " a", function () {
                 $this.pointPlayBubble($(this).text());
             });
             $(document).on("mouseover", draftBlock, function () {
-                $(this).find('span.del-timeStamp').show();
+                $(this)
+                    .find("span.del-timeStamp")
+                    .show();
             });
             $(document).on("mouseout", draftBlock, function () {
-                $(this).find('span.del-timeStamp').hide();
+                $(this)
+                    .find("span.del-timeStamp")
+                    .hide();
             });
             $(document).on("click", ".del-timeStamp", function () {
-                timeValue = $(this).closest(timeBlock).find('a').text();
-                $(this).closest('div[data-block]').remove();
+                timeValue = $(this)
+                    .closest(timeBlock)
+                    .find("a")
+                    .text();
+                $(this)
+                    .closest("div[data-block]")
+                    .remove();
             });
         }, 50);
 
         $(".timers").focusout(function () {
-            $this.setState({...$this.state, ...{editorContent: $this.state.editorContent.filter(val => (val.timeConstraint !== timeValue))}});
+            $this.setState({
+                ...$this.state,
+                ...{
+                    editorContent: $this.state.editorContent.filter(
+                        val => val.timeConstraint !== timeValue
+                    )
+                }
+            });
             $this.editTitle($this.state.editorContent);
         });
     }
@@ -526,7 +536,6 @@ class Docs extends Component {
                 folder_id: folder_id
             };
             googleSaveDoc(obj, res => {
-
                 if (res.status) {
                     const data = {
                         _id: recordObj._id,
@@ -600,7 +609,6 @@ class Docs extends Component {
                 </button>
             );
         };
-
 
         return (
             <div className="main-content">

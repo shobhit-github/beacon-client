@@ -17,7 +17,7 @@
   border-radius: 100%; 
   outline: none;
   line-height: 44px;
-  padding: 0px;
+    padding: 0;
   padding-left: 4px;
  }
 
@@ -30,12 +30,13 @@
   width: 36px;
   height: 36px;
   border-radius: 100%;
-  padding: 0px; 
+    padding: 0;
   text-align: center;
   line-height: 46px; 
 }
 .on-rec span.material-icons{
   background: url(../../images/record_mac.svg) no-repeat center;
+    font-size: 23px;
 } 
 .off-rec span.material-icons{
   background: url(../../images/pause.svg) no-repeat center;
@@ -144,7 +145,7 @@
   width: 36px;
   height: 36px;
   border-radius: 100%;
-  padding: 0px; 
+    padding: 0;
   text-align: center;
   line-height: 46px; 
 }

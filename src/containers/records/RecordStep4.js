@@ -10,15 +10,27 @@ import Chip from "@material-ui/core/Chip";
 import {CircularProgress} from "@material-ui/core/es/index";
 import AlertMsg from "../../components/AlertMsg";
 
+
 class RecordStep4 extends Component {
+
+
     onRecordingChange = () => {
-        this.timerInstance.start();
-        this.setState({
-            ...this.state,
-            ...{recording: !this.state.recording}
-        });
+
+        this.setState({...this.state, ...{recording: !this.state.recording}});
+
+        setTimeout(() => {
+            if (this.state.recording) {
+                this.timerInstance.start();
+                return window.addEventListener('beforeunload', ($event) => $event.returnValue = `You have attempted to leave this page. Are you sure?`);
+            }
+            this.timerInstance.stop();
+        }, 10)
+
     };
+
+
     recordingBufferEvent = AudioRecorderChangeEvent => {
+
         const fileReader = new FileReader();
         fileReader.readAsDataURL(AudioRecorderChangeEvent.blob);
 
@@ -34,6 +46,8 @@ class RecordStep4 extends Component {
             this.timerInstance.stop();
         };
     };
+
+
     addMarker = e => {
         if (e.key === "Enter" && this.refs.marker.value !== "") {
             this.state.markers = this.state.markers.filter(
@@ -48,14 +62,14 @@ class RecordStep4 extends Component {
             this.refs.marker.value = null;
         }
     };
+
+
     onChipClick = value => () => {
+
         //For adding timestamp with the marker
         if (!this.state.recording) return;
 
-        this.state.timeStamps.push({
-            timeConstraint: this.state.recordTimer,
-            label: value
-        });
+        this.state.timeStamps.push({timeConstraint: this.state.recordTimer, label: value});
 
         this.setState({
             ...this.state,
@@ -64,10 +78,14 @@ class RecordStep4 extends Component {
             }
         });
     };
+
+
     deleteMarker = data => () => {
         this.state.markers.splice(this.state.markers.indexOf(data), 1);
         this.setState(this.state);
     };
+
+
     saveRecord = () => {
         const params = new FormData();
 
@@ -94,6 +112,7 @@ class RecordStep4 extends Component {
         });
     };
 
+
     constructor(props) {
         super(props);
         this.state = {
@@ -103,6 +122,8 @@ class RecordStep4 extends Component {
             audioDuration: 0,
             timeStamps: [],
             audioUrl: null,
+            micPermission: false,
+            confirmBox: false,
             recording: false,
             open: false,
             markers: localStorage.chipData ? JSON.parse(localStorage.chipData) : [],
@@ -112,106 +133,138 @@ class RecordStep4 extends Component {
         this.recordingBufferEvent = this.recordingBufferEvent.bind(this);
     }
 
+
     componentDidMount() {
+
         this.timerInstance = new Timer();
         const $this = this;
 
+        navigator.mediaDevices.getUserMedia({audio: true})
+            .then(function (stream) {
+                console.log('adfhsdilfh')
+                $this.setState({...$this.state, ...{micPermission: true}});
+            })
+            .catch(function (err) {
+                $this.setState({...$this.state, ...{micPermission: false}});
+            });
+
+
         this.timerInstance.addEventListener("secondsUpdated", e => {
             let timeVal = e.detail.timer
-                .getTimeValues()
-                .toString()
-                .substring(3);
+                .getTimeValues().toString().substring(3);
             let totalDuration = e.detail.timer.getTotalTimeValues().seconds;
 
-            this.setState({
-                ...this.state,
-                ...{recordTimer: timeVal, audioDuration: totalDuration}
-            });
+            this.setState({...this.state, ...{recordTimer: timeVal, audioDuration: totalDuration}});
         });
     }
 
+
     componentWillUnmount() {
         localStorage.removeItem("chipData");
+
     }
+
 
     render() {
         const context = this;
-        const {
-            recordTimer,
-            audioStr,
-            markers,
-            recording,
-            audioUrl,
-            interviewSave
-        } = this.state;
+        const {recordTimer, audioStr, markers, recording, audioUrl, micPermission, interviewSave, confirmBox} = this.state;
 
         return (
             <div className="main-content">
+
                 <div className="row record-step4">
+
                     <AlertMsg
-                        onPress={() => context.setState({open: false})}
-                        isShowingModal={this.state.open}
-                        msg={this.state.msg}
-                        type={this.state.msgType}
-                        status={this.state.msgStatus}
+                        onPress={() => this.setState({...this.state, ...{confirmBox: false}})}
+                        isShowingModal={confirmBox}
+                        msg={'Are you sure want to exit the recording?'}
+                        actionConfirmed={() => {
+                            this.timerInstance.reset();
+                            this.setState({
+                                recordTimer: `00:00`,
+                                audioStr: null,
+                                audioBlob: {},
+                                audioDuration: 0,
+                                timeStamps: [],
+                                audioUrl: null,
+                                micPermission: false,
+                                confirmBox: false,
+                                recording: false,
+                                open: false,
+                                markers: [],
+                                interviewSave: false
+                            });
+                            setTimeout(() => {
+                                this.props.history.push('/dashboard')
+                            }, 10)
+
+                        }}
+                        type={'warning'}
+                        status={'warning'}
                     />
+
                     <div className="step_section">
                         <div className="card text-center single">
                             <div className="beta-tag">Beta</div>
 
                             <div className="card-header">
                                 <label className="step-count">STEP 4 of 4</label>
-
                                 <h2>Record your session</h2>
                             </div>
 
                             <div className="card-block">
                                 <div className="form-group d-flex justify-content-center mt-3">
                                     <div className="recording_options">
-                                        <button className="cancel_btn"/>
+
+                                        <button type="button" onClick={() => {
+                                            if (recording) {
+                                                this.setState({...this.state, ...{confirmBox: true}})
+                                            }
+                                        }} className="cancel_btn"></button>
 
                                         <div className="record-sec">
+
                                             <ReactMic
                                                 record={recording}
                                                 className="react-mic-addon"
                                                 onStop={this.recordingBufferEvent}
                                             />
-                                            {!audioUrl && (
+                                            {console.log(audioUrl, micPermission)}
+                                            {!audioUrl && micPermission && (
                                                 <button
                                                     className={recording ? "off-rec" : "on-rec"}
                                                     onClick={() => this.onRecordingChange()}
                                                     type="button"
                                                 >
                                                     {!recording && (
-                                                        <span>
-                              {" "}
+                                                        <span> {" "}
                                                             <Icon> </Icon>{" "}
-                            </span>
+                                                    </span>
                                                     )}
                                                     {recording && (
                                                         <span>
-                              {" "}
+                                                        {" "}
                                                             <Icon> </Icon>{" "}
-                            </span>
+                                                    </span>
                                                     )}
                                                 </button>
                                             )}
                                         </div>
 
-                                        <button
-                                            disabled={audioStr == null || interviewSave}
-                                            onClick={() => this.saveRecord()}
-                                            className="save_btn"
-                                        >
-                                            {interviewSave ? (
-                                                <CircularProgress size={15} color={"inherit"}/>
-                                            ) : (
-                                                ``
-                                            )}
+                                        <button disabled={audioStr == null || interviewSave}
+                                                onClick={() => this.saveRecord()} className="save_btn">
                                         </button>
+
                                     </div>
 
-                                    <div className="timer">{recordTimer}</div>
+                                    <div className="timer">
+                                        {interviewSave ? (
+                                            <CircularProgress size={15} color={"inherit"}/>
+                                        ) : (
+                                            recordTimer
+                                        )}
+
+                                    </div>
                                 </div>
 
                                 <div className="input-group mt-4">
@@ -253,7 +306,8 @@ class RecordStep4 extends Component {
                     </div>
                 </div>
             </div>
-        );
+        )
+            ;
     }
 }
 

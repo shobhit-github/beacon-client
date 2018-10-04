@@ -61,9 +61,9 @@ class DocsList extends Component {
             isDelete: false,
             _id: null,
             confirmBox: false,
-            deleteConfirmed: false,
             records: props.records,
-            orderBy: true
+            orderBy: true,
+            deleteParams: []
         };
         this.indexOfLastList = ITEM_PER_PAGE;
         this.indexOfFirstList = this.indexOfLastList - ITEM_PER_PAGE;
@@ -82,8 +82,10 @@ class DocsList extends Component {
         });
     }
 
-    secToHHMMSS = seconds => `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m ${Math.floor((seconds % 3600) % 60)}s`
-
+    secToHHMMSS = seconds =>
+        `${Math.floor(seconds / 3600)}h ${Math.floor(
+            (seconds % 3600) / 60
+        )}m ${Math.floor((seconds % 3600) % 60)}s`;
 
     /************ Active page on change of pagination ***********/
     handlePageChange(pageNumber) {
@@ -95,13 +97,13 @@ class DocsList extends Component {
     /****************** update record status ****************/
 
     updateStatus(_id, status) {
+
         const {user, updateRecordStatus, history} = this.props;
         if (status === 2) {
-            this.setState({isArchive: false, _id, confirmBox: true});
+            this.setState({isArchive: false, _id});
         } else {
             this.setState({isDelete: true, _id});
         }
-
 
         updateRecordStatus({_id, status, token: user.token}, res => {
             if (res) {
@@ -177,7 +179,6 @@ class DocsList extends Component {
                                     : `/synthesis-doc/${row._id}`
                             }
                         >
-
                             {row.type === 2 || row.type === 1 ? "BeaconDoc" : "Summary"}
                         </Link>
                     </td>
@@ -195,16 +196,15 @@ class DocsList extends Component {
                     <td>{this.secToHHMMSS(row.media_length)}</td>
                     <td>
             <span className="table_icons">
-
-
-                <a
-                    href="javascript:void(0);"
-                    onClick={e => {
-                        e.stopPropagation();
-                        this.updateStatus(row._id, 2);
-                    }}
-                    disabled={isDelete && _id === row._id}
-                >
+              <a
+                  href="javascript:void(0);"
+                  onClick={e => {
+                      e.stopPropagation();
+                      this.setState({...this.state, ...{deleteParams: [row._id, 2], confirmBox: true}})
+                      // this.updateStatus(row._id, 2);
+                  }}
+                  disabled={isDelete && _id === row._id}
+              >
                 {isDelete && _id === row._id ? (
                     <CircularProgress size={15} color={"inherit"}/>
                 ) : (
@@ -218,20 +218,21 @@ class DocsList extends Component {
     }
 
     render() {
-        let {records, deleteConfirmed, confirmBox} = this.state;
+        let {records, confirmBox, deleteParams} = this.state;
         records = records.filter(value => value.status === 1 || value.status === 0);
 
         return (
             <div style={{paddingTop: "30px"}} className="main-content">
-
-                {/*<AlertMsg
+                <AlertMsg
                     onPress={() => this.setState({...this.state, ...{confirmBox: false}})}
                     isShowingModal={confirmBox}
                     msg={'Are you sure?'}
-                    actionConfirmed={() => this.updateStatus()}
+                    actionConfirmed={() => {
+                        this.updateStatus(...deleteParams)
+                    }}
                     type={'warning'}
                     status={'warning'}
-                />*/}
+                />
 
                 <div className="col-sm-12">
                     <div style={{marginBottom: "18px"}} className="fillter_section">
@@ -276,10 +277,9 @@ class DocsList extends Component {
                       width="15px"
                   />
                 <ul className="dropdown-menu">
-
-                    <li>
+                  <li>
                     {" "}
-                        <span onClick={() => this.filterRecords([1, 2])}>
+                      <span onClick={() => this.filterRecords([1, 2])}>
                       <label className="checkbox-wrap">
                         Beacon Doc
                         <input type="checkbox"/>{" "}

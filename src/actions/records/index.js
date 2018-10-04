@@ -22,10 +22,10 @@ export const update_records_status = data => ({
 
 /****** action creator for save records ********/
 export const saveRecord = (params, cb) => {
-    const userId = params.get('_id'),
-        token = params.get('token');
-    params.delete('_id');
-    params.delete('token');
+    const userId = params.get("_id"),
+        token = params.get("token");
+    params.delete("_id");
+    params.delete("token");
     return dispatch => {
         RestClient.file(`transcriptions/uploadInterview/${userId}`, params, token)
             .then(result => {

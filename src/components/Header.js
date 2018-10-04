@@ -57,23 +57,25 @@ class Header extends Component {
         // this.navToggle = this.navToggle.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.profileLink = this.profileLink.bind(this);
-
-
     }
 
     logoVisibility() {
-
-        return (this.state.toggleLogo) ?
-            setTimeout(() => {
+        return this.state.toggleLogo
+            ? setTimeout(() => {
                 this.setState({
                     ...this.state,
                     ...{smallLogo: true, largeLogo: false}
-                }), 400
-            }) : setTimeout(() => this.setState({
-                ...this.state,
-                ...{smallLogo: false, largeLogo: true}
-            }), 400)
-
+                }),
+                    400;
+            })
+            : setTimeout(
+                () =>
+                    this.setState({
+                        ...this.state,
+                        ...{smallLogo: false, largeLogo: true}
+                    }),
+                400
+            );
     }
 
     render() {
@@ -84,7 +86,6 @@ class Header extends Component {
         const isLoginPage = pathname.indexOf("register") > -1;
         const isRegisterPage = pathname.indexOf("login") > -1;
         const isForgotPasswordPage = pathname.indexOf("forgot_password") > -1;
-
 
         return (
             !isLoginPage &&
@@ -100,10 +101,18 @@ class Header extends Component {
                     >
                         <div className="navbar-brand">
                             <Link to="/" className="pull-left">
-                                <img src={logo} alt="logo" style={{display: (largeLogo && 'block') || 'none'}}
-                                     className="lg_logo"/>
-                                <img src={sm_logo} alt="logo" style={{display: (smallLogo && 'block') || 'none'}}
-                                     className="sm_logo"/>
+                                <img
+                                    src={logo}
+                                    alt="logo"
+                                    style={{display: (largeLogo && "block") || "none"}}
+                                    className="lg_logo"
+                                />
+                                <img
+                                    src={sm_logo}
+                                    alt="logo"
+                                    style={{display: (smallLogo && "block") || "none"}}
+                                    className="sm_logo"
+                                />
                             </Link>
 
                             <a
@@ -114,16 +123,14 @@ class Header extends Component {
                                     this.setState({
                                         navClass: !navClass,
                                         toggleLogo: !toggleLogo
-                                    })
-                                }
-                                }
+                                    });
+                                }}
                             >
                                 <img src={menu} alt="logo"/>
                             </a>
                         </div>
 
                         <div id="navbarCollapse" className="collapse navbar-collapse">
-
                             <ul
                                 style={{cursor: "pointer"}}
                                 onClick={() => this.setState({open: !this.state.open})}

@@ -21,7 +21,8 @@ class RecordStep4 extends Component {
         setTimeout(() => {
             if (this.state.recording) {
                 this.timerInstance.start();
-                return window.addEventListener('beforeunload', ($event) => $event.returnValue = `You have attempted to leave this page. Are you sure?`);
+                return window.addEventListener('beforeunload', ($event) =>
+                    $event.returnValue = `Are you sure you want to cancel your recording? You cannot get your audio back after you do this.`);
             }
             this.timerInstance.stop();
         }, 10)
@@ -50,10 +51,17 @@ class RecordStep4 extends Component {
 
     addMarker = e => {
         if (e.key === "Enter" && this.refs.marker.value !== "") {
-            this.state.markers = this.state.markers.filter(
-                r => r.label !== this.refs.marker.value
-            );
+            this.state.markers = this.state.markers
+                .filter(
+                    r => r.label !== this.refs.marker.value
+                );
+
             this.state.markers.push({label: this.refs.marker.value});
+
+            if (this.state.markers.length > 6) {
+                delete this.state.markers[0]
+            }
+
             this.setState({
                 ...this.state,
                 ...{markers: this.state.markers}
@@ -94,6 +102,7 @@ class RecordStep4 extends Component {
         params.append("timeStamps", JSON.stringify(this.state.timeStamps));
         params.append("audioBlob", this.state.audioBlob);
         params.append("length", this.state.audioDuration);
+        params.append("notes", this.state.recordingNotes);
 
         const context = this;
         context.setState({interviewSave: true});
@@ -123,6 +132,7 @@ class RecordStep4 extends Component {
             timeStamps: [],
             audioUrl: null,
             micPermission: false,
+            recordingNotes: null,
             confirmBox: false,
             recording: false,
             open: false,
@@ -141,7 +151,6 @@ class RecordStep4 extends Component {
 
         navigator.mediaDevices.getUserMedia({audio: true})
             .then(function (stream) {
-                console.log('adfhsdilfh')
                 $this.setState({...$this.state, ...{micPermission: true}});
             })
             .catch(function (err) {
@@ -167,7 +176,7 @@ class RecordStep4 extends Component {
 
     render() {
         const context = this;
-        const {recordTimer, audioStr, markers, recording, audioUrl, micPermission, interviewSave, confirmBox} = this.state;
+        const {recordTimer, audioStr, markers, recording, audioUrl, micPermission, interviewSave, confirmBox, recordingNotes} = this.state;
 
         return (
             <div className="main-content">
@@ -190,6 +199,7 @@ class RecordStep4 extends Component {
                                 micPermission: false,
                                 confirmBox: false,
                                 recording: false,
+                                recordingNotes: null,
                                 open: false,
                                 markers: [],
                                 interviewSave: false
@@ -220,7 +230,7 @@ class RecordStep4 extends Component {
                                             if (recording) {
                                                 this.setState({...this.state, ...{confirmBox: true}})
                                             }
-                                        }} className="cancel_btn"></button>
+                                        }} className="cancel_btn">&nbsp;</button>
 
                                         <div className="record-sec">
 
@@ -229,7 +239,7 @@ class RecordStep4 extends Component {
                                                 className="react-mic-addon"
                                                 onStop={this.recordingBufferEvent}
                                             />
-                                            {console.log(audioUrl, micPermission)}
+
                                             {!audioUrl && micPermission && (
                                                 <button
                                                     className={recording ? "off-rec" : "on-rec"}
@@ -299,6 +309,8 @@ class RecordStep4 extends Component {
                                 <label>Take notes below</label>
                                 <textarea
                                     className="form-control"
+                                    value={recordingNotes}
+                                    onChange={evt => this.setState({...this.state, ...{recordingNotes: evt.target.value}})}
                                     placeholder="Enter notes here"
                                 />
                             </div>

@@ -361,6 +361,9 @@ class Docs extends Component {
                 );
             })
             : [];
+
+        // finalString +=  `<p>&nbsp;</p><p>&nbsp;</p><p>${record.notes || ``}</p>`;
+
         mainDiv += finalString;
         mainDiv += "</div>";
         this.setState({dynamicHtml: mainDiv});

@@ -4,12 +4,11 @@ import {bindActionCreators} from "redux";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import _ from "underscore";
-import {CircularProgress} from "@material-ui/core/es/index";
 import htmlToDraft from "html-to-draftjs";
+import {CircularProgress} from "material-ui";
 import draftToHtml from "draftjs-to-html";
 import {stateToHTML} from "draft-js-export-html";
 import Download from "@axetroy/react-download";
-
 import Loader from "../../components/ProcessingLoader";
 import {environment as env} from "../../constants/app-config";
 import {
@@ -34,6 +33,7 @@ import {
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
+import AlertMsg from "../../components/AlertMsg";
 
 class Docs extends Component {
     editiorContent = val => {
@@ -128,6 +128,7 @@ class Docs extends Component {
     /************ Edit records title ***********/
     editTitle = markers => {
         this.setState({loaderStatus: true});
+        const noteDescription = this.state.record.notes;
         const title = document.getElementById("title").innerHTML,
             {records, match, updateRecord, user} = this.props,
             recordObj =
@@ -136,6 +137,7 @@ class Docs extends Component {
                 _id: match.params._id,
                 token: user.token,
                 title,
+                notes: noteDescription,
                 timeStamps: recordObj
             };
         updateRecord(record, res => {
@@ -284,6 +286,7 @@ class Docs extends Component {
             sec: 0,
             toggleQuickTip: true,
             isPaused: 1,
+            confirmDelete: false,
             duration: 0,
             titleEdit: false,
             title: "",
@@ -477,6 +480,16 @@ class Docs extends Component {
 
         let timeValue;
 
+        const settingUpStats = () =>
+            $this.setState({
+                ...$this.state,
+                ...{
+                    editorContent: $this.state.editorContent.filter(
+                        val => val.timeConstraint !== timeValue
+                    )
+                }
+            });
+
         setTimeout(() => {
             $(draftBlock)
                 .find(timeBlock)
@@ -504,19 +517,24 @@ class Docs extends Component {
                     .closest("div[data-block]")
                     .remove();
             });
-        }, 50);
 
-        $(".timers").focusout(function () {
-            $this.setState({
-                ...$this.state,
-                ...{
-                    editorContent: $this.state.editorContent.filter(
-                        val => val.timeConstraint !== timeValue
-                    )
+            $(document).keydown(function (event) {
+                settingUpStats();
+
+                if (
+                    !(
+                        String.fromCharCode(event.which).toLowerCase() === "s" &&
+                        event.ctrlKey
+                    ) &&
+                    !(event.which === 19)
+                ) {
+                    return true;
                 }
+                $this.editTitle($this.state.editorContent);
+                event.preventDefault();
+                return false;
             });
-            $this.editTitle($this.state.editorContent);
-        });
+        }, 50);
     }
 
     runProgress(e) {
@@ -560,6 +578,7 @@ class Docs extends Component {
     render() {
         const {
             record,
+            confirmDelete,
             percent,
             sec,
             listItems,
@@ -574,6 +593,8 @@ class Docs extends Component {
             open,
             history
         } = this.state;
+        const {updateRecordStatus, match, user} = this.props;
+
         const totalDurationMin = Math.trunc(duration / 60);
         const totalDurationSec = duration % 60;
         const compDurationMin = Math.trunc(sec / 60);
@@ -615,6 +636,26 @@ class Docs extends Component {
 
         return (
             <div className="main-content">
+                <AlertMsg
+                    onPress={() =>
+                        this.setState({...this.state, ...{confirmDelete: false}})
+                    }
+                    isShowingModal={confirmDelete}
+                    msg={"Are you sure want to delete this document?"}
+                    actionConfirmed={() => {
+                        updateRecordStatus(
+                            {_id: match.params._id, token: user.token, status: 2},
+                            res => {
+                                if (res) {
+                                    this.props.history.push("/docs");
+                                }
+                            }
+                        );
+                    }}
+                    type={"warning"}
+                    status={"warning"}
+                />
+
                 <div className="row">
                     <Loader isShowingLoader={this.state.loaderStatus}/>
                     <div
@@ -759,7 +800,12 @@ class Docs extends Component {
                                     <li>
                                         <a
                                             href="javascript:void(0);"
-                                            onClick={() => this.handleAction(0)}
+                                            onClick={() =>
+                                                this.setState({
+                                                    ...this.state,
+                                                    ...{confirmDelete: true}
+                                                })
+                                            }
                                         >
                                             Delete
                                         </a>
@@ -787,6 +833,29 @@ class Docs extends Component {
                                     onEditorStateChange={this.onEditorStateChange}
                                     onContentStateChange={this.onContentStateChange}
                                 />
+                            </div>
+
+                            <div className="text_notes">
+                <textarea
+                    placeholder={"Please add notes..."}
+                    onChange={e =>
+                        this.setState({
+                            ...this.state,
+                            ...{
+                                record: {
+                                    ...this.state.record,
+                                    ...{notes: e.target.value}
+                                }
+                            }
+                        })
+                    }
+                    name=""
+                    id=""
+                    cols="30"
+                    rows="10"
+                >
+                  {record.notes}
+                </textarea>
                             </div>
 
                             <p className="time_stamp">

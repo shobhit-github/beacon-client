@@ -91,9 +91,32 @@ tbody > tr > td.check {
     cursor: pointer;
     text-align: center;
     height: 16px;
-    left: 0px;
+    left: 0;
     top: 5px;
     display: none;
 }
 
+.text_notes {
+    float: left;
+    margin-top: 19%;
+    width: 100%;
+    text-align: center;
+}
+
+.text_notes textarea {
+    height: 83px;
+    width: 87%;
+    margin-left: 15%;
+    outline: none;
+    font-weight: 100;
+    color: rgb(68, 68, 85);
+    z-index: auto;
+    position: relative;
+    line-height: 24px;
+    font-size: 11px !important;
+    transition: none 0s ease 0s;
+    background: transparent !important;
+    border: 1px dashed #CCC;
+    padding-left: 10px;
+}
 

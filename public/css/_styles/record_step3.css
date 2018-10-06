@@ -3,7 +3,6 @@
 
 .record-step3 .home-fa-twitter {
   margin-left: 2em; }
-
 .record-step3 .card-header h2 {
   font-weight: normal;
   font-size: 24px;}
@@ -11,8 +10,11 @@
 .record-step3 .card-block p {
   color: #414965;
   font-weight: bolder;
-  font-size: 14px;
-  margin:0px auto 15px; }
+    font-size: 16px;
+    line-height: normal;
+    width: 95%;
+    margin: 12px auto 10px;
+}
 
 .record-step3 .card-block ol li {
   font-size: 12px;
@@ -25,3 +27,21 @@
 .record-step3 .form-check.d-flex span {
   height: 21px !important; }
   .btn.btn-primary{margin-top: 0px !important;}
+
+.record-step3 .card.single .card-block .btn-primary {
+    margin-top: 50px !important;
+}
+
+.record-step3 .card.single ol {
+    max-width: 318px;
+    margin: 10px auto;
+}
+
+.record-step3 .card.single .card-block .btn-primary {
+    margin-top: 50px !important;
+}
+
+.record-step3 .card.single ol {
+    max-width: 318px;
+    margin: 10px auto;
+}

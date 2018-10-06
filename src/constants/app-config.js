@@ -5,13 +5,12 @@
  * @author: Jasdeep Singh
  */
 
-
 export const environment = {
     API_ROOT:
         window.location.protocol === "https:"
-            ? `https://localhost:4190/`
+            ? `https://stagingsdei.com:4190/`
             : `https://localhost:4190/`,
-    LOCAL_API_URL: `localhost:4190`,
+    LOCAL_API_URL: `localhost:4189`,
     STAGING_API_URL: `stagingsdei.com:4190`,
     THIRD_PARTY_API_URL: `https://7698f1db.ngrok.io` //`http://172.24.1.52:8080`
 };

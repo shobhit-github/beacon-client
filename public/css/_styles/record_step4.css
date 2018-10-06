@@ -142,7 +142,8 @@
 }
 
 .notes_section textarea {
-    height: 133px;
+    height: 157px !important;
+    border: 1px solid #E8E9ED;
 }
 
 .recording_options {
@@ -157,6 +158,7 @@
 
 .recording_options .save_btn {
     outline: none;
+    position: relative;
     font-size: 17px;
     color: white;
     background: #B9C2C9 url(../../images/check.svg) no-repeat center;
@@ -185,4 +187,12 @@
     padding: 0;
     text-align: center;
     line-height: 46px;
+}
+
+.d-flex.mt-3 {
+    margin-top: 10px !important;
+}
+
+.d-flex.mt-3 {
+    margin-top: 10px !important;
 }

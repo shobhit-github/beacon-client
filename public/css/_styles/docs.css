@@ -74,9 +74,9 @@
 } 
 .main-container .main-content .player-div .player .download-icon i {
   background: url(../../images/download.svg)no-repeat center; 
-  
 }
 .chip-sec .chip{
+  justify-content: space-between;
   background: #848DAF !important;
   min-height: 30px;
   font-size: 16px;
@@ -145,7 +145,7 @@ content:'';
   opacity: 0;
 }
 .record-step1 .input-group input, .record-step4 .input-group input {
-  min-height: 50px;
+  min-height: 40px;
 } 
 .add_icon{
   background: url(../../images/plus_icon.svg)no-repeat center;
@@ -159,8 +159,8 @@ content:'';
  
 .step_section{
   margin: 0 auto;
-  width: 95%;
-  max-width: 650px;
+  /* width: 95%;
+  max-width: 650px; */
 }
 .card-block .form-control{
   border: 1px solid #E8E9ED;
@@ -171,7 +171,7 @@ content:'';
   font-size: 11px !important;
 }
 .record-step1 .input-group input {
-  padding-top: 20px !important;
+  padding-top: 6px !important;
 } 
 .main-container .main-content{position: relative;}
 .main-container .main-content .docs-wrapper h1{
@@ -371,17 +371,17 @@ content: none;
   min-width: 100% !important;
 }
 .lg_logo{
-    /*display: none;*/
+  display: none;
 }
 .sm_logo{
-    /*display: inline-block;*/
+  display: inline-block;
   max-height: 26px;
 }
 .collapse-logo .sm_logo{
-    /*display: none;*/
+  display: none;
 }
 .collapse-logo .lg_logo{
-    /*display: inline-block;*/
+  display: inline-block;
 }
 .navbar-nav li.profile_dropdown > div{
   position: absolute;
@@ -526,7 +526,6 @@ display: inline-block;
 .rdw-link-decorator-wrapper {
     position: absolute !important;
     left: 0;
-    padding-left: 20px;
 }
 .main-container{
   padding-left: 100px;
@@ -553,9 +552,11 @@ display: inline-block;
   justify-content:center; 
 }
 .flex_section .card{
-  max-width: 335px !important;
-  margin:0 70px;
+  max-width: 336px !important;
+  margin: 0 72px;
   margin-bottom: 25px !important;
+  margin-top: 47px;
+  min-height: 552px !important;
 } 
 .flex_main{  
       display: flex;
@@ -595,7 +596,7 @@ display: inline-block;
   box-shadow: 0 2px 4.7px 0.3px rgba(117,117,117,0.10);
   background: #fff;
   position: absolute;
-  top: 20px;
+  top: 13px;
   left: 20px;
 }
 .back_dashboard_btn img{
@@ -707,6 +708,47 @@ border-color: transparent;
   .mob_text_info{
     display: none;
   }
+
+.card.text-center.single {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.btn_tooltip {
+  position: absolute;
+  left: 3px;
+  top: -25px;
+  background: #fff;
+  border: 1px solid #DFE1E9;
+  color: #98A8B9;
+  font-size: 12px;
+  padding: 0px 8px;
+  border-radius: 3px;
+  font-style: normal;
+  opacity: 0;
+  transition: ease-in-out 0.5s;
+  -webkit-transition: ease-in-out 0.5s;
+  line-height: normal;
+  min-width: 55px;
+}
+
+.btn_tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 20%;
+  background: #fff;
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  transform: rotate(45deg);
+  border-bottom: 1px solid #DFE1E9;
+  border-right: 1px solid #DFE1E9;
+}
+
+.save_btn:hover .btn_tooltip {
+  opacity: 1;
+}
 /*========= responsive css ===========*/
 
 @media screen and (max-width:1280px) {
@@ -716,7 +758,11 @@ border-color: transparent;
   .card{
     max-width: 100% !important;
   }
-  .flex_section .card{margin: 0 30px;}
+
+  .flex_section .card {
+    margin: 47px 10px 0 10px;
+    width: 310px;
+  }
 }
 @media screen and (max-width:1200px) {
   .pad_rlt {
@@ -774,7 +820,6 @@ border-color: transparent;
     flex: 0 0 100% !important; 
     max-width: 100% !important;
   }
-  .flex_section .card{margin: 0 10px;}
   .main-container{
     padding-left: 0px;
   }
@@ -792,10 +837,10 @@ border-color: transparent;
   overflow: hidden;
 }
 .sm_logo {
-    /*display: inline-block;*/
+  display: inline-block;
 }
 .lg_logo {
-    /*display: none;*/
+  display: none;
 }
 .main-container .main-content{
   padding-left: 15px !important;
@@ -807,10 +852,10 @@ border-color: transparent;
   width: 183px !important;
 }
 .collapse-logo.navbar .navbar-brand .sm_logo {
-    /*display: none;*/
+  display: none;
 }
 .collapse-logo.navbar .navbar-brand .lg_logo {
-    /*display: inline-block;*/
+  display: inline-block;
 }
 .main-container.collapse-sidebar .sidebar ul li a span {
   opacity: 1 !important;
@@ -839,11 +884,17 @@ border-color: transparent;
   }
 }
 @media screen and (max-width:780px) {
-  .card.text-center.single{
-    margin-top: 40px;
-  }
+
 }
-@media screen and (max-width:767px) {
+
+@media screen and (max-width: 767px) {
+  .card.text-center.single{
+    margin-top: 30px;
+  }
+
+  .flex_section .card {
+    padding: 10px 15px !important;
+  }
   .main-container .main-content .sharebox ul li{
     font-size: 0 !important;
     margin-bottom: 0px !important;
@@ -910,14 +961,52 @@ display: none;
 }
 .user_name_id p{margin-bottom: 0px !important;}
 }
-@media screen and (max-width:575px) {
-  
+
+@media screen and (max-width: 575px) {
+  .card.single {
+    width: 95% !important;
+  }
   .botm_menu{right: 5px; bottom: 70px;}
+
+  .card.text-center.single {
+    margin-top: 0px;
+    min-height: auto;
+  }
   .sharebox {
         right: 5px;
         bottom: 90px;
   }
-  .flex_section .card{max-width: 100% !important;}
+
+  .card.dashboard h2 {
+    margin-top: 20px !important;
+  }
+
+  .card.dashboard img {
+    margin: 0px auto 10px !important;
+    width: 55px;
+  }
+
+  .card-block p {
+    margin-bottom: 15px !important;
+    min-height: auto !important;
+    font-size: 12px !important;
+    line-height: 22px !important;
+  }
+
+  .main-container .main-content .flex_section .card h2 {
+    font-size: 16px !important;
+  }
+
+  .card .beta-tag {
+    display: none;
+  }
+
+  .flex_section .card {
+    max-width: 100% !important;
+    width: 90%;
+    margin: 0 auto;
+    min-height: auto !important;
+  }
   .flex_section{flex-direction: column;}
   .tablet_view_content{font-size: 10px !important;  margin: 0px;}
   .custom_responsive_table td:nth-child(2), 
@@ -1010,5 +1099,17 @@ display: none;
   }
   .profile_section header button span{
     font-size: 11px !important;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .record-step1 .chip-sec .chip {
+    width: 47% !important;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .record-step1 .chip-sec .chip {
+    width: 47% !important;
   }
 }

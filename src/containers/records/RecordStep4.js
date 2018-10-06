@@ -181,7 +181,10 @@ class RecordStep4 extends Component {
         } = this.state;
 
         return (
-            <div className="main-content">
+            <div className="main-content flex_main">
+                <a href="#" className="back_dashboard_btn">
+                    <img src="../../images/back.svg" alt=""/> Back to Dashboard
+                </a>
                 <div className="row record-step4">
                     <AlertMsg
                         onPress={() =>
@@ -275,7 +278,9 @@ class RecordStep4 extends Component {
                                             disabled={audioStr == null || interviewSave}
                                             onClick={() => this.saveRecord()}
                                             className="save_btn"
-                                        />
+                                        >
+                                            <span className="btn_tooltip">Save</span>
+                                        </button>
                                     </div>
 
                                     <div className="timer">

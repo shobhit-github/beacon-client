@@ -661,11 +661,9 @@ body {
     padding-right: 0;
     padding-left: 0;
   }
-
   .card.dashboard, .card.single {
     padding: 10px 15px;
   }
-
   .card-header {
     padding: 0;
   }
@@ -861,15 +859,13 @@ ul.dropdown-menu.dropdown_sub.show {
   background: none !important;
   box-shadow: none !important;
 }
-
 .main_navbar .navbar-toggler {
   color: rgba(0, 0, 0, .5);
   border-color: rgba(0, 0, 0, .1);
 }
-
 .navbar-toggler-icon {
+  /*background-image: ;*/
 }
-
 .navbar-toggler-icon {
     display: inline-block;
     width: 1.5em;
@@ -881,7 +877,7 @@ ul.dropdown-menu.dropdown_sub.show {
 }
 
 .pad_zero, .record-step1 .card-block p.pad_zero {
-  padding: 0 !important;
+  padding: 0px !important;
   margin-bottom: 20px;
 }
 
@@ -889,7 +885,6 @@ ul.dropdown-menu.dropdown_sub.show {
   color: #4E546C !important;
   font-size: 19px;
 }
-
 .form-check span {
   width: 37px;
   height: auto;
@@ -903,14 +898,13 @@ ul.dropdown-menu.dropdown_sub.show {
 
 @media screen and (max-width: 1024px) {
   .back_dashboard_btn {
-    font-size: 0;
+    font-size: 0px;
     line-height: 35px;
     text-align: center;
     top: 40px;
   }
-
   .back_dashboard_btn img {
-    margin: 0;
+    margin: 0px;
   }
 }
 
@@ -930,7 +924,6 @@ ul.dropdown-menu.dropdown_sub.show {
   .main-container .main-content {
     padding: 20px 15px 15px 0;
   }
-
   .card.single label.step-count {
     padding-top: 40px;
         padding-bottom: 5px;
@@ -948,11 +941,9 @@ ul.dropdown-menu.dropdown_sub.show {
   .btn.btn-primary {
     margin-top: 10px;
   }
-
   .card-footer {
     padding-bottom: 0px !important;
   }
-
   .card.single {
     padding-bottom: 10px !important;
   }
@@ -969,12 +960,10 @@ ul.dropdown-menu.dropdown_sub.show {
 @media (max-width: 575px) {
   .record-step1 .card-block p {
     margin: 0px auto 10px;
-  }
-
+  } 
   .main-container .main-content h2 {
     font-size: 16px;
   }
-
   .card-header a, .card-footer a {
     font-size: 10px;
   }

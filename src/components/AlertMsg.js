@@ -16,7 +16,6 @@ import React from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 
 const AlertMsg = props => {
-
     return (
         <div>
             {props.isShowingModal && (

@@ -97,7 +97,6 @@ class DocsList extends Component {
     /****************** update record status ****************/
 
     updateStatus(_id, status) {
-
         const {user, updateRecordStatus, history} = this.props;
         if (status === 2) {
             this.setState({isArchive: false, _id});
@@ -116,8 +115,6 @@ class DocsList extends Component {
                 this.setState({isArchive: false, isDelete: false, _id: null});
             }
         });
-
-
     }
 
     /************ List of docs **********/
@@ -145,6 +142,7 @@ class DocsList extends Component {
                         }}
                     >
             <span
+                className={"no_wrap_text"}
                 dangerouslySetInnerHTML={{__html: row.title.replace(/\n/g, "")}}
             />
                         <p className="mob_text_info">
@@ -152,47 +150,9 @@ class DocsList extends Component {
                             <span>1h 7m 18s</span>
                         </p>
                     </td>
-                    <td
-                        onClick={e => {
-                            this.props.history.push(
-                                row.type === 2 || row.type === 1
-                                    ? `/docs/${row._id}`
-                                    : `/synthesis-doc/${row._id}`
-                            );
-                        }}
-                    >
-                        {moment(row.updated_at).format("LLL")}
-                    </td>
-                    <td
-                        onClick={e => {
-                            this.props.history.push(
-                                row.type === 2 || row.type === 1
-                                    ? `/docs/${row._id}`
-                                    : `/synthesis-doc/${row._id}`
-                            );
-                        }}
-                    >
-                        <Link
-                            to={
-                                row.type === 2 || row.type === 1
-                                    ? `/docs/${row._id}`
-                                    : `/synthesis-doc/${row._id}`
-                            }
-                        >
-                            {row.type === 2 || row.type === 1 ? "BeaconDoc" : "Summary"}
-                        </Link>
-                    </td>
-                    <td
-                        onClick={e => {
-                            this.props.history.push(
-                                row.type === 2 || row.type === 1
-                                    ? `/docs/${row._id}`
-                                    : `/synthesis-doc/${row._id}`
-                            );
-                        }}
-                    >
-                        {user && user.name ? user.name.capitalizeEachLetter() : ""}
-                    </td>
+                    <td>{moment(row.updated_at).format("LLL")}</td>
+                    <td>{row.type === 2 || row.type === 1 ? "BeaconDoc" : "Summary"}</td>
+                    <td>{user && user.name ? user.name.capitalizeEachLetter() : ""}</td>
                     <td>{this.secToHHMMSS(row.media_length)}</td>
                     <td>
             <span className="table_icons">
@@ -200,7 +160,10 @@ class DocsList extends Component {
                   href="javascript:void(0);"
                   onClick={e => {
                       e.stopPropagation();
-                      this.setState({...this.state, ...{deleteParams: [row._id, 2], confirmBox: true}})
+                      this.setState({
+                          ...this.state,
+                          ...{deleteParams: [row._id, 2], confirmBox: true}
+                      });
                       // this.updateStatus(row._id, 2);
                   }}
                   disabled={isDelete && _id === row._id}
@@ -224,14 +187,16 @@ class DocsList extends Component {
         return (
             <div style={{paddingTop: "30px"}} className="main-content">
                 <AlertMsg
-                    onPress={() => this.setState({...this.state, ...{confirmBox: false}})}
+                    onPress={() =>
+                        this.setState({...this.state, ...{confirmBox: false}})
+                    }
                     isShowingModal={confirmBox}
-                    msg={'Are you sure?'}
+                    msg={"Are you sure?"}
                     actionConfirmed={() => {
-                        this.updateStatus(...deleteParams)
+                        this.updateStatus(...deleteParams);
                     }}
-                    type={'warning'}
-                    status={'warning'}
+                    type={"warning"}
+                    status={"warning"}
                 />
 
                 <div className="col-sm-12">

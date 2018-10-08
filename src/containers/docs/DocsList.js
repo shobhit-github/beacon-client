@@ -51,6 +51,10 @@ class DocsList extends Component {
             this.setState({records});
         }
     };
+    secToHHMMSS = seconds =>
+        `${Math.floor(seconds / 3600)}h ${Math.floor(
+            (seconds % 3600) / 60
+        )}m ${Math.floor((seconds % 3600) % 60)}s`;
 
     constructor(props) {
         super(props);
@@ -81,11 +85,6 @@ class DocsList extends Component {
             }
         });
     }
-
-    secToHHMMSS = seconds =>
-        `${Math.floor(seconds / 3600)}h ${Math.floor(
-            (seconds % 3600) / 60
-        )}m ${Math.floor((seconds % 3600) % 60)}s`;
 
     /************ Active page on change of pagination ***********/
     handlePageChange(pageNumber) {

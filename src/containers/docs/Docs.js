@@ -142,9 +142,14 @@ class Docs extends Component {
             };
         updateRecord(record, res => {
             if (res || !res) {
+                let temp = ``;
+                res.data.markers.map(value => {
+                    temp += value.timeConstraint + "    " + value.label + "\n";
+                });
+
                 this.setState({loaderStatus: false});
                 this.setState({titleEdit: false});
-                this.setState({title: title});
+                this.setState({title: title, docData: temp});
             }
         });
     };
@@ -268,11 +273,39 @@ class Docs extends Component {
                 ["i"]
             ).exec(txt) === null
         );
+
     handleOpen = () => {
         this.setState({open: true});
     };
+
     handleClose = () => {
         this.setState({open: false});
+    };
+
+    addAdditionalMarkers = () => {
+        const {sec} = this.state;
+        const compDurationMin = Math.trunc(sec / 60);
+        const compDurationSec = sec % 60;
+        const completedAudioDuration = `${
+            compDurationMin < 9 ? "0" + compDurationMin : compDurationMin
+            }:${compDurationSec < 9 ? "0" + compDurationSec : compDurationSec}`;
+
+        let timeStamp = completedAudioDuration.split(":");
+        timeStamp = parseInt(timeStamp[1]);
+        if (timeStamp > 0) {
+            let markerData = this.state.record;
+            if (markerData) {
+                let markers = markerData.markers;
+                markerData.markers.push({timeConstraint: completedAudioDuration});
+                this.setState({record: markerData});
+            }
+            let newTimeStamp = `<p><a href="javascript:void(0)">${completedAudioDuration}</a></p>`;
+            let dynamicHtml = this.state.dynamicHtml;
+
+            dynamicHtml += newTimeStamp;
+            this.setState({dynamicHtml: dynamicHtml});
+            this.editiorContent(dynamicHtml);
+        }
     };
 
     constructor(props) {
@@ -303,7 +336,7 @@ class Docs extends Component {
             open: false,
             history: []
         };
-        // const html = 'Hey this <strong>editor</strong> rocks 😀';
+
         this.getOauthToken = this.getOauthToken.bind(this);
         this.getDocDetail = this.getDocDetail.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -334,6 +367,7 @@ class Docs extends Component {
         mainDiv += header;
         this.state.listItems = record
             ? record.markers.map((number, index) => {
+                console.log(number);
                 let timeArr = number.timeConstraint.split(":");
                 let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
                 let prog = (secs / record.media_length) * 100;
@@ -389,32 +423,9 @@ class Docs extends Component {
             e.preventDefault();
             e.stopPropagation();
 
-            const {sec} = _this.state;
-
-            const compDurationMin = Math.trunc(sec / 60);
-            const compDurationSec = sec % 60;
-            const completedAudioDuration = `${
-                compDurationMin < 9 ? "0" + compDurationMin : compDurationMin
-                }:${compDurationSec < 9 ? "0" + compDurationSec : compDurationSec}`;
-
             //e.ctrlKey && (e.which === 106 || e.which === 74)
             if (e.ctrlKey && (e.which === 106 || e.which === 74)) {
-                let timeStamp = completedAudioDuration.split(":");
-                timeStamp = parseInt(timeStamp[1]);
-                if (timeStamp > 0) {
-                    let markerData = _this.state.record;
-                    if (markerData) {
-                        let markers = markerData.markers;
-                        markerData.markers.push({timeConstraint: completedAudioDuration});
-                        _this.setState({record: markerData});
-                    }
-                    let newTimeStamp = `<p><a href="javascript:void(0)">${completedAudioDuration}</a></p>`;
-                    let dynamicHtml = _this.state.dynamicHtml;
-
-                    dynamicHtml += newTimeStamp;
-                    _this.setState({dynamicHtml: dynamicHtml});
-                    _this.editiorContent(dynamicHtml);
-                }
+                _this.addAdditionalMarkers();
             } else if (e.keyCode === 27) {
                 _this.playPauseSong();
             }
@@ -519,8 +530,24 @@ class Docs extends Component {
             });
 
             $(document).keydown(function (event) {
+                event.stopPropagation();
                 settingUpStats();
 
+                if (
+                    String.fromCharCode(event.which).toLowerCase() === "'" &&
+                    event.ctrlKey &&
+                    !(event.which === 19)
+                ) {
+                    $this.skipPlay("forward");
+                }
+
+                if (
+                    String.fromCharCode(event.which).toLowerCase() === "%" &&
+                    event.ctrlKey &&
+                    !(event.which === 19)
+                ) {
+                    $this.skipPlay("back");
+                }
                 if (
                     !(
                         String.fromCharCode(event.which).toLowerCase() === "s" &&
@@ -858,7 +885,11 @@ class Docs extends Component {
                 </textarea>
                             </div>
 
-                            <p className="time_stamp">
+                            <p
+                                style={{cursor: "pointer"}}
+                                onClick={this.addAdditionalMarkers}
+                                className="time_stamp"
+                            >
                                 <img src="../../images/stemp.svg" alt=""/> insert timestamp
                                 <span>
                   {completedAudioDuration}/{totalAudioDuration}

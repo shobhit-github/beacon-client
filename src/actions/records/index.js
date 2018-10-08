@@ -116,7 +116,7 @@ export const updateRecord = (params, cb) => {
                     toastAction(true, "Record Updated!");
                     params._id = _id;
                     dispatch(update_records(params));
-                    cb(true);
+                    cb(result);
                 } else {
                     toastAction(false, result.message);
                     cb(false);

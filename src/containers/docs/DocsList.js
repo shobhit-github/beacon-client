@@ -2,16 +2,15 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+
 import moment from "moment";
 import Pagination from "react-js-pagination";
 import {CircularProgress} from "@material-ui/core/es/index";
 import Loader from "../../components/ProcessingLoader";
 import {getRecord, updateRecordStatus} from "../../actions/records";
 import "../_styles/docs.css";
-import Download from "@axetroy/react-download";
 import AlertMsg from "../../components/AlertMsg";
-import $ from "jquery";
+
 
 /*********** PAGINATIONS CONFIG ************/
 const ITEM_PER_PAGE = 10,

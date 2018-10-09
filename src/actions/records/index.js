@@ -183,3 +183,25 @@ export const saveSynthesisDoc = (params, cb) => {
             });
     };
 };
+
+
+export const downloadAudio = (params, cb) => {
+
+    return dispatch => {
+        RestClient.post(`user/downloadAudio/`, params)
+            .then(result => {
+                if (result.success) {
+                    toastAction(true, result.message);
+                    dispatch(save_records(result.data));
+                    cb({status: true, _id: result.data._id});
+                } else {
+                    toastAction(false, result.message);
+                    cb({status: false});
+                }
+            })
+            .catch(error => {
+                toastAction(false, message.commonError);
+                cb({status: false});
+            });
+    };
+};

@@ -31,7 +31,7 @@ const GoogleDriveGenricFunc = props => {
                 //     .addView(google.picker.ViewId.PDFS)
                 // )
                     .addView(docsView)
-                    .addView(new google.picker.DocsUploadView())
+                    // .addView(new google.picker.DocsUploadView())
                     .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                     .setOAuthToken(oauthToken)
                     .setCallback(data => {

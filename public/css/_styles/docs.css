@@ -70,7 +70,7 @@
   height: 19px; 
   background: url(../../images/bubble.svg)no-repeat center; 
   top:-7px;
-  left: 0; 
+  left: -7px; /* please don't change this if you're designer this is part fo the functionality*/
 } 
 .main-container .main-content .player-div .player .download-icon i {
   background: url(../../images/download.svg)no-repeat center; 

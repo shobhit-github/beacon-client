@@ -19,7 +19,8 @@ import GoogleDriveGenricFunc from "../../components/GoogleDriveGenricFunc";
 import {
     updateRecord,
     updateRecordStatus,
-    getHistory
+    getHistory,
+    downloadAudio
 } from "../../actions/records";
 import {google_keys as KEY} from "../../constants/app-config";
 import "../_styles/docs.css";
@@ -34,6 +35,9 @@ import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
 import AlertMsg from "../../components/AlertMsg";
+
+var fileDownload = require('js-file-download');
+
 
 class Docs extends Component {
     editiorContent = val => {
@@ -124,6 +128,20 @@ class Docs extends Component {
             this.progressUpdate();
         }
     };
+    downloadAudioFile = (url) => {
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                var myBlob = this.response;
+                // myBlob is now the blob that the object URL pointed to.
+                console.log(myBlob)
+            }
+        };
+        xhr.send();
+    }
 
     /************ Edit records title ***********/
     editTitle = markers => {
@@ -287,8 +305,8 @@ class Docs extends Component {
         const compDurationMin = Math.trunc(sec / 60);
         const compDurationSec = sec % 60;
         const completedAudioDuration = `${
-            compDurationMin < 9 ? "0" + compDurationMin : compDurationMin
-            }:${compDurationSec < 9 ? "0" + compDurationSec : compDurationSec}`;
+            compDurationMin < 10 ? "0" + compDurationMin : compDurationMin
+            }:${compDurationSec < 10 ? "0" + compDurationSec : compDurationSec}`;
 
         let timeStamp = completedAudioDuration.split(":");
         timeStamp = parseInt(timeStamp[1]);
@@ -367,16 +385,16 @@ class Docs extends Component {
         mainDiv += header;
         this.state.listItems = record
             ? record.markers.map((number, index) => {
-                console.log(number);
                 let timeArr = number.timeConstraint.split(":");
                 let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
+
                 let prog = (secs / record.media_length) * 100;
+
+
                 if (index === 0) {
-                    prog = prog - 5.012531328320802 / 2;
+                    // prog = prog - 5 / 2;
                 } else {
-                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(
-                        ":"
-                    );
+                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(':');
                     let lastSecs =
                         parseInt(lastTimeArr[0] * 60) + parseInt(lastTimeArr[1]);
                     let lastProg = (lastSecs / record.media_length) * 100;
@@ -603,23 +621,7 @@ class Docs extends Component {
     }
 
     render() {
-        const {
-            record,
-            confirmDelete,
-            percent,
-            sec,
-            listItems,
-            duration,
-            isPaused,
-            titleEdit,
-            title,
-            fileSaving,
-            toggleQuickTip,
-            showGreen,
-            showWhite,
-            open,
-            history
-        } = this.state;
+        const {record, confirmDelete, percent, sec, listItems, duration, isPaused, titleEdit, title, fileSaving, toggleQuickTip, showGreen, showWhite, open, history} = this.state;
         const {updateRecordStatus, match, user} = this.props;
 
         const totalDurationMin = Math.trunc(duration / 60);
@@ -627,11 +629,11 @@ class Docs extends Component {
         const compDurationMin = Math.trunc(sec / 60);
         const compDurationSec = sec % 60;
         const totalAudioDuration = `${
-            totalDurationMin < 9 ? "0" + totalDurationMin : totalDurationMin
-            }:${totalDurationSec < 9 ? "0" + totalDurationSec : totalDurationSec}`;
+            totalDurationMin < 10 ? "0" + totalDurationMin : totalDurationMin
+            }:${totalDurationSec < 10 ? "0" + totalDurationSec : totalDurationSec}`;
         const completedAudioDuration = `${
-            compDurationMin < 9 ? "0" + compDurationMin : compDurationMin
-            }:${compDurationSec < 9 ? "0" + compDurationSec : compDurationSec}`;
+            compDurationMin < 10 ? "0" + compDurationMin : compDurationMin
+            }:${compDurationSec < 10 ? "0" + compDurationSec : compDurationSec}`;
 
         let TITLE_ICONS = titleEdit ? (
             <React.Fragment>
@@ -738,7 +740,7 @@ class Docs extends Component {
 
                             <div
                                 style={{
-                                    width: "calc(100% - 160px)",
+                                    width: "calc(100% - 200px)", /* please don't change by the designer side it is part fo the marking functionality*/
                                     marginLeft: "103px",
                                     lineHeight: 0,
                                     marginTop: "18px"
@@ -764,9 +766,9 @@ class Docs extends Component {
                             </div>
 
                             <a
-                                href={record ? `${env.API_ROOT + record.blob_str}` : ""}
                                 target="_blank"
                                 download
+                                href={`${env.API_ROOT + record.blob_str}`}
                                 className="download-icon"
                             >
                                 <i aria-hidden="true"> </i>
@@ -781,9 +783,7 @@ class Docs extends Component {
                             flex: `0 0 ${
                                 !toggleQuickTip || (!showGreen && !showWhite) ? "82%" : "58%"
                                 }`,
-                            maxWidth: `${
-                                !toggleQuickTip || (!showGreen && !showWhite) ? "82%" : "58%"
-                                }`
+                            maxWidth: `${ !toggleQuickTip || (!showGreen && !showWhite) ? "82%" : "58%" }`
                         }}
                         className="col-sm-12 col-md-7 col-lg-7 sidearea p_left_50"
                     >
@@ -990,6 +990,7 @@ Docs.propTypes = {
     user: PropTypes.object.isRequired,
     records: PropTypes.array.isRequired,
     updateRecord: PropTypes.func.isRequired,
+    downloadAudio: PropTypes.func.isRequired,
     updateRecordStatus: PropTypes.func.isRequired,
     saveUserDriveDetails: PropTypes.func.isRequired,
     googleSaveDoc: PropTypes.func.isRequired,
@@ -1003,6 +1004,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     updateRecord: bindActionCreators(updateRecord, dispatch),
+    downloadAudio: bindActionCreators(downloadAudio, dispatch),
     updateRecordStatus: bindActionCreators(updateRecordStatus, dispatch),
     saveUserDriveDetails: bindActionCreators(saveUserDriveDetails, dispatch),
     googleSaveDoc: bindActionCreators(googleSaveDoc, dispatch),

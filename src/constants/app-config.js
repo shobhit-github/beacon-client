@@ -12,7 +12,7 @@ export const environment = {
             : `https://localhost:4190/`,
     LOCAL_API_URL: `localhost:4190`,
     STAGING_API_URL: `stagingsdei.com:4190`,
-    THIRD_PARTY_API_URL: `https://7698f1db.ngrok.io` //`http://172.24.1.52:8080`
+    THIRD_PARTY_API_URL: `https://61ab81fb.ngrok.io` //`http://172.24.1.52:8080`
 };
 
 export const google_keys = {

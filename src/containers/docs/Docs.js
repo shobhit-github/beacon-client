@@ -36,9 +36,6 @@ import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
 import AlertMsg from "../../components/AlertMsg";
 
-var fileDownload = require('js-file-download');
-
-
 class Docs extends Component {
     editiorContent = val => {
         const contentBlock = htmlToDraft(val);
@@ -128,20 +125,19 @@ class Docs extends Component {
             this.progressUpdate();
         }
     };
-    downloadAudioFile = (url) => {
-
+    downloadAudioFile = url => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.responseType = 'blob';
+        xhr.open("GET", url, true);
+        xhr.responseType = "blob";
         xhr.onload = function (e) {
             if (this.status == 200) {
                 var myBlob = this.response;
                 // myBlob is now the blob that the object URL pointed to.
-                console.log(myBlob)
+                console.log(myBlob);
             }
         };
         xhr.send();
-    }
+    };
 
     /************ Edit records title ***********/
     editTitle = markers => {
@@ -390,11 +386,12 @@ class Docs extends Component {
 
                 let prog = (secs / record.media_length) * 100;
 
-
                 if (index === 0) {
                     // prog = prog - 5 / 2;
                 } else {
-                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(':');
+                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(
+                        ":"
+                    );
                     let lastSecs =
                         parseInt(lastTimeArr[0] * 60) + parseInt(lastTimeArr[1]);
                     let lastProg = (lastSecs / record.media_length) * 100;
@@ -621,7 +618,23 @@ class Docs extends Component {
     }
 
     render() {
-        const {record, confirmDelete, percent, sec, listItems, duration, isPaused, titleEdit, title, fileSaving, toggleQuickTip, showGreen, showWhite, open, history} = this.state;
+        const {
+            record,
+            confirmDelete,
+            percent,
+            sec,
+            listItems,
+            duration,
+            isPaused,
+            titleEdit,
+            title,
+            fileSaving,
+            toggleQuickTip,
+            showGreen,
+            showWhite,
+            open,
+            history
+        } = this.state;
         const {updateRecordStatus, match, user} = this.props;
 
         const totalDurationMin = Math.trunc(duration / 60);
@@ -740,7 +753,8 @@ class Docs extends Component {
 
                             <div
                                 style={{
-                                    width: "calc(100% - 200px)", /* please don't change by the designer side it is part fo the marking functionality*/
+                                    width:
+                                        "calc(100% - 200px)" /* please don't change by the designer side it is part fo the marking functionality*/,
                                     marginLeft: "103px",
                                     lineHeight: 0,
                                     marginTop: "18px"
@@ -783,7 +797,9 @@ class Docs extends Component {
                             flex: `0 0 ${
                                 !toggleQuickTip || (!showGreen && !showWhite) ? "82%" : "58%"
                                 }`,
-                            maxWidth: `${ !toggleQuickTip || (!showGreen && !showWhite) ? "82%" : "58%" }`
+                            maxWidth: `${
+                                !toggleQuickTip || (!showGreen && !showWhite) ? "82%" : "58%"
+                                }`
                         }}
                         className="col-sm-12 col-md-7 col-lg-7 sidearea p_left_50"
                     >

@@ -11,7 +11,6 @@ import {getRecord, updateRecordStatus} from "../../actions/records";
 import "../_styles/docs.css";
 import AlertMsg from "../../components/AlertMsg";
 
-
 /*********** PAGINATIONS CONFIG ************/
 const ITEM_PER_PAGE = 10,
     PAGE_RANGE_SHOW = 10;
@@ -40,13 +39,25 @@ class DocsList extends Component {
             });
         }
     };
-    filterRecords = types => {
-        if (types.length === 0) {
+    filterRecords = () => {
+        const {docFilter, summaryFilter} = this.state;
+        const params =
+            docFilter && summaryFilter
+                ? [1, 2, 3]
+                : docFilter && !summaryFilter
+                ? [1, 2]
+                : !docFilter && summaryFilter
+                    ? [3]
+                    : [1, 2, 3];
+        this.state.activePage = 1;
+
+        if (params.length === 0) {
             this.setState({records: this.props.records});
         } else {
             let records = this.props.records.filter(value =>
-                types.includes(value.type)
+                params.includes(value.type)
             );
+            console.log(records);
             this.setState({records});
         }
     };
@@ -58,14 +69,16 @@ class DocsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            _id: null,
             activePage: 1,
             loaderStatus: false,
             isArchive: false,
             isDelete: false,
-            _id: null,
             confirmBox: false,
             records: props.records,
             orderBy: true,
+            docFilter: false,
+            summaryFilter: false,
             deleteParams: []
         };
         this.indexOfLastList = ITEM_PER_PAGE;
@@ -201,40 +214,42 @@ class DocsList extends Component {
                     <div style={{marginBottom: "18px"}} className="fillter_section">
                         <h2 className="title_tag">My Files</h2>
                         <span>
-              <a href="javascript:void(0);" className="icon dropdown">
+              <a
+                  href="javascript:void(0);"
+                  data-toggle="dropdown"
+                  className="icon dropdown"
+              >
                 Sort by{" "}
                   <img
                       className="dropToggle"
-                      data-toggle="dropdown"
                       src="../../images/sort1.svg"
                       alt=""
                       width="20px"
                   />
                 <ul className="dropdown-menu">
-                  <li>Date</li>
-                  <li>
+                  <li onClick={() => this.sortRecords("updated_at")}>
                     {" "}
-                      <span onClick={() => this.sortRecords("title")}>
-                      Title
-                    </span>{" "}
+                      <span>Date</span>{" "}
                   </li>
-                  <li>
+                  <li onClick={() => this.sortRecords("title")}>
                     {" "}
-                      <span onClick={() => this.sortRecords("updated_at")}>
-                      {" "}
-                          Audio length{" "}
-                    </span>{" "}
+                      <span>Title</span>{" "}
+                  </li>
+                  <li onClick={() => this.sortRecords("media_length")}>
+                    {" "}
+                      <span> Audio length </span>{" "}
                   </li>
                 </ul>
               </a>
+
               <a
                   href="javascript:void(0);"
                   className="icon dropdown filter_dropdown"
               >
                 Filter by{" "}
                   <img
-                      className="dropToggle"
                       data-toggle="dropdown"
+                      className="dropToggle"
                       src="../../images/filter1.svg"
                       alt=""
                       width="15px"
@@ -242,20 +257,33 @@ class DocsList extends Component {
                 <ul className="dropdown-menu">
                   <li>
                     {" "}
-                      <span onClick={() => this.filterRecords([1, 2])}>
+                      <span>
                       <label className="checkbox-wrap">
                         Beacon Doc
-                        <input type="checkbox"/>{" "}
+                        <input
+                            onChange={e => {
+                                this.state.docFilter = e.target.checked;
+                                this.filterRecords();
+                            }}
+                            type="checkbox"
+                        />{" "}
                           <span className="checkmark"> </span>
                       </label>
                     </span>{" "}
                   </li>
                   <li>
                     {" "}
-                      <span onClick={() => this.filterRecords([3])}>
+                      <span>
                       {" "}
                           <label className="checkbox-wrap">
-                        Summary <input type="checkbox"/>{" "}
+                        Summary{" "}
+                              <input
+                                  onChange={e => {
+                                      this.state.summaryFilter = e.target.checked;
+                                      this.filterRecords();
+                                  }}
+                                  type="checkbox"
+                              />{" "}
                               <span className="checkmark"> </span>
                       </label>
                     </span>{" "}

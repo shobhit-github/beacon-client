@@ -184,9 +184,7 @@ export const saveSynthesisDoc = (params, cb) => {
     };
 };
 
-
 export const downloadAudio = (params, cb) => {
-
     return dispatch => {
         RestClient.post(`user/downloadAudio/`, params)
             .then(result => {

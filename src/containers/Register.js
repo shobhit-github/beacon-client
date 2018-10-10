@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import lock from "../assets/images/lock.png";
-import sale from "../assets/images/sale-banner.png";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {CircularProgress, Icon} from "@material-ui/core/es/index";
 import FrontHeader from "../components/FrontHeader";
+import {register} from "../actions/user";
+import {bindActionCreators} from "redux";
 
 class Register extends Component {
     changePasswordVisibility = () => {
@@ -17,6 +17,7 @@ class Register extends Component {
             !this.state.password_visibility ? `text` : `password`
         );
     };
+
     passDataToPaymentSection = evt => {
         evt.preventDefault();
 
@@ -35,13 +36,29 @@ class Register extends Component {
             });
             return false;
         }
-        this.props.history.push("/register-payment", {
-            email: this.refs.email.value,
-            name: this.refs.name.value,
-            password: this.refs.password.value,
-            plan_type: this.state.plan_type
-        });
+
+        this.props.register(
+            {
+                email: this.refs.email.value,
+                name: this.refs.name.value,
+                password: this.refs.password.value
+            },
+            res => {
+                if (res.status === true) {
+                    this.setState({
+                        ...this.state,
+                        ...{registerError: null, registerSuccess: res.message}
+                    });
+                } else {
+                    this.setState({
+                        ...this.state,
+                        ...{registerError: res.message, registerSuccess: null}
+                    });
+                }
+            }
+        );
     };
+
     changeBillingPlan = evt => {
         this.setState({
             ...this.state,
@@ -53,12 +70,13 @@ class Register extends Component {
         super(props);
         this.state = {
             registerError: null,
+            registerSuccess: null,
             agreed: false
         };
     }
 
     render() {
-        const {registerError, registerIn, agreed} = this.state;
+        const {registerError, registerIn, agreed, registerSuccess} = this.state;
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -67,27 +85,27 @@ class Register extends Component {
                             <div className="col-sm-12">
                                 <FrontHeader/>
                             </div>
-                            <div className="col-sm-12">
+                            {/*<div className="col-sm-12">
                                 <div className="billing-section">
                                     <label>Choose a billing cycle</label>
 
                                     <div className="d-flex plan-action">
-                    <span className="plan-name">
-                      {" "}
-                        <img src={sale} className="sale-img"/>
-                      Yearly
-                    </span>
+                                        <span className="plan-name">
+                                          {" "}
+                                            <img src={sale} className="sale-img"/>
+                                          Yearly
+                                        </span>
 
-                                        <span>
-                      <label className="switch">
-                        <input
-                            type="checkbox"
-                            onChange={this.changeBillingPlan}
-                        />
+                                         <span>
+                                          <label className="switch">
+                                            <input
+                                                type="checkbox"
+                                                onChange={this.changeBillingPlan}
+                                            />
 
-                        <span className="slider round"> </span>
-                      </label>
-                    </span>
+                                            <span className="slider round"> </span>
+                                          </label>
+                                        </span>
 
                                         <span className="plan-name"> Monthly </span>
                                     </div>
@@ -135,7 +153,7 @@ class Register extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*/}
                         </div>
                     </div>
 
@@ -152,6 +170,13 @@ class Register extends Component {
                                     <div className="error-msg ">
                                         <i className="material-icons">clear</i>
                                         <span> {registerError} </span>
+                                    </div>
+                                )}
+
+                                {registerSuccess && (
+                                    <div className="success-msg ">
+                                        <i className="material-icons">check</i>
+                                        <span> {registerSuccess} </span>
                                     </div>
                                 )}
 
@@ -226,13 +251,13 @@ class Register extends Component {
                                         </button>
                                     </div>
 
-                                    <div className="col-lg-12 next-step-bar mt-5">
+                                    {/*<div className="col-lg-12 next-step-bar mt-5">
                                         <label>
                                             2. Payment <img src={lock}/>
                                         </label>
 
                                         <p>Sign up and proceed to payment</p>
-                                    </div>
+                                    </div>*/}
                                 </form>
                             </div>
                         </div>
@@ -250,7 +275,8 @@ Register.contextTypes = {
 Register.propTypes = {
     user: PropTypes.string,
     registerError: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -262,4 +288,11 @@ function mapStateToProps(state) {
     return {user: null};
 }
 
-export default connect(mapStateToProps)(Register);
+const mapDispatchToProps = dispatch => ({
+    register: bindActionCreators(register, dispatch)
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Register);

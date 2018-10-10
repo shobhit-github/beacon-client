@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import InputMask from "react-input-mask";
 import {Link} from "react-router-dom";
-import {Switch} from "@material-ui/core/es/index";
 import {CircularProgress} from "@material-ui/core/es/index";
 import AlertMsg from "../components/AlertMsg";
 import {register} from "../actions/user";
@@ -16,7 +15,6 @@ class RegisterPayment extends Component {
     makePayment = event => {
         event.preventDefault();
         if (!this.validateInput()) {
-            console.log("vcxv");
             this.setState({
                 ...this.state,
                 ...{validateErr: "Please fill valid details!"}
@@ -27,10 +25,7 @@ class RegisterPayment extends Component {
                 {...this.state.userInfo, plan_type: this.state.plan_type},
                 res => {
                     if (res.status) {
-                        this.setState({
-                            ...this.state,
-                            ...{userInfo: {}}
-                        });
+                        this.setState({...this.state, ...{userInfo: {}}});
                         this.props.history.push("/register-success");
                     } else {
                         this.setState({
@@ -139,12 +134,11 @@ class RegisterPayment extends Component {
 
                                         <span>
                       <label className="switch">
-                        {console.log("value of pland > ", this.state.plan_type)}
-                          <input
-                              type="checkbox"
-                              onChange={this.changeBillingPlan}
-                              checked={this.state.plan_type === "startup-plan"}
-                          />
+                        <input
+                            type="checkbox"
+                            onChange={this.changeBillingPlan}
+                            checked={this.state.plan_type === "startup-plan"}
+                        />
 
                         <span className="slider round"> </span>
                       </label>

@@ -15,7 +15,8 @@ const styles = theme => ({
     }
 });
 
-const PopUpModal = ({open, data, _handleClose, classes}) => {
+const PopUpModal = ({open, data, _handleClose, classes, onSelectHistoryRecord}) => {
+
     const getModalStyle = () => {
         const top = 20;
         const right = 11;
@@ -26,6 +27,7 @@ const PopUpModal = ({open, data, _handleClose, classes}) => {
             transform: `translate(-${top}%, -${right}%)`
         };
     };
+
 
     return (
         <div>
@@ -47,7 +49,8 @@ const PopUpModal = ({open, data, _handleClose, classes}) => {
                         <ul className="history-listing" style={{listStyle: "none"}}>
                             {data.length > 0
                                 ? data.map((row, index) => (
-                                    <li key={index}> {moment(row.created).format("LLL")}</li>
+                                    <li style={{cursor: 'pointer'}} onClick={() => onSelectHistoryRecord(row)}
+                                        key={index}> {moment(row.created).format("LLL")}</li>
                                 ))
                                 : "History not available!"}
                         </ul>
@@ -62,7 +65,8 @@ PopUpModal.propTypes = {
     open: PropTypes.bool.isRequired,
     _handleClose: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    data: PropTypes.array.isRequired
+    data: PropTypes.array.isRequired,
+    onSelectHistoryRecord: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PopUpModal);

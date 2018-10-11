@@ -417,6 +417,10 @@ body {
     color: #4E546C
 }
 
+.main-container .main-content .docs-wrapper h1:focus {
+    outline: none;
+}
+
 .main-container .main-content .docs-wrapper .dropToggle {
     float: right;
 }

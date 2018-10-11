@@ -11,32 +11,21 @@ import {stateToHTML} from "draft-js-export-html";
 import Download from "@axetroy/react-download";
 import Loader from "../../components/ProcessingLoader";
 import {environment as env} from "../../constants/app-config";
-import {
-    saveUserDriveDetails,
-    googleSaveDoc
-} from "../../actions/google-drive";
+import {saveUserDriveDetails, googleSaveDoc} from "../../actions/google-drive";
 import GoogleDriveGenricFunc from "../../components/GoogleDriveGenricFunc";
-import {
-    updateRecord,
-    updateRecordStatus,
-    getHistory,
-    downloadAudio
-} from "../../actions/records";
+import {updateRecord, updateRecordStatus, getHistory, downloadAudio} from "../../actions/records";
 import {google_keys as KEY} from "../../constants/app-config";
 import "../_styles/docs.css";
 import {Editor} from "react-draft-wysiwyg";
-import {
-    EditorState,
-    convertToRaw,
-    ContentState,
-    convertFromRaw
-} from "draft-js";
+import {EditorState, convertToRaw, ContentState, convertFromRaw} from "draft-js";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
 import AlertMsg from "../../components/AlertMsg";
 
+
 class Docs extends Component {
+
     editiorContent = val => {
         const contentBlock = htmlToDraft(val);
         let editorState;
@@ -48,9 +37,11 @@ class Docs extends Component {
             this.setState({editorState: editorState});
         }
     };
+
     handleError = error => {
         throw error.message;
     };
+
     playPauseSong = () => {
         if (this.state.playing) {
             document.getElementById("audio").pause();
@@ -72,6 +63,7 @@ class Docs extends Component {
         this.state.playing = !this.state.playing;
         this.setState({...this.state});
     };
+
     endProgress = () => {
         clearInterval(this.state.interval);
         this.state.sec = 0;
@@ -81,11 +73,13 @@ class Docs extends Component {
         this.state.isPaused = 1;
         this.setState({...this.state});
     };
+
     progressUpdate = () => {
         let length = this.state.record.media_length;
         this.state.interval = setInterval(this.updateProgress, 1000);
         this.setState({...this.state});
     };
+
     updateProgress = () => {
         if (!this.state.isPaused) {
             this.state.sec += 1;
@@ -97,11 +91,13 @@ class Docs extends Component {
             }
         }
     };
+
     pointPlayBubble = seconds => {
         let timeArr = seconds.split(":");
         let secs = parseInt(timeArr[0] * 60) + parseInt(timeArr[1]);
         this.skipPlay(secs);
     };
+
     skipPlay = data => {
         if (data === "forward") {
             data =
@@ -125,24 +121,11 @@ class Docs extends Component {
             this.progressUpdate();
         }
     };
-    downloadAudioFile = url => {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.responseType = "blob";
-        xhr.onload = function (e) {
-            if (this.status == 200) {
-                var myBlob = this.response;
-                // myBlob is now the blob that the object URL pointed to.
-                console.log(myBlob);
-            }
-        };
-        xhr.send();
-    };
 
     /************ Edit records title ***********/
     editTitle = markers => {
         this.setState({loaderStatus: true});
-        const noteDescription = this.state.record.notes;
+        const notes = this.state.record.notes;
         const title = document.getElementById("title").innerHTML,
             {records, match, updateRecord, user} = this.props,
             recordObj =
@@ -151,11 +134,13 @@ class Docs extends Component {
                 _id: match.params._id,
                 token: user.token,
                 title,
-                notes: noteDescription,
+                notes,
                 timeStamps: recordObj
             };
+
         updateRecord(record, res => {
             if (res || !res) {
+
                 let temp = ``;
                 res.data.markers.map(value => {
                     temp += value.timeConstraint + "    " + value.label + "\n";
@@ -164,6 +149,7 @@ class Docs extends Component {
                 this.setState({loaderStatus: false});
                 this.setState({titleEdit: false});
                 this.setState({title: title, docData: temp});
+                this.getDocumentHistory()
             }
         });
     };
@@ -348,7 +334,8 @@ class Docs extends Component {
             dynamicHtml: false,
             editorState: false,
             open: false,
-            history: []
+            history: [],
+            undoRedo: 0
         };
 
         this.getOauthToken = this.getOauthToken.bind(this);
@@ -356,27 +343,39 @@ class Docs extends Component {
         this.handleClose = this.handleClose.bind(this);
     }
 
+
+    resettingEditorContent = record => {
+
+        this.state.title = record.title;
+        this.state.notes = record.notes;
+
+        let temp = `<div>`;
+        record.markers.map(value => {
+            return temp += `<p><a href="javascript:void(0)">${
+                value.timeConstraint
+                }</a> ${value.label}</p>`
+        });
+        this.editiorContent(temp += `</div>`)
+    };
+
     componentWillMount() {
+
         const {records, match} = this.props,
             record = _.findWhere(records, {_id: match.params._id});
         let temp = ``;
+        console.log(records)
         record.markers.map(value => {
             temp += value.timeConstraint + "    " + value.label + "\n";
         });
 
         let last = 0;
-        this.setState({
-            docData: temp
-        });
+        this.state.docData = temp;
+
         this.state.record = record;
         this.state.duration = record ? record.media_length : 0;
         this.state.title = record ? record.title : "";
-        let array = [],
-            header = ""; //'<h2>'+this.state.title+'</h2>';
-        var tr,
-            finalString = "",
-            div,
-            table,
+        var header = ""; //'<h2>'+this.state.title+'</h2>';
+        var finalString = "",
             mainDiv = "<div>";
         mainDiv += header;
         this.state.listItems = record
@@ -389,11 +388,8 @@ class Docs extends Component {
                 if (index === 0) {
                     // prog = prog - 5 / 2;
                 } else {
-                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(
-                        ":"
-                    );
-                    let lastSecs =
-                        parseInt(lastTimeArr[0] * 60) + parseInt(lastTimeArr[1]);
+                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(':');
+                    let lastSecs = parseInt(lastTimeArr[0] * 60, 0) + parseInt(lastTimeArr[1], 0);
                     let lastProg = (lastSecs / record.media_length) * 100;
                     prog = prog - lastProg;
                 }
@@ -414,7 +410,6 @@ class Docs extends Component {
             })
             : [];
 
-        // finalString +=  `<p>&nbsp;</p><p>&nbsp;</p><p>${record.notes || ``}</p>`;
 
         mainDiv += finalString;
         mainDiv += "</div>";
@@ -432,7 +427,10 @@ class Docs extends Component {
         let _this = this;
         let dynamicHtml;
 
-        this.jQueryUses(_this);
+
+        if (!_this.state.editorContent.length) {
+            _this.state.editorContent = _this.state.record.markers;
+        }
 
         document.onkeyup = function (e) {
             e.preventDefault();
@@ -458,13 +456,20 @@ class Docs extends Component {
         if (_this.state.dynamicHtml) {
             _this.editiorContent(_this.state.dynamicHtml);
         }
+        this.getDocumentHistory();
+        this.jQueryUses(_this);
+    }
+
+
+    getDocumentHistory = () => {
         const {getHistory, match, user} = this.props;
         getHistory({_id: match.params._id, token: user.token}, res => {
             if (res.status) {
                 this.setState({history: res.data});
             }
         });
-    }
+    };
+
 
     getOauthToken(token) {
         const {user, saveUserDriveDetails} = this.props;
@@ -563,6 +568,25 @@ class Docs extends Component {
                 ) {
                     $this.skipPlay("back");
                 }
+
+                if (
+                    String.fromCharCode(event.which).toLowerCase() === "z" &&
+                    event.ctrlKey &&
+                    !(event.which === 19)
+                ) {
+                    $this.state.undoRedo = ($this.state.history.length - 1 > $this.state.undoRedo) ? $this.state.undoRedo + 1 : $this.state.undoRedo;
+                    $this.resettingEditorContent($this.state.history[$this.state.undoRedo]);
+                }
+
+                if (
+                    String.fromCharCode(event.which).toLowerCase() === "y" &&
+                    event.ctrlKey &&
+                    !(event.which === 19)
+                ) {
+                    $this.state.undoRedo = ($this.state.undoRedo > 0) ? $this.state.undoRedo - 1 : $this.state.undoRedo;
+                    $this.resettingEditorContent($this.state.history[$this.state.undoRedo]);
+                }
+
                 if (
                     !(
                         String.fromCharCode(event.which).toLowerCase() === "s" &&
@@ -572,6 +596,7 @@ class Docs extends Component {
                 ) {
                     return true;
                 }
+
                 $this.editTitle($this.state.editorContent);
                 event.preventDefault();
                 return false;
@@ -633,7 +658,8 @@ class Docs extends Component {
             showGreen,
             showWhite,
             open,
-            history
+            history,
+            undoRedo
         } = this.state;
         const {updateRecordStatus, match, user} = this.props;
 
@@ -650,7 +676,7 @@ class Docs extends Component {
 
         let TITLE_ICONS = titleEdit ? (
             <React.Fragment>
-                <i className="material-icons" onClick={() => this.editTitle()}>
+                {/*<i className="material-icons" onClick={() => this.editTitle()}>
                     save
                 </i>
                 <i
@@ -658,7 +684,7 @@ class Docs extends Component {
                     onClick={() => this.setState({titleEdit: false, title})}
                 >
                     cancel
-                </i>
+                </i>*/}
             </React.Fragment>
         ) : (
             ""
@@ -853,7 +879,19 @@ class Docs extends Component {
                                             Delete
                                         </a>
                                     </li>
-                                    {record &&
+                                    <li>
+                                        <a
+                                            href="javascript:void(0);"
+                                            onClick={() => {
+                                                this.state.undoRedo = (history.length - 1 > this.state.undoRedo) ? undoRedo + 1 : undoRedo;
+                                                this.resettingEditorContent(this.state.history[undoRedo]);
+                                            }
+                                            }
+                                        >
+                                            Undo
+                                        </a>
+                                    </li>
+                                    {/*record &&
                                     record.status !== 2 && (
                                         <li>
                                             <a
@@ -863,7 +901,7 @@ class Docs extends Component {
                                                 Archive
                                             </a>
                                         </li>
-                                    )}
+                                    )*/}
                                 </ul>
                             </div>
 
@@ -879,26 +917,27 @@ class Docs extends Component {
                             </div>
 
                             <div className="text_notes">
-                <textarea
-                    placeholder={"Please add notes..."}
-                    onChange={e =>
-                        this.setState({
-                            ...this.state,
-                            ...{
-                                record: {
-                                    ...this.state.record,
-                                    ...{notes: e.target.value}
-                                }
-                            }
-                        })
-                    }
-                    name=""
-                    id=""
-                    cols="30"
-                    rows="10"
-                >
-                  {record.notes}
-                </textarea>
+                                <textarea
+                                    placeholder={"Please add notes..."}
+                                    onChange={e => {
+                                        this.setState({
+                                            ...this.state,
+                                            ...{
+                                                record: {
+                                                    ...this.state.record,
+                                                    ...{notes: e.target.value}
+                                                }
+                                            }
+                                        })
+                                    }
+                                    }
+                                    name=""
+                                    id=""
+                                    cols="30"
+                                    rows="10"
+                                >
+                                  {record.notes}
+                                </textarea>
                             </div>
 
                             <p
@@ -908,7 +947,7 @@ class Docs extends Component {
                             >
                                 <img src="../../images/stemp.svg" alt=""/> insert timestamp
                                 <span>
-                  {completedAudioDuration}/{totalAudioDuration}
+                    {completedAudioDuration}/{totalAudioDuration}
                 </span>
                             </p>
                         </div>
@@ -994,6 +1033,9 @@ class Docs extends Component {
                             open={open}
                             data={history}
                             _handleClose={this.handleClose}
+                            onSelectHistoryRecord={(record) => {
+                                this.resettingEditorContent(record)
+                            }}
                         />
                     </div>
                 </div>

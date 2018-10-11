@@ -53,9 +53,12 @@ tbody > tr > td.check {
     visibility: hidden !important;
 }
 
-/* .picker-dialog-bg {
-   display: none !important;
- }*/
+.no_wrap_text_desktop {
+    white-space: nowrap;
+    max-width: 247px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .history-listing {
     list-style: none inside none;

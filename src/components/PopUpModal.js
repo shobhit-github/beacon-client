@@ -50,7 +50,7 @@ const PopUpModal = ({open, data, _handleClose, classes, onSelectHistoryRecord}) 
                             {data.length > 0
                                 ? data.map((row, index) => (
                                     <li style={{cursor: 'pointer'}} onClick={() => onSelectHistoryRecord(row)}
-                                        key={index}> {moment(row.created).format("LLL")}</li>
+                                        key={index}> {moment(row.created_at).format("LLL")}</li>
                                 ))
                                 : "History not available!"}
                         </ul>

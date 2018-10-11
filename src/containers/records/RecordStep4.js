@@ -187,6 +187,7 @@ class RecordStep4 extends Component {
                 </a>
                 <div className="row record-step4">
                     <AlertMsg
+                        btnConfirmTxt={"Sure"}
                         onPress={() =>
                             this.setState({...this.state, ...{confirmBox: false}})
                         }
@@ -239,9 +240,10 @@ class RecordStep4 extends Component {
                                                     });
                                                 }
                                             }}
-                                            className="cancel_btn"
+                                            className="cancel_btn btn_relative"
                                         >
                                             &nbsp;
+                                            <span className="btn_tooltip">Cancel</span>
                                         </button>
 
                                         <div className="record-sec">
@@ -254,7 +256,7 @@ class RecordStep4 extends Component {
                                             {!audioUrl &&
                                             micPermission && (
                                                 <button
-                                                    className={recording ? "off-rec" : "on-rec"}
+                                                    className={recording ? "off-rec btn_relative" : "on-rec btn_relative"}
                                                     onClick={() => this.onRecordingChange()}
                                                     type="button"
                                                 >
@@ -270,6 +272,8 @@ class RecordStep4 extends Component {
                                                             <Icon> </Icon>{" "}
                               </span>
                                                     )}
+                                                    <span
+                                                        className="btn_tooltip">{recording ? "Pause" : "Record"}</span>
                                                 </button>
                                             )}
                                         </div>

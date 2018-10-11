@@ -70,7 +70,7 @@
   height: 19px; 
   background: url(../../images/bubble.svg)no-repeat center; 
   top:-7px;
-    left: -7px;
+  left: -7px;
 } 
 .main-container .main-content .player-div .player .download-icon i {
   background: url(../../images/download.svg)no-repeat center; 
@@ -553,7 +553,7 @@ display: inline-block;
 }
 .flex_section .card{
   max-width: 336px !important;
-    margin: 0 72px;
+  margin: 0 72px;
   margin-bottom: 25px !important;
   margin-top: 47px;
   min-height: 552px !important;
@@ -747,38 +747,38 @@ border-color: transparent;
 }
 
 .save_btn:hover .btn_tooltip {
-    opacity: 1;
+  opacity: 1;
 }
 
 .sweet-alert {
-    text-align: left !important;
-    max-width: 440px;
+  text-align: left !important;
+  max-width: 440px;
 }
 
 .sweet-alert h2 {
-    font-size: 26px !important;
-    text-align: left;
+  font-size: 26px !important;
+  text-align: left;
     margin: 20px 0 15px 0;
 }
 
 .lead {
     font-size: 16px !important;
-    text-align: left;
-    color: #414965 !important;
+  text-align: left;
+  color: #414965 !important;
 }
 
 .lead.text-muted {
-    color: #414965 !important;
+  color: #414965 !important;
 }
 
 .sweet-alert .btn-default {
     background: none;
-    color: #414965 !important;
+  color: #414965 !important;
     font-size: 12px;
 }
 
 .sweet-alert .btn {
-    margin: 0px !important;
+  margin: 0px !important;
 }
 
 .sweet-alert .btn-primary {
@@ -796,7 +796,7 @@ border-color: transparent;
     display: inline-block;
     width: 20px;
     height: 20px;
-    background: url(../../images/cross_icon2.svg) no-repeat center;
+  background: url(../../images/cross_icon2.svg) no-repeat center;
     position: absolute;
     cursor: pointer;
     top: 10px;
@@ -804,7 +804,7 @@ border-color: transparent;
 }
 
 .sweet-alert > div:first-child {
-    display: none;
+  display: none;
 }
 
 .sweet-alert .form-check {
@@ -815,16 +815,23 @@ border-color: transparent;
 }
 
 .sweet-alert .form-check span {
-    width: auto;
-    margin: -2px 2px 0 0;
+  width: auto;
+  margin: -2px 2px 0 0;
 }
-
 .sweet-alert p span:nth-child(2) {
     float: left;
 }
 
 .rdw-link-decorator-wrapper {
-    padding-left: 20px;
+  padding-left: 20px;
+}
+
+.btn_relative {
+  position: relative;
+}
+
+.btn_relative:hover .btn_tooltip {
+  opacity: 1;
 }
 /*========= responsive css ===========*/
 
@@ -836,8 +843,8 @@ border-color: transparent;
     max-width: 100% !important;
   }
 
-    .flex_section .card {
-        margin: 47px 10px 0 10px;
+  .flex_section .card {
+    margin: 47px 10px 0 10px;
     width: 310px; 
   }
 }
@@ -969,9 +976,9 @@ border-color: transparent;
     margin-top: 30px;
   }
 
-    .flex_section .card {
-        padding: 10px 15px !important;
-    }
+  .flex_section .card {
+    padding: 10px 15px !important;
+  }
   .main-container .main-content .sharebox ul li{
     font-size: 0 !important;
     margin-bottom: 0px !important;
@@ -1040,15 +1047,15 @@ display: none;
 }
 
 @media screen and (max-width: 575px) {
-    .card.single {
-        width: 95% !important;
-    }
+  .card.single {
+    width: 95% !important;
+  }
   .botm_menu{right: 5px; bottom: 70px;}
 
-    .card.text-center.single {
-        margin-top: 0px;
-        min-height: auto;
-    }
+  .card.text-center.single {
+    margin-top: 0px;
+    min-height: auto;
+  }
   .sharebox {
         right: 5px;
         bottom: 90px;
@@ -1057,32 +1064,32 @@ display: none;
     margin-top: 20px !important;
   }
 
-    .card.dashboard img {
-        margin: 0px auto 10px !important;
-        width: 55px;
-    }
+  .card.dashboard img {
+    margin: 0px auto 10px !important;
+    width: 55px;
+  }
 
-    .card-block p {
-        margin-bottom: 15px !important;
-        min-height: auto !important;
-        font-size: 12px !important;
-        line-height: 22px !important;
-    }
+  .card-block p {
+    margin-bottom: 15px !important;
+    min-height: auto !important;
+    font-size: 12px !important;
+    line-height: 22px !important;
+  }
 
-    .main-container .main-content .flex_section .card h2 {
-        font-size: 16px !important;
-    }
+  .main-container .main-content .flex_section .card h2 {
+    font-size: 16px !important;
+  }
 
-    .card .beta-tag {
-        display: none;
-    }
+  .card .beta-tag {
+    display: none;
+  }
 
-    .flex_section .card {
-        max-width: 100% !important;
-        width: 90%;
-        margin: 0 auto;
-        min-height: auto !important;
-    }
+  .flex_section .card {
+    max-width: 100% !important;
+    width: 90%;
+    margin: 0 auto;
+    min-height: auto !important;
+  }
   .flex_section{flex-direction: column;}
   .tablet_view_content{font-size: 10px !important;  margin: 0px;}
   .custom_responsive_table td:nth-child(2), 

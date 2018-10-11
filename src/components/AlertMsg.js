@@ -35,7 +35,7 @@ const AlertMsg = props => {
                     }
                     title={props.type}
                     allowEscape
-                    confirmBtnText={props.status === "warning" ? "Delete forever" : "Close"}
+                    confirmBtnText={props.status === "warning" ? props.btnConfirmTxt : "Close"}
                     confirmBtnBsStyle={
                         props.status === false || props.status === "warning"
                             ? "primary"
@@ -62,7 +62,7 @@ const AlertMsg = props => {
                             Do not show this message again{" "}
                         </label>
                     </div>
-                    <span className="close_popup"></span>
+                    <span onClick={() => props.onPress()} className="close_popup"></span>
                 </SweetAlert>
             )}
         </div>

@@ -126,6 +126,7 @@ class Docs extends Component {
     editTitle = markers => {
         this.setState({loaderStatus: true});
         const notes = this.state.record.notes;
+
         const title = document.getElementById("title").innerHTML,
             {records, match, updateRecord, user} = this.props,
             recordObj =
@@ -347,7 +348,8 @@ class Docs extends Component {
     resettingEditorContent = record => {
 
         this.state.title = record.title;
-        this.state.notes = record.notes;
+        this.state.record.notes = record.notes;
+        this.state.record.markers = this.state.editorContent = record.markers;
 
         let temp = `<div>`;
         record.markers.map(value => {
@@ -363,7 +365,7 @@ class Docs extends Component {
         const {records, match} = this.props,
             record = _.findWhere(records, {_id: match.params._id});
         let temp = ``;
-        console.log(records)
+
         record.markers.map(value => {
             temp += value.timeConstraint + "    " + value.label + "\n";
         });
@@ -596,7 +598,6 @@ class Docs extends Component {
                 ) {
                     return true;
                 }
-
                 $this.editTitle($this.state.editorContent);
                 event.preventDefault();
                 return false;
@@ -702,9 +703,11 @@ class Docs extends Component {
             );
         };
 
+
         return (
             <div className="main-content">
                 <AlertMsg
+                    btnConfirmTxt={"Sure"}
                     onPress={() =>
                         this.setState({...this.state, ...{confirmDelete: false}})
                     }
@@ -917,27 +920,11 @@ class Docs extends Component {
                             </div>
 
                             <div className="text_notes">
-                                <textarea
-                                    placeholder={"Please add notes..."}
-                                    onChange={e => {
-                                        this.setState({
-                                            ...this.state,
-                                            ...{
-                                                record: {
-                                                    ...this.state.record,
-                                                    ...{notes: e.target.value}
-                                                }
-                                            }
-                                        })
-                                    }
-                                    }
-                                    name=""
-                                    id=""
-                                    cols="30"
-                                    rows="10"
-                                >
-                                  {record.notes}
-                                </textarea>
+
+                                <textarea name="body"
+                                          placeholder={"Please add notes..."}
+                                          onChange={(e) => this.state.record.notes = e.target.value}
+                                          value={record.notes}/>
                             </div>
 
                             <p
@@ -954,7 +941,7 @@ class Docs extends Component {
                     </div>
                     <div
                         style={{display: !toggleQuickTip ? "none" : "block"}}
-                        className="col-sm-10 col-10 col-md-3 col-lg-3 p_rlt_zero"
+                        className="col-sm-10 col-10 col-md-3 col-lg-3 p_rlt_zero quick_tipbox"
                     >
                         {showGreen ? (
                             <div className="quicktip greenbg">
@@ -996,6 +983,7 @@ class Docs extends Component {
                             </div>
                         ) : null}
                     </div>
+                    <span className="cross_sharebox"> </span>
                     <div className="col-sm-2 col-2 col-md-2 col-lg-2 sharebox">
                         <ul>
                             <li className="clock" onClick={() => this.handleOpen()}>

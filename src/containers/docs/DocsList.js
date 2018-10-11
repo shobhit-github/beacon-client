@@ -17,6 +17,7 @@ const ITEM_PER_PAGE = 10,
 
 class DocsList extends Component {
     sortRecords = fieldBy => {
+
         if (this.state.orderBy) {
             this.setState({
                 ...this.state,
@@ -57,7 +58,6 @@ class DocsList extends Component {
             let records = this.props.records.filter(value =>
                 params.includes(value.type)
             );
-            console.log(records);
             this.setState({records});
         }
     };
@@ -139,11 +139,11 @@ class DocsList extends Component {
             .filter(value => value.status === 1 || value.status === 0)
             .slice(this.indexOfFirstList, this.indexOfLastList)
             .map((row, index) => (
-                <tr style={{cursor: "pointer"}} key={index}>
+                <tr key={index}>
                     {row.markers.map(value => {
                         temp += value.timeConstraint + "    " + value.label + "\n";
                     })}
-                    <td
+                    <td style={{cursor: 'pointer'}}
                         onClick={e => {
                             this.props.history.push(
                                 row.type === 2 || row.type === 1
@@ -151,6 +151,7 @@ class DocsList extends Component {
                                     : `/synthesis-doc/${row._id}`
                             );
                         }}
+                        className={'no_wrap_text_desktop'}
                     >
             <span
                 className={"no_wrap_text"}
@@ -158,7 +159,7 @@ class DocsList extends Component {
             />
                         <p className="mob_text_info">
                             <span>{moment(row.updated_at).format("LLL")}</span>
-                            <span>1h 7m 18s</span>
+                            <span>{this.secToHHMMSS(row.media_length)}</span>
                         </p>
                     </td>
                     <td>{moment(row.updated_at).format("LLL")}</td>
@@ -198,6 +199,7 @@ class DocsList extends Component {
         return (
             <div style={{paddingTop: "30px"}} className="main-content">
                 <AlertMsg
+                    btnConfirmTxt={"Sure"}
                     onPress={() =>
                         this.setState({...this.state, ...{confirmBox: false}})
                     }
@@ -216,11 +218,11 @@ class DocsList extends Component {
                         <span>
               <a
                   href="javascript:void(0);"
-                  data-toggle="dropdown"
                   className="icon dropdown"
               >
                 Sort by{" "}
                   <img
+                      data-toggle="dropdown"
                       className="dropToggle"
                       src="../../images/sort1.svg"
                       alt=""

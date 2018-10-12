@@ -11,21 +11,32 @@ import {stateToHTML} from "draft-js-export-html";
 import Download from "@axetroy/react-download";
 import Loader from "../../components/ProcessingLoader";
 import {environment as env} from "../../constants/app-config";
-import {saveUserDriveDetails, googleSaveDoc} from "../../actions/google-drive";
+import {
+    saveUserDriveDetails,
+    googleSaveDoc
+} from "../../actions/google-drive";
 import GoogleDriveGenricFunc from "../../components/GoogleDriveGenricFunc";
-import {updateRecord, updateRecordStatus, getHistory, downloadAudio} from "../../actions/records";
+import {
+    updateRecord,
+    updateRecordStatus,
+    getHistory,
+    downloadAudio
+} from "../../actions/records";
 import {google_keys as KEY} from "../../constants/app-config";
 import "../_styles/docs.css";
 import {Editor} from "react-draft-wysiwyg";
-import {EditorState, convertToRaw, ContentState, convertFromRaw} from "draft-js";
+import {
+    EditorState,
+    convertToRaw,
+    ContentState,
+    convertFromRaw
+} from "draft-js";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PopUpModal from "../../components/PopUpModal";
 import $ from "jquery";
 import AlertMsg from "../../components/AlertMsg";
 
-
 class Docs extends Component {
-
     editiorContent = val => {
         const contentBlock = htmlToDraft(val);
         let editorState;
@@ -141,7 +152,6 @@ class Docs extends Component {
 
         updateRecord(record, res => {
             if (res || !res) {
-
                 let temp = ``;
                 res.data.markers.map(value => {
                     temp += value.timeConstraint + "    " + value.label + "\n";
@@ -150,7 +160,7 @@ class Docs extends Component {
                 this.setState({loaderStatus: false});
                 this.setState({titleEdit: false});
                 this.setState({title: title, docData: temp});
-                this.getDocumentHistory()
+                this.getDocumentHistory();
             }
         });
     };
@@ -336,32 +346,32 @@ class Docs extends Component {
             editorState: false,
             open: false,
             history: [],
-            undoRedo: 0
+            undoRedo: 0,
+            hamBurgerToggle: false
         };
 
         this.getOauthToken = this.getOauthToken.bind(this);
         this.getDocDetail = this.getDocDetail.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.editTitle = this.editTitle.bind(this);
     }
 
-
     resettingEditorContent = record => {
-
         this.state.title = record.title;
         this.state.record.notes = record.notes;
         this.state.record.markers = this.state.editorContent = record.markers;
 
         let temp = `<div>`;
         record.markers.map(value => {
-            return temp += `<p><a href="javascript:void(0)">${
+            return (temp += `<p><a href="javascript:void(0)">${
                 value.timeConstraint
-                }</a> ${value.label}</p>`
+                }</a> ${value.label}</p>`);
         });
-        this.editiorContent(temp += `</div>`)
+        this.editiorContent((temp += `</div>`));
     };
 
     componentWillMount() {
-
+        console.log(this.props);
         const {records, match} = this.props,
             record = _.findWhere(records, {_id: match.params._id});
         let temp = ``;
@@ -390,8 +400,11 @@ class Docs extends Component {
                 if (index === 0) {
                     // prog = prog - 5 / 2;
                 } else {
-                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(':');
-                    let lastSecs = parseInt(lastTimeArr[0] * 60, 0) + parseInt(lastTimeArr[1], 0);
+                    let lastTimeArr = record.markers[index - 1].timeConstraint.split(
+                        ":"
+                    );
+                    let lastSecs =
+                        parseInt(lastTimeArr[0] * 60, 0) + parseInt(lastTimeArr[1], 0);
                     let lastProg = (lastSecs / record.media_length) * 100;
                     prog = prog - lastProg;
                 }
@@ -412,7 +425,6 @@ class Docs extends Component {
             })
             : [];
 
-
         mainDiv += finalString;
         mainDiv += "</div>";
         this.setState({dynamicHtml: mainDiv});
@@ -423,12 +435,12 @@ class Docs extends Component {
         script.src = "https://apis.google.com/js/platform.js";
         script.async = true;
         document.body.appendChild(script);
+        this.jQueryUses(this);
     }
 
     componentDidMount() {
         let _this = this;
         let dynamicHtml;
-
 
         if (!_this.state.editorContent.length) {
             _this.state.editorContent = _this.state.record.markers;
@@ -459,9 +471,8 @@ class Docs extends Component {
             _this.editiorContent(_this.state.dynamicHtml);
         }
         this.getDocumentHistory();
-        this.jQueryUses(_this);
+        // this.jQueryUses(_this);
     }
-
 
     getDocumentHistory = () => {
         const {getHistory, match, user} = this.props;
@@ -471,7 +482,6 @@ class Docs extends Component {
             }
         });
     };
-
 
     getOauthToken(token) {
         const {user, saveUserDriveDetails} = this.props;
@@ -576,8 +586,13 @@ class Docs extends Component {
                     event.ctrlKey &&
                     !(event.which === 19)
                 ) {
-                    $this.state.undoRedo = ($this.state.history.length - 1 > $this.state.undoRedo) ? $this.state.undoRedo + 1 : $this.state.undoRedo;
-                    $this.resettingEditorContent($this.state.history[$this.state.undoRedo]);
+                    $this.state.undoRedo =
+                        $this.state.history.length - 1 > $this.state.undoRedo
+                            ? $this.state.undoRedo + 1
+                            : $this.state.undoRedo;
+                    $this.resettingEditorContent(
+                        $this.state.history[$this.state.undoRedo]
+                    );
                 }
 
                 if (
@@ -585,8 +600,13 @@ class Docs extends Component {
                     event.ctrlKey &&
                     !(event.which === 19)
                 ) {
-                    $this.state.undoRedo = ($this.state.undoRedo > 0) ? $this.state.undoRedo - 1 : $this.state.undoRedo;
-                    $this.resettingEditorContent($this.state.history[$this.state.undoRedo]);
+                    $this.state.undoRedo =
+                        $this.state.undoRedo > 0
+                            ? $this.state.undoRedo - 1
+                            : $this.state.undoRedo;
+                    $this.resettingEditorContent(
+                        $this.state.history[$this.state.undoRedo]
+                    );
                 }
 
                 if (
@@ -598,7 +618,8 @@ class Docs extends Component {
                 ) {
                     return true;
                 }
-                $this.editTitle($this.state.editorContent);
+                console.log("sdfksd.fs;FSKDFH");
+                this.editTitle(this.state.editorContent);
                 event.preventDefault();
                 return false;
             });
@@ -660,7 +681,8 @@ class Docs extends Component {
             showWhite,
             open,
             history,
-            undoRedo
+            undoRedo,
+            hamBurgerToggle
         } = this.state;
         const {updateRecordStatus, match, user} = this.props;
 
@@ -703,9 +725,9 @@ class Docs extends Component {
             );
         };
 
-
         return (
             <div className="main-content">
+                <div className="bg_box"/>
                 <AlertMsg
                     btnConfirmTxt={"Sure"}
                     onPress={() =>
@@ -819,8 +841,8 @@ class Docs extends Component {
                         </div>
                     </div>
                 </div>
-
-                <div className="row">
+                {console.log(hamBurgerToggle)}
+                <div className={hamBurgerToggle ? "row quicktip_open" : "row"}>
                     <div
                         style={{
                             flex: `0 0 ${
@@ -886,10 +908,14 @@ class Docs extends Component {
                                         <a
                                             href="javascript:void(0);"
                                             onClick={() => {
-                                                this.state.undoRedo = (history.length - 1 > this.state.undoRedo) ? undoRedo + 1 : undoRedo;
-                                                this.resettingEditorContent(this.state.history[undoRedo]);
-                                            }
-                                            }
+                                                this.state.undoRedo =
+                                                    history.length - 1 > this.state.undoRedo
+                                                        ? undoRedo + 1
+                                                        : undoRedo;
+                                                this.resettingEditorContent(
+                                                    this.state.history[undoRedo]
+                                                );
+                                            }}
                                         >
                                             Undo
                                         </a>
@@ -920,11 +946,12 @@ class Docs extends Component {
                             </div>
 
                             <div className="text_notes">
-
-                                <textarea name="body"
-                                          placeholder={"Please add notes..."}
-                                          onChange={(e) => this.state.record.notes = e.target.value}
-                                          value={record.notes}/>
+                <textarea
+                    name="body"
+                    placeholder={"Please add notes..."}
+                    onChange={e => (this.state.record.notes = e.target.value)}
+                    value={record.notes}
+                />
                             </div>
 
                             <p
@@ -934,7 +961,7 @@ class Docs extends Component {
                             >
                                 <img src="../../images/stemp.svg" alt=""/> insert timestamp
                                 <span>
-                    {completedAudioDuration}/{totalAudioDuration}
+                  {completedAudioDuration}/{totalAudioDuration}
                 </span>
                             </p>
                         </div>
@@ -943,47 +970,60 @@ class Docs extends Component {
                         style={{display: !toggleQuickTip ? "none" : "block"}}
                         className="col-sm-10 col-10 col-md-3 col-lg-3 p_rlt_zero quick_tipbox"
                     >
-                        {showGreen ? (
-                            <div className="quicktip greenbg">
-                                <a onClick={() => this.onClick("green")} className="close">
-                                    x
-                                </a>
+                        <div className="fixed_tip">
+                            {showGreen ? (
+                                <div className="quicktip greenbg">
+                                    <a onClick={() => this.onClick("green")} className="close">
+                                        x
+                                    </a>
 
-                                <h4>Quick tips:</h4>
-                                <ul>
-                                    <li>
-                                        -Ctrl+I adds italic formatting and Ctrl+B adds bold
-                                        formatting
-                                    </li>
+                                    <h4>Quick tips:</h4>
+                                    <ul>
+                                        <li>
+                                            -Ctrl+I adds italic formatting and Ctrl+B adds bold
+                                            formatting
+                                        </li>
 
-                                    <li>
-                                        -Press ESC to play/pause, and Ctrl+j to insert the current
-                                        timestamp
-                                    </li>
-                                </ul>
-                            </div>
-                        ) : null}
-                        {showWhite ? (
-                            <div className="quicktip">
-                                <a onClick={() => this.onClick("white")} className="close">
-                                    x
-                                </a>
-                                <h4>Quick tips:</h4>
-                                <ul>
-                                    <li>
-                                        -Ctrl+I adds italic formatting and Ctrl+B adds bold
-                                        formatting
-                                    </li>
+                                        <li>
+                                            -Press ESC to play/pause, and Ctrl+j to insert the current
+                                            timestamp
+                                        </li>
+                                    </ul>
+                                </div>
+                            ) : null}
+                            {showWhite ? (
+                                <div className="quicktip">
+                                    <a onClick={() => this.onClick("white")} className="close">
+                                        x
+                                    </a>
+                                    <h4>Quick tips:</h4>
+                                    <ul>
+                                        <li>
+                                            -Ctrl+I adds italic formatting and Ctrl+B adds bold
+                                            formatting
+                                        </li>
 
-                                    <li>
-                                        -Press ESC to play/pause, and Ctrl+j to insert the current
-                                        timestamp
-                                    </li>
-                                </ul>
-                            </div>
-                        ) : null}
+                                        <li>
+                                            -Press ESC to play/pause, and Ctrl+j to insert the current
+                                            timestamp
+                                        </li>
+                                    </ul>
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
-                    <span className="cross_sharebox"> </span>
+
+                    <span
+                        onClick={() => {
+                            this.setState({
+                                ...this.state,
+                                ...{hamBurgerToggle: !hamBurgerToggle}
+                            });
+                        }}
+                        className="cross_sharebox"
+                    >
+            {" "}
+          </span>
                     <div className="col-sm-2 col-2 col-md-2 col-lg-2 sharebox">
                         <ul>
                             <li className="clock" onClick={() => this.handleOpen()}>
@@ -1021,8 +1061,8 @@ class Docs extends Component {
                             open={open}
                             data={history}
                             _handleClose={this.handleClose}
-                            onSelectHistoryRecord={(record) => {
-                                this.resettingEditorContent(record)
+                            onSelectHistoryRecord={record => {
+                                this.resettingEditorContent(record);
                             }}
                         />
                     </div>

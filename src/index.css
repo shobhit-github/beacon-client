@@ -429,7 +429,7 @@ body {
     width: 100%;
     color: #414965;
     overflow: auto;
-    max-height: calc(100vh - 360px);
+    /*max-height: calc(100vh - 360px);*/
     float: left;
 }
 

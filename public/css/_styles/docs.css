@@ -28,6 +28,12 @@
 .checkboxLabel:first-of-type {
   margin-left: 0; }
 
+.no_wrap_text_desktop {
+  white-space: nowrap;
+  max-width: 247px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .noRows {
   position: absolute;
   top: 0;
@@ -826,12 +832,58 @@ border-color: transparent;
   padding-left: 20px;
 }
 
-.btn_relative {
-  position: relative;
+.cross_sharebox {
+  position: fixed;
+  right: 32px;
+  bottom: 90px;
+  display: none;
+  cursor: pointer;
+  background: url(../../images/botm_menu.svg) no-repeat center;
+  background-size: 28px;
+  width: 28px;
+  height: 28px;
+  z-index: 1;
 }
 
-.btn_relative:hover .btn_tooltip {
-  opacity: 1;
+.quicktip_open .cross_sharebox {
+  background: url(../../images/cross_icon_dark.svg) no-repeat center;
+  background-size: 28px;
+}
+
+.quicktip_open .sharebox {
+  display: block;
+}
+
+.player-div {
+  position: fixed !important;
+  width: 54% !important;
+  z-index: 9;
+}
+
+.docs-wrapper {
+  margin-top: 90px;
+}
+
+.fixed_tip {
+  position: fixed;
+  width: 20%;
+  z-index: 9;
+}
+
+.sharebox ul {
+  position: fixed;
+  z-index: 3;
+  right: 17px;
+}
+
+.bg_box {
+  position: fixed;
+  height: 92px;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  background: #f6f8fb;
+  top: 61px;
 }
 /*========= responsive css ===========*/
 
@@ -860,6 +912,28 @@ border-color: transparent;
   }
 }
 @media screen and (max-width:991px) {
+  .cross_sharebox {
+    display: inline-block;
+  }
+
+  .player-div {
+    width: 100% !important;
+  }
+
+  .main-container .main-content .sharebox ul {
+    margin-bottom: 0px;
+    right: 30px;
+  }
+
+  .quick_tipbox {
+    position: absolute !important;
+    z-index: 9;
+    width: 90% !important;
+    flex: auto !important;
+    max-width: 300px !important;
+    right: 180px;
+    top: 20px;
+  }
   .botm_menu{
     display:inline-block;
   }
@@ -892,13 +966,19 @@ border-color: transparent;
     display: none;
   }
   .sharebox{
-    position: fixed !important; 
-    right: 32px; 
-    bottom: 30px;
+    position: fixed !important;
+    right: 63px;
+    bottom: 217px;
     /* display: none; */
-    width: 30px !important;
-    z-index: 1;
+    width: 135px !important;
+    z-index: 9;
     padding: 0px !important;
+    display: none;
+  }
+
+  .fixed_tip {
+    /*position: relative;*/
+    width: 265px;
   }
   .sidearea{
     flex: 0 0 100% !important; 
@@ -972,6 +1052,22 @@ border-color: transparent;
 }
 
 @media screen and (max-width: 767px) {
+
+  .cross_sharebox {
+    right: 37px;
+    bottom: 90px;
+  }
+
+  .quick_tipbox {
+    right: 70px;
+  }
+
+  .sharebox {
+    right: 30px;
+    bottom: 237px;
+    width: 40px !important;
+    text-align: right;
+  }
   .card.text-center.single{
     margin-top: 30px;
   }
@@ -1047,6 +1143,32 @@ display: none;
 }
 
 @media screen and (max-width: 575px) {
+  .sharebox ul {
+    position: relative;
+  }
+
+  .docs-wrapper {
+    margin-top: 0;
+  }
+
+  .bg_box {
+    display: none;
+  }
+
+  .cross_sharebox {
+    right: 12px;
+    bottom: 90px;
+  }
+
+  .cross_sharebox img {
+    width: 28px;
+  }
+
+  .quick_tipbox {
+    right: 100px;
+    max-width: 228px !important;
+  }
+
   .card.single {
     width: 95% !important;
   }
@@ -1058,7 +1180,7 @@ display: none;
   }
   .sharebox {
         right: 5px;
-        bottom: 90px;
+    bottom: 128px;
   }
   .card.dashboard h2 {
     margin-top: 20px !important;

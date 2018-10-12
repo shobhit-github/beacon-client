@@ -72,6 +72,7 @@
     "react-loaders": "^3.0.1",
     "react-mic": "^9.2.0",
     "react-modal-dialog": "^4.0.7",
+    "react-multimedia-capture": "^1.2.1",
     "react-notification-system": "^0.2.16",
     "react-notification-system-redux": "^1.2.0",
     "react-redux": "^5.0.6",

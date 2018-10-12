@@ -18,9 +18,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 // ui dependencies
 import Checkbox from "@material-ui/core/Checkbox";
 
-
 const AlertMsg = props => {
-
     return (
         <div>
             {props.isShowingModal && (
@@ -35,7 +33,9 @@ const AlertMsg = props => {
                     }
                     title={props.type}
                     allowEscape
-                    confirmBtnText={props.status === "warning" ? props.btnConfirmTxt : "Close"}
+                    confirmBtnText={
+                        props.status === "warning" ? props.btnConfirmTxt : "Close"
+                    }
                     confirmBtnBsStyle={
                         props.status === false || props.status === "warning"
                             ? "primary"
@@ -52,17 +52,14 @@ const AlertMsg = props => {
                     {props.msg}
 
                     <div className="form-check text-left">
-                        <Checkbox
-                            id="check2"
-                            color="primary"
-                        />
+                        <Checkbox id="check2" color="primary"/>
 
                         <label className="form-check-label" for="check2">
                             {" "}
                             Do not show this message again{" "}
                         </label>
                     </div>
-                    <span onClick={() => props.onPress()} className="close_popup"></span>
+                    <span onClick={() => props.onPress()} className="close_popup"/>
                 </SweetAlert>
             )}
         </div>

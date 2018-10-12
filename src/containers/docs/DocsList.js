@@ -17,7 +17,6 @@ const ITEM_PER_PAGE = 10,
 
 class DocsList extends Component {
     sortRecords = fieldBy => {
-
         if (this.state.orderBy) {
             this.setState({
                 ...this.state,
@@ -143,7 +142,8 @@ class DocsList extends Component {
                     {row.markers.map(value => {
                         temp += value.timeConstraint + "    " + value.label + "\n";
                     })}
-                    <td style={{cursor: 'pointer'}}
+                    <td
+                        style={{cursor: "pointer"}}
                         onClick={e => {
                             this.props.history.push(
                                 row.type === 2 || row.type === 1
@@ -151,7 +151,7 @@ class DocsList extends Component {
                                     : `/synthesis-doc/${row._id}`
                             );
                         }}
-                        className={'no_wrap_text_desktop'}
+                        className={"no_wrap_text_desktop"}
                     >
             <span
                 className={"no_wrap_text"}
@@ -216,10 +216,7 @@ class DocsList extends Component {
                     <div style={{marginBottom: "18px"}} className="fillter_section">
                         <h2 className="title_tag">My Files</h2>
                         <span>
-              <a
-                  href="javascript:void(0);"
-                  className="icon dropdown"
-              >
+              <a href="javascript:void(0);" className="icon dropdown">
                 Sort by{" "}
                   <img
                       data-toggle="dropdown"

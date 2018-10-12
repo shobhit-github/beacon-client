@@ -435,7 +435,6 @@ class Docs extends Component {
         script.src = "https://apis.google.com/js/platform.js";
         script.async = true;
         document.body.appendChild(script);
-        this.jQueryUses(this);
     }
 
     componentDidMount() {
@@ -471,7 +470,7 @@ class Docs extends Component {
             _this.editiorContent(_this.state.dynamicHtml);
         }
         this.getDocumentHistory();
-        // this.jQueryUses(_this);
+        this.jQueryUses(_this);
     }
 
     getDocumentHistory = () => {

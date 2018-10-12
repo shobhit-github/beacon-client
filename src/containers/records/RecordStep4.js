@@ -16,10 +16,8 @@ class RecordStep4 extends Component {
         this.setState({...this.state, ...{recording1: !this.state.recording1}});
 
         setTimeout(() => {
-            if(this.state.recording1){
-
-            }else{
-
+            if (this.state.recording1) {
+            } else {
             }
             if (this.state.recording) {
                 this.timerInstance.start();
@@ -138,20 +136,20 @@ class RecordStep4 extends Component {
             interviewSave: false,
 
             granted: false,
-			rejectedReason: '',
-			recording1: false,
-			paused: false
+            rejectedReason: "",
+            recording1: false,
+            paused: false
         };
         this.timerInstance = null;
         this.recordingBufferEvent = this.recordingBufferEvent.bind(this);
 
         this.handleGranted = this.handleGranted.bind(this);
-		this.handleDenied = this.handleDenied.bind(this);
-		this.handleStart = this.handleStart.bind(this);
-		this.handleStop = this.handleStop.bind(this);
-		this.handlePause = this.handlePause.bind(this);
-		this.handleResume = this.handleResume.bind(this);
-		this.downloadAudio = this.downloadAudio.bind(this);
+        this.handleDenied = this.handleDenied.bind(this);
+        this.handleStart = this.handleStart.bind(this);
+        this.handleStop = this.handleStop.bind(this);
+        this.handlePause = this.handlePause.bind(this);
+        this.handleResume = this.handleResume.bind(this);
+        this.downloadAudio = this.downloadAudio.bind(this);
     }
 
     componentDidMount() {
@@ -186,41 +184,48 @@ class RecordStep4 extends Component {
     }
 
     handleGranted() {
-		this.setState({ granted: true });
-		console.log('Permission Granted!');
-	}
-	handleDenied(err) {
-		this.setState({ rejectedReason: err.name });
-		console.log('Permission Denied!', err);
-	}
-	handleStart(stream) {
+        this.setState({granted: true});
+        console.log("Permission Granted!");
+    }
+
+    handleDenied(err) {
+        this.setState({rejectedReason: err.name});
+        console.log("Permission Denied!", err);
+    }
+
+    handleStart(stream) {
         this.timerInstance.start();
-		this.setState({
-			recording1: true
-		});
-	}
-	handleStop(blob) {
-		this.setState({
-			recording1: false
-		});
-		this.downloadAudio(blob);
-	}
-	handlePause() {
+        this.setState({
+            recording1: true
+        });
+    }
+
+    handleStop(blob) {
+        this.setState({
+            recording1: false
+        });
+        this.downloadAudio(blob);
+    }
+
+    handlePause() {
         this.timerInstance.pause();
-		this.setState({
-			paused: true
-		});
-	}
-	handleResume(stream) {
+        this.setState({
+            paused: true
+        });
+    }
+
+    handleResume(stream) {
         this.timerInstance.start();
-		this.setState({
-			paused: false
-		});
-	}
-	handleError(err) {
-		console.log(err);
-	}
-	downloadAudio(blob) {
+        this.setState({
+            paused: false
+        });
+    }
+
+    handleError(err) {
+        console.log(err);
+    }
+
+    downloadAudio(blob) {
         const params = new FormData();
 
         params.append("_id", this.props.user._id);
@@ -245,14 +250,14 @@ class RecordStep4 extends Component {
                 });
             }
         });
-		/*let url = URL.createObjectURL(blob);
-		let a = document.createElement('a');
-		a.style.display = 'none';
-		a.href = url;
-		a.target = '_blank';
-		document.body.appendChild(a);
+        /*let url = URL.createObjectURL(blob);
+                let a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.target = '_blank';
+                document.body.appendChild(a);
 
-		a.click();*/
+                a.click();*/
     }
 
     render() {
@@ -270,9 +275,9 @@ class RecordStep4 extends Component {
         } = this.state;
 
         const granted = this.state.granted;
-		const rejectedReason = this.state.rejectedReason;
-		const recording1 = this.state.recording1;
-		const paused = this.state.paused;
+        const rejectedReason = this.state.rejectedReason;
+        const recording1 = this.state.recording1;
+        const paused = this.state.paused;
 
         return (
             <div className="main-content flex_main">
@@ -381,7 +386,7 @@ class RecordStep4 extends Component {
                                         </button>
                                         */}
                                         <MediaCapturer
-                                            constraints={{ audio: true }}
+                                            constraints={{audio: true}}
                                             mimeType="audio/webm"
                                             timeSlice={10}
                                             onGranted={this.handleGranted}
@@ -390,100 +395,94 @@ class RecordStep4 extends Component {
                                             onStop={this.handleStop}
                                             onPause={this.handlePause}
                                             onResume={this.handleResume}
-                                            onError={this.handleError} 
-                                            render={({ start, stop, pause, resume }) => 
-                                            <div>
-                                                <div className="recording_options">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            if (recording) {
-                                                                this.setState({
-                                                                    ...this.state,
-                                                                    ...{confirmBox: true}
-                                                                });
-                                                            }
-                                                        }}
-                                                        className="cancel_btn"
-                                                    >
-                                                        &nbsp;
-                                                    </button>
-                                                    {/*start*/}
-                                                    { !recording1 && !paused &&
-                                                    <div className="record-sec">
-                                                        {!audioUrl &&
-                                                        micPermission && (
-                                                            <button
-                                                                className={"on-rec"}
-                                                                onClick={start}
-                                                                type="button"
-                                                            >
-                                                                    <span>
-                                                                        {" "}
-                                                                        <Icon> </Icon>{" "}
-                                                                    </span>
-                                                                
-                                                            </button>
-                                                            
+                                            onError={this.handleError}
+                                            render={({start, stop, pause, resume}) => (
+                                                <div>
+                                                    <div className="recording_options">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                if (recording) {
+                                                                    this.setState({
+                                                                        ...this.state,
+                                                                        ...{confirmBox: true}
+                                                                    });
+                                                                }
+                                                            }}
+                                                            className="cancel_btn"
+                                                        >
+                                                            &nbsp;
+                                                        </button>
+                                                        {/*start*/}
+                                                        {!recording1 &&
+                                                        !paused && (
+                                                            <div className="record-sec">
+                                                                {!audioUrl &&
+                                                                micPermission && (
+                                                                    <button
+                                                                        className={"on-rec"}
+                                                                        onClick={start}
+                                                                        type="button"
+                                                                    >
+                                        <span>
+                                          {" "}
+                                            <Icon> </Icon>{" "}
+                                        </span>
+                                                                    </button>
+                                                                )}
+                                                            </div>
                                                         )}
-                                                    </div>
-                                                    }
-                                                    {/*start*/}
+                                                        {/*start*/}
 
-                                                    {/*pause*/}
-                                                    { recording1 && !paused &&
-                                                    <div className="record-sec">
-                                                        {!audioUrl &&
-                                                        micPermission && (
-                                                            <button
-                                                                className={"off-rec"}
-                                                                onClick={pause}
-                                                                type="button"
-                                                            >
-                                                                <span>
-                                                                {" "}
-                                                                        <Icon> </Icon>{" "}
-                                                                </span>
-                                                                
-                                                            </button>
-                                                            
+                                                        {/*pause*/}
+                                                        {recording1 &&
+                                                        !paused && (
+                                                            <div className="record-sec">
+                                                                {!audioUrl &&
+                                                                micPermission && (
+                                                                    <button
+                                                                        className={"off-rec"}
+                                                                        onClick={pause}
+                                                                        type="button"
+                                                                    >
+                                        <span>
+                                          {" "}
+                                            <Icon> </Icon>{" "}
+                                        </span>
+                                                                    </button>
+                                                                )}
+                                                            </div>
                                                         )}
-                                                    </div>
-                                                    }
-                                                    {/*pause*/}
+                                                        {/*pause*/}
 
-                                                    {/*resume*/}
-                                                    { recording1 && paused &&
-                                                    <div className="record-sec">
-                                                        {!audioUrl &&
-                                                        micPermission && (
-                                                            <button
-                                                                className={"on-rec"}
-                                                                onClick={resume}
-                                                                type="button"
-                                                            >
-                                                                <span>
-                                                                {" "}
-                                                                    <Icon> </Icon>{" "}
-                                                                </span>
-                                                                
-                                                            </button>
-                                                            
+                                                        {/*resume*/}
+                                                        {recording1 &&
+                                                        paused && (
+                                                            <div className="record-sec">
+                                                                {!audioUrl &&
+                                                                micPermission && (
+                                                                    <button
+                                                                        className={"on-rec"}
+                                                                        onClick={resume}
+                                                                        type="button"
+                                                                    >
+                                        <span>
+                                          {" "}
+                                            <Icon> </Icon>{" "}
+                                        </span>
+                                                                    </button>
+                                                                )}
+                                                            </div>
                                                         )}
-                                                    </div>
-                                                    }
-                                                    {/*resume*/}
+                                                        {/*resume*/}
 
-                                                    <button
-                                                        
-                                                        onClick={stop}
-                                                        className="save_btn"
-                                                    >
-                                                        <span className="btn_tooltip">Save</span>
-                                                    </button>
+                                                        <button onClick={stop} className="save_btn">
+                                                            <span className="btn_tooltip">Save</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        } />
+                                            )}
+                                        />
                                     </div>
 
                                     <div className="timer">
@@ -540,7 +539,6 @@ class RecordStep4 extends Component {
                         </div>
                     </div>
                 </div>
-                
             </div>
         );
     }
